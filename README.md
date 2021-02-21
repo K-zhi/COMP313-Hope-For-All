@@ -1,1 +1,1 @@
-# COMP313-Help-For-All
+# COMP313-Hope-For-All
