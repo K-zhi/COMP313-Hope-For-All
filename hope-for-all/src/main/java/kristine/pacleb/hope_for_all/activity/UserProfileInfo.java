@@ -1,8 +1,10 @@
-package kristine.pacleb.hope_for_all;
+package kristine.pacleb.hope_for_all.activity;
+
+import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
+import kristine.pacleb.hope_for_all.R;
 
 public class UserProfileInfo extends AppCompatActivity {
 

@@ -1,6 +1,4 @@
-package kristine.pacleb.hope_for_all;
-
-import androidx.appcompat.app.AppCompatActivity;
+package kristine.pacleb.hope_for_all.activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +11,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import kristine.pacleb.hope_for_all.R;
 
 public class UserRegistration extends AppCompatActivity implements View.OnClickListener{
 
@@ -55,7 +57,6 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    //method when user click Create account button
     private void createAccount() {
 
         inputUserName = userName.getText().toString().trim();
@@ -101,11 +102,12 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
         }
 
         if(!inputUserName.isEmpty() && !inputName.isEmpty() && !inputEmail.isEmpty() && !inputPassword.isEmpty() && !inputConfirmPw.isEmpty()){
-            //hide keyboard
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
-            Toast.makeText(UserRegistration.this, "Registration successful", Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getApplicationContext(),UserProfileInfo.class));
+            Toast.makeText(kristine.pacleb.hope_for_all.activity.UserRegistration.this,
+                    "Registration successful",
+                    Toast.LENGTH_LONG).show();
+            startActivity(new Intent(getApplicationContext(), UserProfileInfo.class));
 
             //TODO: invoke database store information
         }

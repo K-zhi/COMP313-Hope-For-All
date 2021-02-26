@@ -9,9 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.HopeForAllkristine">
-        <activity android:name=".UserProfileInfo"></activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".UserRegistration">
+        <activity android:name=".activity.UserProfileInfo"></activity>
+        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.UserRegistration">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
