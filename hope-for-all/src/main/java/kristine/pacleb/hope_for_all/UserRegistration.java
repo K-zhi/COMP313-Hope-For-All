@@ -3,6 +3,7 @@ package kristine.pacleb.hope_for_all;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
@@ -104,6 +105,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
             Toast.makeText(UserRegistration.this, "Registration successful", Toast.LENGTH_LONG).show();
+            startActivity(new Intent(getApplicationContext(),UserProfileInfo.class));
 
             //TODO: invoke database store information
         }
