@@ -52,7 +52,7 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.tvLogIn:
-                //TODO: implement log in activity startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+                //TODO: implement log in activity
                 break;
         }
     }
@@ -107,9 +107,9 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
             Toast.makeText(kristine.pacleb.hope_for_all.activity.UserRegistration.this,
                     "Registration successful",
                     Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getApplicationContext(), UserProfileInfo.class));
+            startActivity(new Intent(getApplicationContext(), CounselorProfileInfo.class));
 
-            //TODO: invoke database store information
+            //TODO: invoke database to store information
         }
 
     }
