@@ -46,15 +46,20 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btnCreateAccount:
                 createAccount();
                 break;
 
             case R.id.tvLogIn:
-                //TODO: implement log in activity
+                login();
                 break;
         }
+    }
+
+    private void login() {
+        Intent intent = new Intent(this, UserLogin.class);
+        startActivity(intent);
     }
 
     private void createAccount() {
