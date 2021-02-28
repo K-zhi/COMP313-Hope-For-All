@@ -1,62 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/counselorProfileInfo">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:gravity="center"
-        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Account Profile"
-            android:textColor="@color/light_blue"
-            android:textSize="30dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="152dp"
+        android:background="#C6BBE3F4">
 
         <ImageView
             android:id="@+id/ivCounselorDisplayPhoto"
             android:layout_width="124dp"
             android:layout_height="66dp"
-            android:src="@drawable/ic_counselor_pic" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:background="@drawable/custom_input">
-
-        <TextView
-            android:layout_width="139dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="User name"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+            android:layout_marginTop="20dp"
+            android:src="@drawable/ic_counselor_pic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.452"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints" />
 
         <TextView
             android:id="@+id/tvUserName"
             android:layout_width="209dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="108dp"
             android:padding="5dp"
             android:text="user name here...."
-            android:textColor="@color/light_blue"
-            android:textSize="20dp" />
+            android:textAlignment="center"
+            android:textColor="@color/blue"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivCounselorDisplayPhoto"
+            tools:ignore="MissingConstraints" />
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -210,10 +195,10 @@
 
     <LinearLayout
         android:id="@+id/layoutButtons"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:gravity="center"
+        android:layout_gravity="center"
         android:orientation="horizontal">
 
         <Button
@@ -235,7 +220,7 @@
             android:textSize="15dp"
             android:text="Delete Profile"
             android:textAllCaps="false"
-            android:textColor="#BA000000"/>
+            android:textColor="@color/blue"/>
 
     </LinearLayout>
 
