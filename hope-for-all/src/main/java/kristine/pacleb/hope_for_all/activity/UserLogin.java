@@ -1,8 +1,8 @@
 package kristine.pacleb.hope_for_all.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import kristine.pacleb.hope_for_all.R;
 
