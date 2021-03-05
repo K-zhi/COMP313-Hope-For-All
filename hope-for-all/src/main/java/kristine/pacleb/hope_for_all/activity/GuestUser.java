@@ -1,4 +1,4 @@
-package hope_for_all_data;
+package kristine.pacleb.hope_for_all.activity;
 
 public class GuestUser {
     public int userId;

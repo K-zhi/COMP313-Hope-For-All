@@ -1,4 +1,4 @@
-package hope_for_all_data;
+package kristine.pacleb.hope_for_all.activity;
 
 import com.google.firebase.database.Exclude;
 
@@ -14,9 +14,21 @@ public class User {
 
     public User() {}
 
+    public User(String email, String password) {
+        this.userEmail = email;
+        this.userPassword = password;
+    }
+
     public User(String email, String password, String userType) {
         this.userEmail = email;
         this.userPassword = password;
+        this.userType = userType;
+    }
+
+    public User(String userName, String userEmail, String userPassword, String userType) {
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userPassword = userPassword;
         this.userType = userType;
     }
 
