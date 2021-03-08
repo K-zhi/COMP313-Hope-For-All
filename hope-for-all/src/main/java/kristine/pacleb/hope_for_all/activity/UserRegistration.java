@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import kristine.pacleb.hope_for_all.R;
@@ -30,40 +31,37 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_registration);
 
-        //initialize layout
+
         userName = findViewById(R.id.etUserName);
         name = findViewById(R.id.etName);
         email = findViewById(R.id.etEmail);
         password = findViewById(R.id.etPassword);
         confirmPassword = findViewById(R.id.etConfirmPassword);
-        createAccount = findViewById(R.id.btnCreateAccount);
-        logIn = findViewById(R.id.tvLogIn);
         layout = findViewById(R.id.userRegistrationLayout);
 
-        createAccount.setOnClickListener(this::onClick);
-        logIn.setOnClickListener(this::onClick);
+        logIn = findViewById(R.id.tvLogIn);
+        logIn.setOnClickListener(this);
+
+        createAccount = findViewById(R.id.btnCreateAccount);
+        createAccount.setOnClickListener(this);
+
     }
+
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
+        switch (view.getId()){
             case R.id.btnCreateAccount:
                 createAccount();
                 break;
 
             case R.id.tvLogIn:
-                login();
+                startActivity(new Intent(getApplicationContext(),LoginActivity.class));
                 break;
         }
     }
 
-    private void login() {
-        Intent intent = new Intent(this, UserLogin.class);
-        startActivity(intent);
-    }
-
     private void createAccount() {
-
         inputUserName = userName.getText().toString().trim();
         inputName = name.getText().toString().trim();
         inputEmail = email.getText().toString().trim();
@@ -100,22 +98,13 @@ public class UserRegistration extends AppCompatActivity implements View.OnClickL
             return;
         }
 
+
         if (!inputConfirmPw.equals(inputPassword)) {
             confirmPassword.setError("Password does not match");
             confirmPassword.requestFocus();
             return;
         }
 
-        if(!inputUserName.isEmpty() && !inputName.isEmpty() && !inputEmail.isEmpty() && !inputPassword.isEmpty() && !inputConfirmPw.isEmpty()){
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
-            Toast.makeText(kristine.pacleb.hope_for_all.activity.UserRegistration.this,
-                    "Registration successful",
-                    Toast.LENGTH_LONG).show();
-            startActivity(new Intent(getApplicationContext(), CounselorProfileInfo.class));
-
-            //TODO: invoke database to store information
-        }
-
     }
+
 }

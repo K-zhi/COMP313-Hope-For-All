@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "723164323391",
+    "project_id": "hope-for-all-2d79d",
+    "storage_bucket": "hope-for-all-2d79d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723164323391:android:870ee21062b431437ae28a",
+        "android_client_info": {
+          "package_name": "kristine.pacleb.hope_for_all"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "723164323391-lgii2nvcjoic7quqs0lhlu82qbstnnka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS__K9vjlSyoxuhwilG99yL6SdW9cjqYE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "723164323391-lgii2nvcjoic7quqs0lhlu82qbstnnka.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
