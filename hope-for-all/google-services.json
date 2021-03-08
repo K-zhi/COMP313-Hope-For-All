@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "694714310061",
+    "project_id": "hope-for-all-app",
+    "storage_bucket": "hope-for-all-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694714310061:android:f4f2c692e9cfeb7a8f5524",
+        "android_client_info": {
+          "package_name": "comp321.hope_for_all"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694714310061-q3ouu5v715qrsilhrjckdgc3v7j2p9m6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "comp321.hope_for_all",
+            "certificate_hash": "c0f7e89768fe0006b8efd91a28089c2ec9a370cc"
+          }
+        },
+        {
+          "client_id": "694714310061-ja5spc5hu162c1gujp8pot4jb070atgj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCZyAuYdoHczAWYRAQAS85QI8wgBQHwdo0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694714310061-ja5spc5hu162c1gujp8pot4jb070atgj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

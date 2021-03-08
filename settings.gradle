@@ -1,0 +1,2 @@
+include ':hope-for-all'
+rootProject.name = "Hope for All"
