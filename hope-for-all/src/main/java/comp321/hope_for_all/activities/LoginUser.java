@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -28,9 +29,10 @@ import comp321.hope_for_all.tasks.CustomAlertDialog;
 
 public class LoginUser extends AppCompatActivity implements View.OnClickListener{
 
+    private static final String TAG = "LoginUser" ;
     private EditText email, password;
     private Button logIn;
-    private TextView signUp;
+    private TextView signUp, guestLogIn;
     private LinearLayout layout;
 
     FirebaseAuth mAuth;
@@ -51,6 +53,10 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
         signUp = findViewById(R.id.tvSignUp);
         signUp.setOnClickListener(this);
 
+        guestLogIn = findViewById(R.id.tvGuestLogIn);
+        guestLogIn.setOnClickListener(this);
+
+        mAuth = FirebaseAuth.getInstance();
     }
 
 
@@ -63,6 +69,10 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
 
             case R.id.btnLogIn:
                 userLogIn();
+                break;
+
+            case R.id.tvGuestLogIn:
+                startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 break;
         }
 
@@ -96,5 +106,37 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
             return;
         }
 
+        mAuth.signInWithEmailAndPassword(inputEmail, inputPassword)
+                .addOnCompleteListener(LoginUser.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if(task.isSuccessful()){
+
+                            final CustomAlertDialog customAlertDialog = new CustomAlertDialog(LoginUser.this);
+                            customAlertDialog.startLoading();
+
+                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
+
+                            Intent  intent = new Intent(getApplicationContext(), MainActivity.class);
+
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    customAlertDialog.dismissDialog();
+                                }
+                            },50000);
+
+                            startActivity(intent);
+
+                        }else{
+                            Log.w(TAG, "signInWithCustomToken:failure", task.getException());
+                            Toast.makeText(LoginUser.this, "Failed to login! Please check you credentials", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                });
     }
 }
