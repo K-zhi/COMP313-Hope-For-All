@@ -119,7 +119,7 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
                             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
 
-                            Intent  intent = new Intent(getApplicationContext(), MainActivity.class);
+                            Intent intent = new Intent(getApplicationContext(), UserProfile.class);
 
                             Handler handler = new Handler();
                             handler.postDelayed(new Runnable() {
