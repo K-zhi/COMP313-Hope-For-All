@@ -13,7 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HopeForAll"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.Message"></activity>
+        <activity android:name=".activities.SelectUserType"></activity>
+        <activity android:name=".activities.CreateCounselor" />
+        <activity android:name=".activities.CounselorProfile" />
+        <activity android:name=".activities.Message" />
         <activity android:name=".activities.UserProfile" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.CreateUser" />

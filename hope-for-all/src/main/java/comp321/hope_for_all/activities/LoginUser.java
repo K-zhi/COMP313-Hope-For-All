@@ -59,12 +59,11 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
         mAuth = FirebaseAuth.getInstance();
     }
 
-
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.tvSignUp:
-                startActivity(new Intent(getApplicationContext(),CreateUser.class));
+                startActivity(new Intent(getApplicationContext(), SelectUserType.class));
                 break;
 
             case R.id.btnLogIn:

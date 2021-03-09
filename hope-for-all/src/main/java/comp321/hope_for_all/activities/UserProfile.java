@@ -28,7 +28,7 @@ import comp321.hope_for_all.models.User;
 public class UserProfile extends AppCompatActivity {
 
     private static final String TAG = "UserProfile";
-    private TextView logOut, greetings;
+    private TextView logOut;
     private Button editProfile;
 
     private FirebaseUser user;
@@ -67,6 +67,7 @@ public class UserProfile extends AppCompatActivity {
         final TextView userNameTextView = findViewById(R.id.tvUserName);
         final TextView nameTextView = findViewById(R.id.tvName);
         final TextView emailTextView = findViewById(R.id.tvEmail);
+        final TextView greetingTextView = findViewById(R.id.tvGreeting);
 
         databaseReference.child(userID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -81,6 +82,7 @@ public class UserProfile extends AppCompatActivity {
                     String strName = userProfile.name;
                     String strEmail = userProfile.email;
 
+                    greetingTextView.setText("Hello, " + strName + "!");
                     userNameTextView.setText(strUserName);
                     nameTextView.setText(strName);
                     emailTextView.setText(strEmail);
@@ -97,7 +99,7 @@ public class UserProfile extends AppCompatActivity {
 
     private void bottomNavigation() {
 
-        setTitle("Account");
+        setTitle("Account Profile");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.profileNav);

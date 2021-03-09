@@ -10,23 +10,27 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import comp321.hope_for_all.R;
+import comp321.hope_for_all.models.Counselor;
 
-public class Message extends AppCompatActivity {
+public class CounselorProfile extends AppCompatActivity {
+
+    private BottomNavigationView bottomNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_message);
+        setContentView(R.layout.activity_counselor_profile);
 
         bottomNavigation();
+
     }
 
     private void bottomNavigation() {
 
-        setTitle("Chat Message");
-
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.messageNav);
+        setTitle("Account Profile");
+        
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.profileNav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -36,10 +40,10 @@ public class Message extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.messageNav:
-                        return true;
                     case R.id.profileNav:
-                        startActivity(new Intent(getApplicationContext(), UserProfile.class));
+                        return true;
+                    case R.id.messageNav:
+                        startActivity(new Intent(getApplicationContext(), Message.class));
                         overridePendingTransition(0, 0);
                         return true;
                 }

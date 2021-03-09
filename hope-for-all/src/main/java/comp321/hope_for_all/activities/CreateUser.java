@@ -92,7 +92,6 @@ public class CreateUser extends AppCompatActivity implements View.OnClickListene
             case R.id.btnCreateAccount:
                 registerUser();
                 break;
-
         }
     }
 
