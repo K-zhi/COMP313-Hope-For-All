@@ -11,36 +11,40 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import comp321.hope_for_all.R;
 
-public class MainActivity extends AppCompatActivity {
+public class Message extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_message);
 
-        setTitle("Home");
+        bottomNavigation();
+    }
+
+    private void bottomNavigation() {
+
+        setTitle("Chat");
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setSelectedItemId(R.id.homeNav);
+        bottomNavigationView.setSelectedItemId(R.id.messageNav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.profileNav:
-                        startActivity(new Intent(getApplicationContext(), UserProfile.class));
+                    case R.id.homeNav:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0, 0);
                         return true;
-                    case R.id.homeNav:
-                        return true;
                     case R.id.messageNav:
-                        startActivity(new Intent(getApplicationContext(), Message.class));
+                        return true;
+                    case R.id.profileNav:
+                        startActivity(new Intent(getApplicationContext(), UserProfile.class));
                         overridePendingTransition(0, 0);
                         return true;
                 }
                 return false;
             }
         });
-
     }
 }

@@ -7,9 +7,10 @@
     android:id="@+id/userProfileInfo">
 
     <TextView
+        android:id="@+id/tvGreeting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:text="Account Profile"
@@ -135,7 +136,6 @@
             android:textAllCaps="false"
             android:textColor="@color/blue" />
 
-
     </LinearLayout>
 
     <TextView
@@ -148,5 +148,21 @@
         android:textSize="18dp"
         android:textAlignment="center"
         android:textColor="@color/blue" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/bottom_navigation"
+            app:itemBackground="@android:color/white"
+            app:itemTextColor="@drawable/selector"
+            app:itemIconTint="@drawable/selector"
+            app:menu="@menu/menu"
+            android:layout_alignParentBottom="true"></com.google.android.material.bottomnavigation.BottomNavigationView>
+
+    </RelativeLayout>
 
 </LinearLayout>
