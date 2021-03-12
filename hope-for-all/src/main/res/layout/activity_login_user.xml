@@ -59,36 +59,45 @@
         android:id="@+id/btnLogIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_blue_button"
-        android:text="Login"/>
+        android:text="User Login "/>
+
+    <Button
+        android:id="@+id/btnLogIn2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/custom_input"
+        android:textColor="@color/blue"
+        android:text="Counselor Login"/>
 
     <LinearLayout
-        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="49dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:orientation="horizontal">
 
         <TextView
             android:layout_width="171dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
-            android:layout_marginTop="10dp"
             android:text="Need an Account?  "
-            android:textColor="@color/black"
-            android:textAlignment="textEnd" />
+            android:textAlignment="textEnd"
+            android:textColor="@color/black" />
 
         <TextView
             android:id="@+id/tvSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginRight="30dp"
             android:text="Sign up"
-            android:textStyle="bold"
-            android:textColor="@color/blue" />
+            android:textColor="@color/blue"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

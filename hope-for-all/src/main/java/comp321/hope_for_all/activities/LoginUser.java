@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,7 +32,7 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
 
     private static final String TAG = "LoginUser" ;
     private EditText email, password;
-    private Button logIn;
+    private Button logIn, logInCounselor;
     private TextView signUp, guestLogIn;
     private LinearLayout layout;
 
@@ -49,6 +50,9 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
 
         logIn = findViewById(R.id.btnLogIn);
         logIn.setOnClickListener(this);
+
+        logInCounselor = findViewById(R.id.btnLogIn2);
+        logInCounselor.setOnClickListener(this);
 
         signUp = findViewById(R.id.tvSignUp);
         signUp.setOnClickListener(this);
@@ -70,11 +74,78 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
                 userLogIn();
                 break;
 
+            case R.id.btnLogIn2:
+                counselorLogIn();
+                break;
+
             case R.id.tvGuestLogIn:
                 startActivity(new Intent(getApplicationContext(),MainActivity.class));
                 break;
         }
 
+    }
+
+    private void counselorLogIn() {
+
+        String inputEmail = email.getText().toString().trim();
+        String inputPassword = password.getText().toString().trim();
+
+        if(inputEmail.isEmpty()){
+            email.setError("Email is required!");
+            email.requestFocus();
+            return;
+        }
+
+        if(!Patterns.EMAIL_ADDRESS.matcher(inputEmail).matches()){
+            email.setError("Email is invalid");
+            email.requestFocus();
+            return;
+        }
+
+        if(inputPassword.isEmpty()){
+            password.setError("Password is required!");
+            password.requestFocus();
+            return;
+        }
+
+        if(password.length() < 6 ){
+            password.setError("Minimum password is 6 characters");
+            password.requestFocus();
+            return;
+        }
+
+        mAuth.signInWithEmailAndPassword(inputEmail, inputPassword)
+                .addOnCompleteListener(LoginUser.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if(task.isSuccessful()){
+
+                            final CustomAlertDialog customAlertDialog = new CustomAlertDialog(LoginUser.this);
+                            customAlertDialog.startLoading();
+
+                            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
+
+                            Intent intent = new Intent(getApplicationContext(), CounselorProfile.class);
+
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    customAlertDialog.dismissDialog();
+                                }
+                            },50000);
+
+                            startActivity(intent);
+
+                        }else{
+                            Log.w(TAG, "signInWithCustomToken:failure", task.getException());
+                            Toast.makeText(LoginUser.this, "Failed to login! Please check you credentials", Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                });
     }
 
     private void userLogIn() {
