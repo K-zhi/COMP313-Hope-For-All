@@ -11,15 +11,19 @@ import android.view.MenuItem;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.models.Post;
 
 public class MainActivity extends AppCompatActivity {
 
+    private FloatingActionButton addPost;
     private RecyclerView recyclerView;
     private DatabaseReference firebaseDatabase;
+    Boolean testclick=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        //TODO: firebaseDatabase = FirebaseDatabase.getInstance().getReference().child();
+        firebaseDatabase = FirebaseDatabase.getInstance().getReference().child("Posts");
 
         setUpRecyclerView();
 
