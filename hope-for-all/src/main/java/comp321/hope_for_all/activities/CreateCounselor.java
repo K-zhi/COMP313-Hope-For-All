@@ -34,6 +34,7 @@ import java.util.List;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.adapter.PlaceAutoSuggestAdapter;
+import comp321.hope_for_all.models.Counselor;
 import comp321.hope_for_all.models.User;
 
 public class CreateCounselor extends AppCompatActivity implements View.OnClickListener{
@@ -253,11 +254,11 @@ public class CreateCounselor extends AppCompatActivity implements View.OnClickLi
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
 
-                            User user = new User(inputUserName, inputName, inputEmail);
+                            Counselor counselor = new Counselor(inputUserName, inputName, inputBio, inputEmail, inputWebsite, inputLocation);
 
                             mDatabase.getInstance().getReference("Counselors")
                                     .child(mAuth.getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    .setValue(counselor).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
 
