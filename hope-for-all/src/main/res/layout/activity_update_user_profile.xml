@@ -4,18 +4,18 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/userProfileInfo">
+    android:id="@+id/updateUserProfileInfo"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/tvGreeting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
-        android:text="Account Profile"
+        android:text="Update Profile"
         android:textColor="@color/light_blue"
-        android:textAlignment="inherit"
+        android:textAlignment="center"
         android:textSize="30dp" />
 
     <LinearLayout
@@ -37,10 +37,10 @@
             android:textColor="@color/black"
             android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/tvUserName"
+        <EditText
+            android:id="@+id/update_userName"
             android:layout_width="223dp"
-            android:layout_height="47dp"
+            android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="user name here...."
             android:textColor="@color/light_blue"
@@ -67,10 +67,10 @@
             android:textColor="@color/black"
             android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/tvName"
+        <EditText
+            android:id="@+id/update_name"
             android:layout_width="240dp"
-            android:layout_height="47dp"
+            android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Name here...."
             android:textColor="@color/light_blue"
@@ -97,10 +97,10 @@
             android:textColor="@color/black"
             android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/tvEmail"
+        <EditText
+            android:id="@+id/update_email"
             android:layout_width="240dp"
-            android:layout_height="47dp"
+            android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Email here...."
             android:textColor="@color/light_blue"
@@ -116,53 +116,27 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnEditProfile"
+            android:id="@+id/btnSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:background="@drawable/custom_blue_button"
-            android:text="Update Profile"
-            android:textAllCaps="false"
-            android:textSize="15dp" />
+            android:textSize="15dp"
+            android:text="Save"
+            android:textAllCaps="false" />
 
         <Button
-            android:id="@+id/btnDeleteProfile"
+            android:id="@+id/btnCancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:background="@drawable/custom_gray_button"
             android:textSize="15dp"
-            android:text="Delete Profile"
+            android:text="Cancel"
             android:textAllCaps="false"
             android:textColor="@color/blue" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tvSignOut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:text="Sign out"
-        android:textSize="18dp"
-        android:textAlignment="center"
-        android:textColor="@color/blue" />
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/bottom_navigation"
-            app:itemBackground="@android:color/white"
-            app:itemTextColor="@drawable/selector"
-            app:itemIconTint="@drawable/selector"
-            app:menu="@menu/menu"
-            android:layout_alignParentBottom="true"></com.google.android.material.bottomnavigation.BottomNavigationView>
-
-    </RelativeLayout>
 
 </LinearLayout>

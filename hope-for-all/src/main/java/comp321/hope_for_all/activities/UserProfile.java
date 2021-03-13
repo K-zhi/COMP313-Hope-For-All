@@ -13,14 +13,20 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.models.User;
@@ -28,7 +34,7 @@ import comp321.hope_for_all.models.User;
 public class UserProfile extends AppCompatActivity {
 
     private static final String TAG = "UserProfile";
-    private TextView logOut;
+    private TextView userNameTextView, nameTextView, emailTextView, logOut;
     private Button editProfile;
 
     private FirebaseUser user;
@@ -42,14 +48,6 @@ public class UserProfile extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         bottomNavigation();
-
-        editProfile = findViewById(R.id.btnEditProfile);
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: EDIT USER PROFILE ACTIVITY
-            }
-        });
 
         logOut = findViewById(R.id.tvSignOut);
         logOut.setOnClickListener(new View.OnClickListener() {
@@ -95,7 +93,23 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        editProfile = findViewById(R.id.btnEditProfile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(v.getContext(), UpdateUserProfile.class);
+
+                i.putExtra("userName", userNameTextView.getText().toString().trim());
+                i.putExtra("name", nameTextView.getText().toString().trim());
+                i.putExtra("email", emailTextView.getText().toString().trim());
+
+                startActivity(i);
+            }
+        });
+
     }
+
 
     private void bottomNavigation() {
 
