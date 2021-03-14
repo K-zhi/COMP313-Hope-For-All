@@ -8,8 +8,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,12 +20,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,10 +36,9 @@ import java.util.Objects;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.adapter.PostAdapter;
-import comp321.hope_for_all.models.Counselor;
 import comp321.hope_for_all.models.Post;
 
-public class MainActivity extends AppCompatActivity {
+public class MainCounselor extends AppCompatActivity {
 
     private FloatingActionButton addPost;
     private RecyclerView recyclerView;
@@ -56,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_counselor);
 
         bottomNav();
 
@@ -72,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         readData();
-
     }
 
     @Override
@@ -82,9 +76,8 @@ public class MainActivity extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Posts");
 
+
     }
-
-
 
     private void showDialogAddPost() {
         Dialog dialog = new Dialog(this);
@@ -134,12 +127,12 @@ public class MainActivity extends AppCompatActivity {
         myRef.child(id).setValue(my_post).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(MainActivity.this, "Posted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainCounselor.this, "Posted", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(MainActivity.this, "Failed to post.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainCounselor.this, "Failed to post.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -155,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     Post values = dataSnapshot.getValue(Post.class);
                     list.add(values);
                 }
-                adapter = new PostAdapter(MainActivity.this, list);
+                adapter = new PostAdapter(MainCounselor.this, list);
                 recyclerView.setAdapter(adapter);
                 setClick();
             }
@@ -257,18 +250,17 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.profileNav:
-                        startActivity(new Intent(getApplicationContext(), UserProfile.class));
+                        startActivity(new Intent(getApplicationContext(), CounselorProfile.class));
                         overridePendingTransition(0, 0);
                         finish();
                         return true;
 
                     case R.id.homeNav:
-                        return true;
-
-                    case R.id.messageNav:
-                        startActivity(new Intent(getApplicationContext(), Message.class));
+                        startActivity(new Intent(getApplicationContext(), MainCounselor.class));
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
+                        
                 }
                 return false;
             }
