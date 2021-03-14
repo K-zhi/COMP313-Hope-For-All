@@ -37,7 +37,7 @@ public class Message extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.messageNav:
-                        return true;
+                        return false;
                     case R.id.profileNav:
                         startActivity(new Intent(getApplicationContext(), UserProfile.class));
                         overridePendingTransition(0, 0);

@@ -42,7 +42,7 @@ public class SelectUserType extends AppCompatActivity implements View.OnClickLis
                 break;
 
             case R.id.tvGuestLogIn:
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), MainGuest.class));
                 break;
         }
 
