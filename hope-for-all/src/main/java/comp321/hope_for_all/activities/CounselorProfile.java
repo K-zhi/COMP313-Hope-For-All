@@ -118,15 +118,14 @@ public class CounselorProfile extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.homeNav:
-                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        startActivity(new Intent(getApplicationContext(), MainCounselor.class));
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.profileNav:
-                        return true;
-                    case R.id.messageNav:
-                        startActivity(new Intent(getApplicationContext(), Message.class));
+                        startActivity(new Intent(getApplicationContext(), CounselorProfile.class));
                         overridePendingTransition(0, 0);
                         return true;
+
                 }
                 return false;
             }

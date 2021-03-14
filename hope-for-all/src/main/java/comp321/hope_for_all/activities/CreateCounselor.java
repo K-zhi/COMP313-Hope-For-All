@@ -71,6 +71,10 @@ public class CreateCounselor extends AppCompatActivity implements View.OnClickLi
         confirmPassword = findViewById(R.id.etConfirmPassword);
 
         layout = findViewById(R.id.createCounselorLayout);
+
+        logIn = findViewById(R.id.tvLogIn);
+        logIn.setOnClickListener(this);
+
         createAccount = findViewById(R.id.btnCreateAccount);
         createAccount.setOnClickListener(this);
 

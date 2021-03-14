@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +40,7 @@ import java.util.Objects;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.adapter.PostAdapter;
+import comp321.hope_for_all.models.Counselor;
 import comp321.hope_for_all.models.Post;
 
 public class MainActivity extends AppCompatActivity {
@@ -72,6 +74,16 @@ public class MainActivity extends AppCompatActivity {
         readData();
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Posts");
+
+    }
+
 
 
     private void showDialogAddPost() {
@@ -247,9 +259,12 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.profileNav:
                         startActivity(new Intent(getApplicationContext(), UserProfile.class));
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
+
                     case R.id.homeNav:
                         return true;
+
                     case R.id.messageNav:
                         startActivity(new Intent(getApplicationContext(), Message.class));
                         overridePendingTransition(0, 0);

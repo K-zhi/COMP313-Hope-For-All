@@ -260,11 +260,7 @@ public class MainCounselor extends AppCompatActivity {
                         overridePendingTransition(0, 0);
                         finish();
                         return true;
-
-                    case R.id.messageNav:
-                        startActivity(new Intent(getApplicationContext(), Message.class));
-                        overridePendingTransition(0, 0);
-                        return true;
+                        
                 }
                 return false;
             }
