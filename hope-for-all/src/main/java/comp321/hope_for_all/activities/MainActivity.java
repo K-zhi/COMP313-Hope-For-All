@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         final EditText text = dialog.findViewById(R.id.et_post);
+
         Button post = dialog.findViewById(R.id.btn_post);
 
         post.setOnClickListener(new View.OnClickListener() {
@@ -165,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onButtonEditClick(Post post) {
-
+                showDialogUpdatePost(post);
             }
         });
     }
@@ -178,6 +179,57 @@ public class MainActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    private void showDialogUpdatePost(Post posts){
+
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_add_post);
+
+        dialog.setCancelable(true);
+        WindowManager.LayoutParams lp =new WindowManager.LayoutParams();
+        lp.copyFrom(Objects.requireNonNull(dialog.getWindow().getAttributes()));
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        dialog.getWindow().setAttributes(lp);
+
+        ImageButton close = dialog.findViewById(R.id.btn_close);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        final EditText text = dialog.findViewById(R.id.et_post);
+        text.setText(posts.getContent());
+        Button btn_post = dialog.findViewById(R.id.btn_post);
+
+        btn_post.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(TextUtils.isEmpty(text.getText())){
+                    text.setError("Cannot be empty");
+                }else {
+                    updatePost(posts, text.getText().toString());
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        dialog.show();
+
+    }
+
+    private void updatePost(Post posts, String newPost) {
+        myRef.child(posts.getId()).child("content").setValue(newPost)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), "Updated successfully", Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
 
