@@ -79,7 +79,7 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
                 break;
 
             case R.id.tvGuestLogIn:
-                startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                startActivity(new Intent(getApplicationContext(),MainGuest.class));
                 break;
         }
 
