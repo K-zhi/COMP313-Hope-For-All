@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
@@ -15,7 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HopeForAll"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.Chat"></activity>
+        <activity android:name=".activities.Chat">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activities.MainCounselor" />
         <activity android:name=".activities.MainGuest" />
         <activity android:name=".activities.UpdateUserProfile" />
@@ -27,11 +31,11 @@
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.CreateUser" />
         <activity android:name=".activities.LoginUser">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
     </application>
 
