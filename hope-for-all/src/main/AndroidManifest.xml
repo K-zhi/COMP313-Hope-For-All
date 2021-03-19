@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HopeForAll"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.MainCounselor"></activity>
+        <activity android:name=".activities.Chat"></activity>
+        <activity android:name=".activities.MainCounselor" />
         <activity android:name=".activities.MainGuest" />
         <activity android:name=".activities.UpdateUserProfile" />
         <activity android:name=".activities.SelectUserType" />
