@@ -35,7 +35,7 @@ public class Chat extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private List<ChatData> chatList;
     // After change it
-    private String nick = "Nick1";
+    private String nick = "Nick2";
 
     private EditText editTxtChat;
     private Button btnSendChat;
@@ -53,6 +53,7 @@ public class Chat extends AppCompatActivity {
                 if(editTxtChat.getText() != null) {
                     String message = editTxtChat.getText().toString();
 
+                    // Caution, if the data's format is nor correct, have to delete it from Firebase
                     if(message != null) {
                         ChatData chat = new ChatData();
                         chat.setNickname(nick);
@@ -77,12 +78,6 @@ public class Chat extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance();
         myRef = mDatabase.getReference("Message");
-
-        // Caution, if the data's format is nor correct, have to delete it from Firebase
-//        ChatData chat = new ChatData();
-//        chat.setNickname(nick);
-//        chat.setMsg("HI");
-//        myRef.setValue(chat);
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
