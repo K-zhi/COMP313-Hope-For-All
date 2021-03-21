@@ -91,6 +91,7 @@ public class MainGuest extends AppCompatActivity {
         adapter.setOnCallBack(new PostAdapter.OnCallBack() {
             @Override
             public void onButtonCommentClick(Post post) {
+                adapter.addItem(post.getId());
             }
 
             @Override

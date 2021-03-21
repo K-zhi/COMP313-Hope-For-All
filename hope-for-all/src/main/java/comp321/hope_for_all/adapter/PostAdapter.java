@@ -5,10 +5,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -42,30 +45,46 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.tvPostContent.setText(list.get(position).getContent());
+        Post post = list.get(position);
+        holder.tvPostContent.setText(post.getContent());
 
         if(context.getClass() == MainGuest.class) {
-            holder.comment.setVisibility(View.INVISIBLE);
+//            holder.comment.setVisibility(View.INVISIBLE);
+        }
+
+        String id = post.getId();
+        if(id == null || id == "") {
+            Log.d("tag", "checked");
+            RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
+            params.setMarginStart(200);
+            holder.itemView.findViewById(R.id.id_postview).setLayoutParams(params);
+            holder.editTextComment.setVisibility(View.VISIBLE);
+            holder.tvPostContent.setVisibility(View.INVISIBLE);
+            holder.edit.setVisibility(View.INVISIBLE);
+            holder.delete.setVisibility(View.INVISIBLE);
+        }
+        else {
+            holder.editTextComment.setVisibility(View.INVISIBLE);
         }
 
         holder.comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCallBack.onButtonCommentClick(list.get(position));
+                onCallBack.onButtonCommentClick(post);
             }
         });
 
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCallBack.onButtonDeleteClick(list.get(position));
+                onCallBack.onButtonDeleteClick(post);
             }
         });
 
         holder.edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCallBack.onButtonEditClick(list.get(position));
+                onCallBack.onButtonEditClick(post);
             }
         });
     }
@@ -78,12 +97,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         private TextView tvPostContent;
+        private EditText editTextComment;
         private ImageButton comment, delete, edit;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tvPostContent = itemView.findViewById(R.id.tv_postContent);
+            editTextComment = itemView.findViewById(R.id.edittext_comment);
             comment = itemView.findViewById(R.id.comment_post);
             delete = itemView.findViewById(R.id.delete_post);
             edit = itemView.findViewById(R.id.edit_post);
@@ -95,5 +116,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         void onButtonCommentClick(Post post);
         void onButtonDeleteClick(Post posts);
         void onButtonEditClick(Post posts);
+    }
+
+    public void addItem(String parentId) {
+        for(int i=0; i<list.size(); ++i) {
+            Post p = list.get(i);
+            if(p.getId() == parentId) {
+                list.add(i + 1, new Post());
+                break;
+            }
+        }
+
+        notifyDataSetChanged();
     }
 }

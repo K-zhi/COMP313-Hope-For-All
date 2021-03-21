@@ -10,6 +10,8 @@ public class Post {
 
     public Post() {
         //default constructor is needed
+        id = "";
+        content = "";
     }
 
     public Post(String id, String content) {

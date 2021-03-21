@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void commentPost(Post post) {
-
+        adapter.addItem(post.getId());
     }
 
     private void bottomNav() {
