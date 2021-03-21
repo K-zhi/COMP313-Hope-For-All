@@ -188,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //adding delete function
     private void deletePost(Post post){
         myRef.child(post.getId()).removeValue(new DatabaseReference.CompletionListener() {
             @Override
@@ -197,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void showDialogUpdatePost(Post posts){
 
