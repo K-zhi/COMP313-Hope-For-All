@@ -105,7 +105,12 @@ public class MainGuest extends AppCompatActivity {
             }
 
             @Override
-            public void onButtonConfirmComment() {
+            public void onButtonConfirmComment(Post post) {
+                // do nothing
+            }
+
+            @Override
+            public void onButtonCancelComment() {
                 // do nothing
             }
         });

@@ -42,6 +42,7 @@ public class MainCounselor extends AppCompatActivity {
 
     private FloatingActionButton addPost;
     private RecyclerView recyclerView;
+    BottomNavigationView bottomNavigationView;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("Posts");
 
@@ -119,10 +120,9 @@ public class MainCounselor extends AppCompatActivity {
 
     }
 
-    private void addDataToFirebase(String toString) {
-
+    private void addDataToFirebase(String toString, String parentId) {
         String id = myRef.push().getKey();
-        Post my_post = new Post(id,toString);
+        Post my_post = new Post(id, toString, parentId);
 
         myRef.child(id).setValue(my_post).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -135,7 +135,10 @@ public class MainCounselor extends AppCompatActivity {
                 Toast.makeText(MainCounselor.this, "Failed to post.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    private void addDataToFirebase(String content) {
+        addDataToFirebase(content, "");
     }
 
     private void readData() {
@@ -143,7 +146,7 @@ public class MainCounselor extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                list.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Post values = dataSnapshot.getValue(Post.class);
                     list.add(values);
@@ -167,6 +170,8 @@ public class MainCounselor extends AppCompatActivity {
             @Override
             public void onButtonCommentClick(Post post) {
                 commentPost(post);
+                bottomNavigationView.setVisibility(View.INVISIBLE);
+                addPost.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -179,9 +184,18 @@ public class MainCounselor extends AppCompatActivity {
                 showDialogUpdatePost(post);
             }
 
-            @Override
-            public void onButtonConfirmComment() {
 
+            @Override
+            public void onButtonConfirmComment(Post post) {
+                addDataToFirebase(post.getContent(), post.getParentId());
+                bottomNavigationView.setVisibility(View.VISIBLE);
+                addPost.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onButtonCancelComment() {
+                bottomNavigationView.setVisibility(View.VISIBLE);
+                addPost.setVisibility(View.VISIBLE);
             }
         });
     }
@@ -255,7 +269,7 @@ public class MainCounselor extends AppCompatActivity {
 
         setTitle("Home");
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.homeNav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

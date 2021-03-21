@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import comp321.hope_for_all.R;
@@ -31,7 +32,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public PostAdapter(Context context, List<Post> list) {
         this.context = context;
-        this.list = list;
+        this.list = sortList(list);
+
+        notifyDataSetChanged();
     }
 
     public void setOnCallBack(OnCallBack onCallBack){
@@ -50,12 +53,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Post post = list.get(position);
         holder.tvPostContent.setText(post.getContent());
 
-        if(context.getClass() == MainGuest.class) {
-//            holder.comment.setVisibility(View.INVISIBLE);
-        }
-
         String id = post.getId();
-        if(id == null || id == "") {
+        if(id == null || id.isEmpty()) {
             RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
             params.setMarginStart(200);
             holder.itemView.findViewById(R.id.id_postview).setLayoutParams(params);
@@ -66,10 +65,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             holder.delete.setVisibility(View.INVISIBLE);
             holder.confirmcomment.setVisibility(View.VISIBLE);
             holder.cancelcomment.setVisibility(View.VISIBLE);
-//            holder.editTextComment.selectAll();
-//            holder.editTextComment.requestFocus();
-//            InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//            imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_IMPLICIT_ONLY);
             holder.editTextComment.post(new Runnable() {
                 @Override
                 public void run() {
@@ -82,11 +77,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         else {
             holder.editTextComment.setVisibility(View.INVISIBLE);
             holder.tvPostContent.setVisibility(View.VISIBLE);
-            holder.comment.setVisibility(View.VISIBLE);
+            if(context.getClass() == MainGuest.class) {
+                holder.comment.setVisibility(View.GONE);
+            }
+//            holder.comment.setVisibility(View.VISIBLE);
             holder.edit.setVisibility(View.VISIBLE);
             holder.delete.setVisibility(View.VISIBLE);
             holder.confirmcomment.setVisibility(View.INVISIBLE);
             holder.cancelcomment.setVisibility(View.INVISIBLE);
+
+            if(!post.getParentId().isEmpty()) {
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
+                params.setMarginStart(200);
+                holder.itemView.findViewById(R.id.id_postview).setLayoutParams(params);
+                holder.comment.setVisibility(View.GONE);
+            }
         }
 
         holder.comment.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +118,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.confirmcomment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onCallBack.onButtonConfirmComment();
+                post.setContent(holder.editTextComment.getText().toString());
+                onCallBack.onButtonConfirmComment(post);
+                InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(holder.editTextComment.getWindowToken(), 0);
             }
         });
 
@@ -168,18 +176,50 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         void onButtonCommentClick(Post post);
         void onButtonDeleteClick(Post posts);
         void onButtonEditClick(Post posts);
-        void onButtonConfirmComment();
+        void onButtonConfirmComment(Post post);
+        void onButtonCancelComment();
     }
 
     public void addItem(String parentId) {
         for(int i=0; i<list.size(); ++i) {
             Post p = list.get(i);
             if(p.getId() == parentId) {
-                list.add(i + 1, new Post());
+                list.add(i + 1, new Post("", "", p.getId()));
                 break;
             }
         }
 
         notifyDataSetChanged();
+    }
+
+    private List<Post> sortList(List<Post> list) {
+        List<Post> posts = new ArrayList<>();
+        List<Post> comments = new ArrayList<>();
+        List<Post> sorted = new ArrayList<>();
+        for(int i=0; i<list.size(); ++i) {
+            Post post = list.get(i);
+            if(post.getParentId().equals("")) {
+                posts.add(post);
+                sorted.add(post);
+            }
+            else {
+                comments.add(post);
+            }
+        }
+
+        for(int i=0; i<posts.size(); ++i) {
+            Post post = posts.get(i);
+            int currentCommentCount = 0;
+            for (int j=0; j<comments.size(); ++j) {
+                Post comment = comments.get(j);
+                int postIndex = sorted.indexOf(post);
+                if(comment.getParentId().equals(post.getId())) {
+                    ++currentCommentCount;
+                    sorted.add(postIndex + currentCommentCount, comment);
+                }
+            }
+        }
+
+        return sorted;
     }
 }
