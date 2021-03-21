@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="comp321.hope_for_all">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.HopeForAll"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".activities.ChatActivity"/>
+        <activity android:name=".activities.UserListActivity" />
+        <activity android:name=".activities.MainCounselor" />
+        <activity android:name=".activities.MainGuest" />
+        <activity android:name=".activities.UpdateUserProfile" />
+        <activity android:name=".activities.SelectUserType" />
+        <activity android:name=".activities.CreateCounselor" />
+        <activity android:name=".activities.CounselorProfile" />
+        <activity android:name=".activities.Message" />
+        <activity android:name=".activities.UserProfile" />
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.CreateUser" />
+        <activity android:name=".activities.LoginUser">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
