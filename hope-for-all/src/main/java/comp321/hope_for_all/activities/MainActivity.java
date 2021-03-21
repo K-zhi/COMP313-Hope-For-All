@@ -185,6 +185,11 @@ public class MainActivity extends AppCompatActivity {
             public void onButtonEditClick(Post post) {
                 showDialogUpdatePost(post);
             }
+
+            @Override
+            public void onButtonConfirmComment() {
+
+            }
         });
     }
 

@@ -103,6 +103,11 @@ public class MainGuest extends AppCompatActivity {
             public void onButtonEditClick(Post post) {
                 showDialogUpdatePost(post);
             }
+
+            @Override
+            public void onButtonConfirmComment() {
+                // do nothing
+            }
         });
     }
 
