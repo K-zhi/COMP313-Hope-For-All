@@ -28,12 +28,22 @@
             android:textSize="18dp"/>
 
         <ImageButton
+            android:id="@+id/comment_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="79dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_comment" />
+
+        <ImageButton
             android:id="@+id/delete_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="64dp"
+            android:layout_marginRight="44dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_delete" />
 
@@ -43,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:background="@android:color/transparent"
             android:src="@drawable/ic_edit" />
 

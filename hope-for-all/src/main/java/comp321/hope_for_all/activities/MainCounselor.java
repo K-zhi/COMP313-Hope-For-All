@@ -165,6 +165,11 @@ public class MainCounselor extends AppCompatActivity {
     private void setClick() {
         adapter.setOnCallBack(new PostAdapter.OnCallBack() {
             @Override
+            public void onButtonCommentClick(Post post) {
+                commentPost(post);
+            }
+
+            @Override
             public void onButtonDeleteClick(Post post) {
                 deletePost(post);
             }
@@ -237,6 +242,9 @@ public class MainCounselor extends AppCompatActivity {
                 });
     }
 
+    private void commentPost(Post post) {
+
+    }
 
     private void bottomNav() {
 
