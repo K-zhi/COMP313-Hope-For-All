@@ -21,7 +21,7 @@
         <activity android:name=".activities.SelectUserType" />
         <activity android:name=".activities.CreateCounselor" />
         <activity android:name=".activities.CounselorProfile" />
-        <activity android:name=".activities.Message" />
+        <activity android:name=".activities.Message"/>
         <activity android:name=".activities.UserProfile" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.CreateUser" />

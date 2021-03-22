@@ -12,18 +12,34 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hello from Messages!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <ListView
+            android:id="@+id/lvMessage"
+            android:layout_width="match_parent"
+            android:layout_height="608dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="656dp">
+            android:layout_height="69dp">
+
+            <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+            <!--                android:id="@+id/FloatingBtnMsgCoun"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:clickable="true"-->
+            <!--                app:srcCompat="@drawable/ic_chat"-->
+            <!--                tools:ignore="MissingConstraints"-->
+            <!--                tools:layout_editor_absoluteX="339dp"-->
+            <!--                tools:layout_editor_absoluteY="518dp" />-->
+
+            <!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+            <!--                android:id="@+id/FloatingBtnMsgUser"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:clickable="true"-->
+            <!--                app:srcCompat="@drawable/ic_profile"-->
+            <!--                tools:ignore="MissingConstraints"-->
+            <!--                tools:layout_editor_absoluteX="339dp"-->
+            <!--                tools:layout_editor_absoluteY="452dp" />-->
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/FloatingBtnMain"
@@ -32,30 +48,10 @@
                 android:clickable="true"
                 app:srcCompat="@android:drawable/ic_menu_add"
                 tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="339dp"
-                tools:layout_editor_absoluteY="584dp" />
-
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:id="@+id/FloatingBtnMsgCoun"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:clickable="true"-->
-<!--                app:srcCompat="@drawable/ic_chat"-->
-<!--                tools:ignore="MissingConstraints"-->
-<!--                tools:layout_editor_absoluteX="339dp"-->
-<!--                tools:layout_editor_absoluteY="518dp" />-->
-
-<!--            <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--                android:id="@+id/FloatingBtnMsgUser"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:clickable="true"-->
-<!--                app:srcCompat="@drawable/ic_profile"-->
-<!--                tools:ignore="MissingConstraints"-->
-<!--                tools:layout_editor_absoluteX="339dp"-->
-<!--                tools:layout_editor_absoluteY="452dp" />-->
-
+                tools:layout_editor_absoluteX="348dp"
+                tools:layout_editor_absoluteY="6dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </LinearLayout>
 
 

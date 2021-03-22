@@ -13,4 +13,13 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="CustomMessageTitle" parent="android:Theme">
+        <item name="android:windowTitleSize">48dp</item>
+        <item name="android:windowTitleBackgroundStyle">@style/CustomWindowTitleBackground</item>
+    </style>
+
+    <style name="CustomWindowTitleBackground">
+        <item name="background">@color/design_default_color_primary_dark</item>
+    </style>
 </resources>
