@@ -4,7 +4,6 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
@@ -15,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HopeForAll"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.MainCounselor"></activity>
+        <activity android:name=".activities.Chat" />
+        <activity android:name=".activities.MainCounselor" />
         <activity android:name=".activities.MainGuest" />
         <activity android:name=".activities.UpdateUserProfile" />
         <activity android:name=".activities.SelectUserType" />

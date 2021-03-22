@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton addPost;
     private RecyclerView recyclerView;
+    BottomNavigationView bottomNavigationView;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("Posts");
 
@@ -123,13 +124,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         dialog.show();
-
     }
 
-    private void addDataToFirebase(String toString) {
-
+    private void addDataToFirebase(String toString, String parentId) {
         String id = myRef.push().getKey();
-        Post my_post = new Post(id,toString);
+        Post my_post = new Post(id, toString, parentId);
 
         myRef.child(id).setValue(my_post).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -142,7 +141,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Failed to post.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    private void addDataToFirebase(String content) {
+        addDataToFirebase(content, "");
     }
 
     private void readData() {
@@ -150,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                list.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Post values = dataSnapshot.getValue(Post.class);
                     list.add(values);
@@ -172,6 +174,13 @@ public class MainActivity extends AppCompatActivity {
     private void setClick() {
         adapter.setOnCallBack(new PostAdapter.OnCallBack() {
             @Override
+            public void onButtonCommentClick(Post post) {
+                commentPost(post);
+                bottomNavigationView.setVisibility(View.INVISIBLE);
+                addPost.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
             public void onButtonDeleteClick(Post post) {
                 deletePost(post);
             }
@@ -180,9 +189,23 @@ public class MainActivity extends AppCompatActivity {
             public void onButtonEditClick(Post post) {
                 showDialogUpdatePost(post);
             }
+
+            @Override
+            public void onButtonConfirmComment(Post post) {
+                addDataToFirebase(post.getContent(), post.getParentId());
+                bottomNavigationView.setVisibility(View.VISIBLE);
+                addPost.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onButtonCancelComment() {
+                bottomNavigationView.setVisibility(View.VISIBLE);
+                addPost.setVisibility(View.VISIBLE);
+            }
         });
     }
 
+    //adding delete function
     private void deletePost(Post post){
         myRef.child(post.getId()).removeValue(new DatabaseReference.CompletionListener() {
             @Override
@@ -192,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void showDialogUpdatePost(Post posts){
 
@@ -244,12 +268,15 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    private void commentPost(Post post) {
+        adapter.addItem(post.getId());
+    }
 
     private void bottomNav() {
 
         setTitle("Home");
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.homeNav);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

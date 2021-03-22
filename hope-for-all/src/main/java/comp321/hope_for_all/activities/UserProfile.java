@@ -41,6 +41,7 @@ public class UserProfile extends AppCompatActivity {
     private DatabaseReference databaseReference;
 
     private String userID;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,12 +77,12 @@ public class UserProfile extends AppCompatActivity {
                 Log.d(TAG, "signInWithEmail:success");
 
                 if (userProfile != null) {
-                    String strUserName = userProfile.userName;
+                    userName = userProfile.userName;
                     String strName = userProfile.name;
                     String strEmail = userProfile.email;
 
                     greetingTextView.setText("Hello, " + strName + "!");
-                    userNameTextView.setText(strUserName);
+                    userNameTextView.setText(userName);
                     nameTextView.setText(strName);
                     emailTextView.setText(strEmail);
                 }
@@ -129,7 +130,9 @@ public class UserProfile extends AppCompatActivity {
                     case R.id.profileNav:
                         return true;
                     case R.id.messageNav:
-                        startActivity(new Intent(getApplicationContext(), Message.class));
+                        Intent intent = new Intent(getApplicationContext(), Message.class);
+                        intent.putExtra("UserName", userName);
+                        startActivity(intent);
                         overridePendingTransition(0, 0);
                         return true;
                 }

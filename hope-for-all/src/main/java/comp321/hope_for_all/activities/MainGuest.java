@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
@@ -89,6 +90,11 @@ public class MainGuest extends AppCompatActivity {
     private void setClick() {
         adapter.setOnCallBack(new PostAdapter.OnCallBack() {
             @Override
+            public void onButtonCommentClick(Post post) {
+                adapter.addItem(post.getId());
+            }
+
+            @Override
             public void onButtonDeleteClick(Post post) {
                 deletePost(post);
             }
@@ -96,6 +102,16 @@ public class MainGuest extends AppCompatActivity {
             @Override
             public void onButtonEditClick(Post post) {
                 showDialogUpdatePost(post);
+            }
+
+            @Override
+            public void onButtonConfirmComment(Post post) {
+                // do nothing
+            }
+
+            @Override
+            public void onButtonCancelComment() {
+                // do nothing
             }
         });
     }
@@ -160,7 +176,4 @@ public class MainGuest extends AppCompatActivity {
                     }
                 });
     }
-
-
-
 }
