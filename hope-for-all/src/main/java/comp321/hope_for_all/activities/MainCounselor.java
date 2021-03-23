@@ -166,7 +166,7 @@ public class MainCounselor extends AppCompatActivity {
     }
 
     private void setClick() {
-        adapter.setOnCallBack(new PostAdapter.OnCallBack() {
+      /*  adapter.setOnCallBack(new PostAdapter.OnCallBack() {
             @Override
             public void onButtonCommentClick(Post post) {
                 commentPost(post);
@@ -197,7 +197,7 @@ public class MainCounselor extends AppCompatActivity {
                 bottomNavigationView.setVisibility(View.VISIBLE);
                 addPost.setVisibility(View.VISIBLE);
             }
-        });
+        });*/
     }
 
     private void deletePost(Post post){
