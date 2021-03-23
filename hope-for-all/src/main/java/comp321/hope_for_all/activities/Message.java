@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +23,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -69,6 +71,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     //
     private static UserListAdapter userListAdapter;
     public static ListView listView;
+    private List<User> listUserInfo;
     List<Map<String, String>> dialogUserList;
 
     @Override
@@ -91,15 +94,13 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         mRecyclerView.setLayoutManager(mLayoutManager);
         listMessageSetting();
 
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
-
-
-        userListAdapter = new UserListAdapter(this);
+        userListAdapter = new UserListAdapter(this, listUserInfo);
         fabMain = (FloatingActionButton) findViewById(R.id.FloatingBtnMain);
         fabMain.setOnClickListener(this);
 
-        bottomNavigation();
+//        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+//        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+//        bottomNavigation();
     }
 
     private void listMessageSetting() {
@@ -139,31 +140,83 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.FloatingBtnMain :
-                dialogUserList = new ArrayList<>();
+                //dialogUserList = new ArrayList<>();
+                listUserInfo = new ArrayList<>();
 
-                FirebaseDatabase.getInstance().getReference("Users").orderByChild("name").addValueEventListener(new ValueEventListener() {
+                // Get the users data from Firebase
+                getUsersInfo();
+
+                LayoutInflater inflater = getLayoutInflater();
+                View view = inflater.inflate(R.layout.custom_alert_dialog_user_list, null);
+                listView = (ListView) view.findViewById(R.id.alertDialogUserList);
+                listView.setAdapter(userListAdapter);
+
+                // Create Dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                // Set Layout
+                builder.setView(view);
+                // Confirm & Cancel button
+                builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot userSnapshot : snapshot.getChildren()) {
-                            User user = userSnapshot.getValue(User.class);
-
-                            if(user != null) {
-                                Map<String, String> itemMap = new HashMap<>();
-                                itemMap.put("userId", userSnapshot.getKey());
-                                itemMap.put("userName", user.getUserName());
-                                dialogUserList.add(itemMap);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
+                    public void onClick(DialogInterface dialog, int which) {
 
                     }
                 });
 
-                ShowAlertDialog();
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                // Set Icon
+                builder.setIcon(R.drawable.ic_hope);
+                // Set Title
+                builder.setTitle("Choose an user to talk :)");
+                //builder.setItems(userListAdapter)
+                builder.show();
 
+                final AlertDialog dialog = builder.create();
+
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                });
+
+                break;
+//                if(dialogUserList != null) {
+//                    SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), dialogUserList,
+//                    R.layout.custom_alert_dialog_user_item,
+//                    new String[] {"userId", "userName"},
+//                    new int[]{R.id.alertDialogIdItemTextView, R.id.alertDialogNameItemTextView});
+//
+//                    listView.setAdapter(sAdapter);
+//
+//                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    dialog.dismiss();
+//
+//                    if(position != -1) {
+//                        Map.Entry<String, String> element = (Map.Entry<String, String>) dialogUserList.get(position).entrySet();
+//
+//                        Intent intent = new Intent(getApplicationContext(), Chat.class);
+//                        intent.putExtra("UserName", userName);
+//                        intent.putExtra("Uid", uid);
+//                        intent.putExtra("OpponentId", element.getKey());
+//                        intent.putExtra("OpponentName", element.getValue());
+//
+//                        ActivityOptions activityOptions = null;
+//                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                            activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
+//                            startActivity(intent, activityOptions.toBundle());
+//                        }
+//                    }
+//                }
+//            });
                 // ## Original, but I want to change list type of dialog to show the list of users
 //                FirebaseDatabase.getInstance().getReference("Counselors").orderByChild("c_name").addListenerForSingleValueEvent(new ValueEventListener() {
 //                    @Override
@@ -190,29 +243,61 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 //                        Toast.makeText(Message.this, "Message: omething wrong happened!", Toast.LENGTH_LONG).show();
 //                    }
 //                });
-
-                break;
         }
     }
 
-    private void ShowAlertDialog() {
-        LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.custom_alert_dialog_user_list, null);
-        listView = (ListView) view.findViewById(R.id.alertDialogUserList);
-        listView.setAdapter(userListAdapter);
+    private void getUsersInfo() {
+        // Get the users data from Firebase
+        FirebaseDatabase.getInstance().getReference("Users").orderByChild("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    User user = userSnapshot.getValue(User.class);
 
-        // Create Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        // Set Layout
-        builder.setView(view);
-        // Confirm button
-        builder.setPositiveButton("Send", null);
-        // Set Icon
-        builder.setIcon(R.drawable.ic_hope);
-        // Set Title
-        builder.setTitle("Choose an user to talk :)");
-        builder.show();
-        final AlertDialog dialog = builder.create();
+                    if (user != null) {
+                        // # will delete : if i use simpleadapter, this one is necessary
+//                                Map<String, String> itemMap = new HashMap<>();
+//                                itemMap.put("userId", userSnapshot.getKey());
+//                                itemMap.put("userName", user.getUserName());
+//                                dialogUserList.add(itemMap);
+
+                        listUserInfo.add(user);
+                    }
+                }
+
+                if (listUserInfo != null) {
+                    userListAdapter.setUserList(listUserInfo);
+                    userListAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void ShowAlertDialog() {
+//        LayoutInflater inflater = getLayoutInflater();
+//        View view = inflater.inflate(R.layout.custom_alert_dialog_user_list, null);
+//        listView = (ListView) view.findViewById(R.id.alertDialogUserList);
+//        listView.setAdapter(userListAdapter);
+//
+//        // Create Dialog
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//
+//        // Set Layout
+//        builder.setView(view);
+//        // Confirm & Cancel button
+//        builder.setPositiveButton("Send", null);
+//        builder.setNegativeButton("Cancel", null);
+//        // Set Icon
+//        builder.setIcon(R.drawable.ic_hope);
+//        // Set Title
+//        builder.setTitle("Choose an user to talk :)");
+//        builder.show();
+//        final AlertDialog dialog = builder.create();
 
 //        if(dialogUserList != null) {
 //            SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), dialogUserList,
