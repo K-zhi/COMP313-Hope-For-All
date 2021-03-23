@@ -61,7 +61,7 @@ public class Chat extends AppCompatActivity {
                     // Caution, if the data's format is nor correct, have to delete it from Firebase
                     if(message != null) {
                         ChatData chat = new ChatData();
-                        chat.setNickname(nick);
+                        chat.setNickName(nick);
                         chat.setMsg(message);
                         myRef.push().setValue(chat);
                     }

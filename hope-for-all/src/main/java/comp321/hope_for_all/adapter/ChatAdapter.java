@@ -56,10 +56,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         // Replace the contents of the view with that element
         ChatData chat = mDataset.get(position);
 
-        holder.txtNickName.setText(chat.getNickname());
+        holder.txtNickName.setText(chat.getNickName());
         holder.txtMsg.setText(chat.getMsg());
 
-        if(chat.getNickname().equals(this.myNickNmae)) {
+        if(chat.getNickName().equals(this.myNickNmae)) {
             holder.txtMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
             holder.txtNickName.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
         }

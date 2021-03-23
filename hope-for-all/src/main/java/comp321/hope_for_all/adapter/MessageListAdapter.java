@@ -5,9 +5,12 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
@@ -16,6 +19,10 @@ import comp321.hope_for_all.models.ChatData;
 
 public class MessageListAdapter extends BaseAdapter {
     private ArrayList<ChatData> mItems = new ArrayList<>();
+
+    public MessageListAdapter(ArrayList<ChatData> list) {
+        this.mItems = list;
+    }
 
     @Override
     public int getCount() {
@@ -48,7 +55,7 @@ public class MessageListAdapter extends BaseAdapter {
         ChatData item = getItem(position);
 
         //image.setImageDrawable(R.drawable.ic_brain);
-        txtName.setText(item.getNickname());
+        txtName.setText(item.getNickName());
         txtContent.setText(item.getMsg());
 
         return convertView;
@@ -57,7 +64,8 @@ public class MessageListAdapter extends BaseAdapter {
     public void addItem(Drawable img, String name, String content) {
         ChatData mItem = new ChatData();
 
-        mItem.setNickname(name);
+        mItem.setImage(R.drawable.ic_brain);
+        mItem.setOpponentName(name);
         mItem.setMsg(content);
 
         mItems.add(mItem);

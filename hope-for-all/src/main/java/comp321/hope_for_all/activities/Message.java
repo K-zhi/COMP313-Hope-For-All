@@ -19,9 +19,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import comp321.hope_for_all.R;
+import comp321.hope_for_all.adapter.MessageListAdapter;
+import comp321.hope_for_all.models.ChatData;
 
 public class Message extends AppCompatActivity implements View.OnClickListener {
     private FirebaseUser user;
@@ -33,6 +36,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     private boolean isFabOpen = false;
 
     private ListView mListView;
+    private ArrayList<ChatData> listChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,14 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void listMessageSetting() {
+        listChat = new ArrayList<ChatData>();
+        MessageListAdapter mListAdapter = new MessageListAdapter(listChat);
+        mListView.setAdapter(mListAdapter);
 
+        // Temporary Data
+        listChat.add(new ChatData(R.drawable.ic_brain, "Jane", "Test01"));
+        listChat.add(new ChatData(R.drawable.ic_brain, "Andrew", "Test02"));
+        listChat.add(new ChatData(R.drawable.ic_brain, "SuJi", "Test03"));
     }
 
     private void bottomNavigation() {
