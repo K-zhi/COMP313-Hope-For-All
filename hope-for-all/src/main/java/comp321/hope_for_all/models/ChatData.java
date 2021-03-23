@@ -4,12 +4,13 @@ import java.io.Serializable;
 
 public class ChatData implements Serializable {
     private String msg;
-    private String nickname;
-    // Add
+    private String userName;
+    private String uid;
     private int image;
+    // Add
     private String opponentName;
+    private String opponentId;
     private String time;
-    private String id;
 
     public ChatData() {}
 
@@ -27,12 +28,28 @@ public class ChatData implements Serializable {
         this.msg = msg;
     }
 
-    public String getNickName() {
-        return nickname;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setNickName(String nickname) {
-        this.nickname = nickname;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 
     public String getOpponentName() {
@@ -43,27 +60,19 @@ public class ChatData implements Serializable {
         this.opponentName = opponentName;
     }
 
+    public String getOpponentId() {
+        return opponentId;
+    }
+
+    public void setOpponentId(String opponentId) {
+        this.opponentId = opponentId;
+    }
+
     public String getTime() {
         return time;
     }
 
-    public void setTime(String nickname) {
+    public void setTime(String time) {
         this.time = time;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
     }
 }

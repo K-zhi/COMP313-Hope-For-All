@@ -132,6 +132,7 @@ public class UserProfile extends AppCompatActivity {
                     case R.id.messageNav:
                         Intent intent = new Intent(getApplicationContext(), Message.class);
                         intent.putExtra("UserName", userName);
+                        intent.putExtra("Uid", userID);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
                         return true;

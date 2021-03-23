@@ -54,18 +54,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // Get element from your dataset at this position
         // Replace the contents of the view with that element
-        ChatData chat = mDataset.get(position);
+        if(mDataset != null && mDataset.size() > 0) {
+            ChatData chat = mDataset.get(position);
 
-        holder.txtNickName.setText(chat.getNickName());
-        holder.txtMsg.setText(chat.getMsg());
+            if(chat != null) {
+                holder.txtNickName.setText(chat.getUserName());
+                holder.txtMsg.setText(chat.getMsg());
 
-        if(chat.getNickName().equals(this.myNickNmae)) {
-            holder.txtMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-            holder.txtNickName.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-        }
-        else {
-            holder.txtMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-            holder.txtNickName.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                if(chat.getUserName().equals(this.myNickNmae)) {
+                    holder.txtMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+                    holder.txtNickName.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+                }
+                else {
+                    holder.txtMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                    holder.txtNickName.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                }
+            }
         }
     }
 

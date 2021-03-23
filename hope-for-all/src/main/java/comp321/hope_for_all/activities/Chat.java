@@ -36,7 +36,10 @@ public class Chat extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private List<ChatData> chatList;
     // After change it
-    private String nick = "Nick2";
+    private String uid;
+    private String uName = "Nick2";
+    private String oppId;
+    private String oppName;
 
     private EditText editTxtChat;
     private Button btnSendChat;
@@ -48,26 +51,16 @@ public class Chat extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(intent.getExtras().getString("UserName") != null)
-            nick = intent.getExtras().getString("UserName");
+            uName = intent.getExtras().getString("UserName");
+        if(intent.getExtras().getString("Uid") != null)
+            uid = intent.getExtras().getString("Uid");
+        if(intent.getExtras().getString("OpponentId") != null)
+            oppId = intent.getExtras().getString("OpponentId");
+        if(intent.getExtras().getString("OpponentName") != null)
+            oppName = intent.getExtras().getString("OpponentName");
 
         btnSendChat = findViewById(R.id.btnSendChat);
         editTxtChat = findViewById(R.id.editTxtChat);
-        btnSendChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(editTxtChat.getText() != null) {
-                    String message = editTxtChat.getText().toString();
-
-                    // Caution, if the data's format is nor correct, have to delete it from Firebase
-                    if(message != null) {
-                        ChatData chat = new ChatData();
-                        chat.setNickName(nick);
-                        chat.setMsg(message);
-                        myRef.push().setValue(chat);
-                    }
-                }
-            }
-        });
 
         // Recycle the view continuously
         mRecyclerView = findViewById(R.id.my_recycler_view);
@@ -78,11 +71,11 @@ public class Chat extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         chatList = new ArrayList();
-        mAdapter = new ChatAdapter(chatList, Chat.this, nick);
+        mAdapter = new ChatAdapter(chatList, Chat.this, uName);
         mRecyclerView.setAdapter(mAdapter);
 
         mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference("Message");
+        myRef = mDatabase.getReference("ChatRoom");
 
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -113,6 +106,26 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+            }
+        });
+
+        btnSendChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editTxtChat.getText() != null) {
+                    String message = editTxtChat.getText().toString();
+
+                    // Caution, if the data's format is nor correct, have to delete it from Firebase
+                    if(message != null) {
+                        ChatData chat = new ChatData();
+                        chat.setUid(uid);
+                        chat.setUserName(uName);
+                        chat.setOpponentId(oppId);
+                        chat.setOpponentName(oppName);
+                        chat.setMsg(message);
+                        FirebaseDatabase.getInstance().getReference().child("ChatRooms").push().setValue(chat);
+                    }
+                }
             }
         });
     }
