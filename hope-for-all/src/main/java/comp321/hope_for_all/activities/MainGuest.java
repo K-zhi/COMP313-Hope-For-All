@@ -88,7 +88,7 @@ public class MainGuest extends AppCompatActivity {
     }
 
     private void setClick() {
-        adapter.setOnCallBack(new PostAdapter.OnCallBack() {
+        /*adapter.setOnCallBack(new PostAdapter.OnCallBack() {
             @Override
             public void onButtonCommentClick(Post post) {
                 adapter.addItem(post.getId());
@@ -113,7 +113,7 @@ public class MainGuest extends AppCompatActivity {
             public void onButtonCancelComment() {
                 // do nothing
             }
-        });
+        });*/
     }
 
     private void deletePost(Post post){
