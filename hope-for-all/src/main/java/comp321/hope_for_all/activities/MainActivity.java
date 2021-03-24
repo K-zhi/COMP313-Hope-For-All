@@ -63,6 +63,18 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && addPost.getVisibility() == View.VISIBLE) {
+                    addPost.hide();
+                } else if (dy < 0 && addPost.getVisibility() != View.VISIBLE) {
+                    addPost.show();
+                }
+            }
+        });
+
 
         addPost = findViewById(R.id.button_add_post);
         addPost.setOnClickListener(new View.OnClickListener() {
