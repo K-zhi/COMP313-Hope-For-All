@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.protobuf.StringValue;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.models.Counselor;
@@ -121,11 +123,15 @@ public class CounselorProfile extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), MainCounselor.class));
                         overridePendingTransition(0, 0);
                         return true;
+
                     case R.id.profileNav:
-                        startActivity(new Intent(getApplicationContext(), CounselorProfile.class));
-                        overridePendingTransition(0, 0);
                         return true;
 
+                    case R.id.messageNav:
+                        Intent intent = new Intent(getApplicationContext(), Message.class);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                        return true;
                 }
                 return false;
             }
