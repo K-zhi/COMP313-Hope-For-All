@@ -74,12 +74,10 @@ public class UpdateUserProfile extends AppCompatActivity {
         user = firebaseAuth.getCurrentUser();
 
         database = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userRef = database.child("Users");
 
         etUserName.setText(editUserName);
         etName.setText(editName);
         etEmail.setText(editEmail);
-
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,15 +89,17 @@ public class UpdateUserProfile extends AppCompatActivity {
 
                 DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Users");
 
-                user = firebaseAuth.getCurrentUser();
-                userID = database.child("Users").getKey();
+                String key = ref.getKey();
 
-                ref.orderByChild("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                userID = database.child("Users").child(key).getKey();
+
+                ref.orderByChild(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                         if (dataSnapshot.exists()) {
                             for (DataSnapshot datas : dataSnapshot.getChildren()) {
+
                                 String key = datas.getKey();
 
                                 String name = datas.child("name").getValue().toString();
