@@ -88,7 +88,6 @@ public class MainCounselor extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Posts");
 
-
     }
 
     private void showDialogAddPost() {
@@ -294,11 +293,14 @@ public class MainCounselor extends AppCompatActivity {
                         return true;
 
                     case R.id.homeNav:
-                        startActivity(new Intent(getApplicationContext(), MainCounselor.class));
-                        overridePendingTransition(0, 0);
-                        finish();
                         return true;
-                        
+
+//                   TODO: Need separate Message Activity for Counselor
+//                    case R.id.messageNav:
+//                        startActivity(new Intent(getApplicationContext(), Message.class));
+//                        overridePendingTransition(0, 0);
+//                        finish();
+//                        return true;
                 }
                 return false;
             }
