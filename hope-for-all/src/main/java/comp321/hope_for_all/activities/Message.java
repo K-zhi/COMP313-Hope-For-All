@@ -23,9 +23,11 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -94,13 +96,17 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         mRecyclerView.setLayoutManager(mLayoutManager);
         listMessageSetting();
 
-        userListAdapter = new UserListAdapter(this, listUserInfo);
+        if(listUserInfo != null)
+            userListAdapter = new UserListAdapter(this, listUserInfo);
+        else {
+            listUserInfo = new ArrayList<>();
+            userListAdapter = new UserListAdapter(this);
+        }
+        // Get the users data from Firebase
+        getUsersInfo();
+
         fabMain = (FloatingActionButton) findViewById(R.id.FloatingBtnMain);
         fabMain.setOnClickListener(this);
-
-//        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-//        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
-//        bottomNavigation();
     }
 
     private void listMessageSetting() {
@@ -143,9 +149,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                 //dialogUserList = new ArrayList<>();
                 listUserInfo = new ArrayList<>();
 
-                // Get the users data from Firebase
-                getUsersInfo();
-
                 LayoutInflater inflater = getLayoutInflater();
                 View view = inflater.inflate(R.layout.custom_alert_dialog_user_list, null);
                 listView = (ListView) view.findViewById(R.id.alertDialogUserList);
@@ -174,7 +177,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                 builder.setIcon(R.drawable.ic_hope);
                 // Set Title
                 builder.setTitle("Choose an user to talk :)");
-                //builder.setItems(userListAdapter)
                 builder.show();
 
                 final AlertDialog dialog = builder.create();
@@ -182,7 +184,35 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if(listUserInfo == null  || listUserInfo.size() == 0) {
+                            if(userListAdapter.getUserList() != null && userListAdapter.getUserList().size() > 0)
+                                listUserInfo = userListAdapter.getUserList();
+                        }
 
+                        if (position != -1) {
+                            //Map.Entry<String, String> element = (Map.Entry<String, String>) dialogUserList.get(position).entrySet();
+
+//                            String tempMessage = "Temp: " + listUserInfo.get(position).getName()
+//                                    + " || " + listUserInfo.get(position).uid
+//                                    + " || " + listUserInfo.get(position).userName;
+//
+//                            TextView temp = (TextView)view.findViewById(R.id.editTextSearchName);
+//                            temp.setText(tempMessage);
+
+                            Intent intent = new Intent(getApplicationContext(), Chat.class);
+                            intent.putExtra("UserName", userName);
+                            intent.putExtra("Uid", uid);
+                            intent.putExtra("OpponentId", listUserInfo.get(position).uid);
+                            intent.putExtra("OpponentName", listUserInfo.get(position).userName);
+
+                            ActivityOptions activityOptions = null;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
+                                startActivity(intent, activityOptions.toBundle());
+                            }
+                        }
+
+                        dialog.dismiss();
                     }
                 });
 
@@ -255,19 +285,10 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                     User user = userSnapshot.getValue(User.class);
 
                     if (user != null) {
-                        // # will delete : if i use simpleadapter, this one is necessary
-//                                Map<String, String> itemMap = new HashMap<>();
-//                                itemMap.put("userId", userSnapshot.getKey());
-//                                itemMap.put("userName", user.getUserName());
-//                                dialogUserList.add(itemMap);
-
+                        user.uid = userSnapshot.getKey();
                         listUserInfo.add(user);
+                        userListAdapter.setUser(user);
                     }
-                }
-
-                if (listUserInfo != null) {
-                    userListAdapter.setUserList(listUserInfo);
-                    userListAdapter.notifyDataSetChanged();
                 }
             }
 

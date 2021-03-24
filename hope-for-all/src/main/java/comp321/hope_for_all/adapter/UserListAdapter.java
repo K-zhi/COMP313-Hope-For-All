@@ -25,6 +25,11 @@ public class UserListAdapter extends BaseAdapter {
         ImageView image;
     }
 
+    public UserListAdapter(Activity context) {
+        this.context = context;
+        userList = new ArrayList<>();
+    }
+
     public UserListAdapter(Activity context, List<User> userList) {
         //super(context, R.layout.custom_alert_dialog_user_item, userList);
         this.context = context;
@@ -36,6 +41,10 @@ public class UserListAdapter extends BaseAdapter {
 
     public void setUser(User user) {
         userList.add(user);
+    }
+
+    public List<User> getUserList() {
+        return this.userList;
     }
 
     public void setUserList(List<User> list) {
@@ -61,43 +70,33 @@ public class UserListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = null;
 
-//        UserListHolder userListHolder = null;
-//        final int pos = position;
-//        TextView userName, userId;
-//        ImageView icon;
-
         if(convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.custom_alert_dialog_user_item, parent, false);
 
             final UserListHolder userHolder = new UserListHolder();
-            userHolder.userName = (TextView) convertView.findViewById(R.id.alertDialogNameItemTextView);
-            userHolder.userId = (TextView) convertView.findViewById(R.id.alertDialogIdItemTextView);
-            userHolder.image = (ImageView) convertView.findViewById(R.id.alertDialogItemImageView);
+            userHolder.userName = (TextView) view.findViewById(R.id.alertDialogNameItemTextView);
+            userHolder.userId = (TextView) view.findViewById(R.id.alertDialogIdItemTextView);
+            userHolder.image = (ImageView) view.findViewById(R.id.alertDialogItemImageView);
 
             view.setTag(userHolder);
-
-            //            userListHolder = new UserListHolder();
-//            userListHolder.userId = userId;
-//            userListHolder.userName = userName;
-//            userListHolder.image = icon;
-//
-//            convertView.setTag(userListHolder);
-            //userId.setVisibility(View.INVISIBLE);
         } else {
             view = convertView;
-            //userListHolder = (UserListHolder) convertView.getTag();
-            //userName = userListHolder.userName;
         }
 
-        //userName.setText(list.get(pos).userName);
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        if(userList != null) {
+            UserListHolder holder = (UserListHolder) view.getTag();
+            holder.userName.setText(userList.get(position).getUserName());
+            holder.userId.setText(userList.get(position).uid);
+            holder.image.setImageResource(R.drawable.ic_brain);
+        }
+//
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
         return view;
     }
