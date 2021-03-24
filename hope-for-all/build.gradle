@@ -22,6 +22,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Todo: delete it
+            splits.abi.enable = false;
+            splits.density.enable = false;
+            aaptOptions.cruncherEnabled = false;
+            ext.alwaysUpdateBuildId = false;
         }
     }
     compileOptions {

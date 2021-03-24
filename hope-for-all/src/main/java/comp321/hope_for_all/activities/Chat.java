@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +36,7 @@ public class Chat extends AppCompatActivity {
     private List<ChatData> chatList;
     // After change it
     private String uid;
-    private String uName = "Nick2";
+    private String uName;
     private String oppId;
     private String oppName;
 
@@ -61,6 +60,25 @@ public class Chat extends AppCompatActivity {
 
         btnSendChat = findViewById(R.id.btnSendChat);
         editTxtChat = findViewById(R.id.editTxtChat);
+        btnSendChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(editTxtChat.getText() != null) {
+                    String message = editTxtChat.getText().toString();
+
+                    // Caution, if the data's format is nor correct, have to delete it from Firebase
+                    if(message != null) {
+                        ChatData chat = new ChatData();
+                        chat.setUid(uid);
+                        chat.setUserName(uName);
+                        chat.setOpponentId(oppId);
+                        chat.setOpponentName(oppName);
+                        chat.setMsg(message);
+                        FirebaseDatabase.getInstance().getReference().child("ChatRooms").child(uName).push().setValue(chat);
+                    }
+                }
+            }
+        });
 
         // Recycle the view continuously
         mRecyclerView = findViewById(R.id.my_recycler_view);
@@ -71,20 +89,24 @@ public class Chat extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         chatList = new ArrayList();
-        mAdapter = new ChatAdapter(chatList, Chat.this, uName);
+        mAdapter = new ChatAdapter(Chat.this, chatList, uName);
         mRecyclerView.setAdapter(mAdapter);
 
-        mDatabase = FirebaseDatabase.getInstance();
-        myRef = mDatabase.getReference("ChatRoom");
-
-        myRef.addChildEventListener(new ChildEventListener() {
+        // FirebaseDatabase.getInstance().getReference("ChatRoom").addValueEventListener(new ValueEventListener()
+        FirebaseDatabase.getInstance().getReference("ChatRoom").child(uName).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d("Chat", snapshot.getValue().toString());
-
+//                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+//                    ChatData chat = snapshot.getValue(ChatData.class);
+//
+//                    if(chat != null)
+//                        ((ChatAdapter) mAdapter).addChat(chat);
+//                }
+                Log.d("Chat: ", snapshot.getValue().toString());
                 if(snapshot.getValue() != null) {
                     ChatData chat = snapshot.getValue(ChatData.class);
                     ((ChatAdapter) mAdapter).addChat(chat);
+                    editTxtChat.setText("");
                 }
             }
 
@@ -106,26 +128,6 @@ public class Chat extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
-            }
-        });
-
-        btnSendChat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(editTxtChat.getText() != null) {
-                    String message = editTxtChat.getText().toString();
-
-                    // Caution, if the data's format is nor correct, have to delete it from Firebase
-                    if(message != null) {
-                        ChatData chat = new ChatData();
-                        chat.setUid(uid);
-                        chat.setUserName(uName);
-                        chat.setOpponentId(oppId);
-                        chat.setOpponentName(oppName);
-                        chat.setMsg(message);
-                        FirebaseDatabase.getInstance().getReference().child("ChatRooms").push().setValue(chat);
-                    }
-                }
             }
         });
     }

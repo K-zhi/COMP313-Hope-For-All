@@ -1,6 +1,7 @@
 package comp321.hope_for_all.activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -84,6 +86,8 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.activity_message);
         //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_message_title);
 
+        databaseReference = FirebaseDatabase.getInstance().getReference("ChatRooms");
+
         Intent intent = getIntent();
         if(intent.getExtras().getString("UserName") != null)
             userName = intent.getExtras().getString("UserName");
@@ -94,7 +98,13 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        listMessageSetting();
+
+        listChatRoom = new ArrayList<>();
+        mAdapter = new MessageListAdapter();
+        mRecyclerView.setAdapter(mAdapter);
+
+        // Get the list of chats from Firebase;
+        getChatRoomList();
 
         if(listUserInfo != null)
             userListAdapter = new UserListAdapter(this, listUserInfo);
@@ -102,6 +112,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
             listUserInfo = new ArrayList<>();
             userListAdapter = new UserListAdapter(this);
         }
+
         // Get the users data from Firebase
         getUsersInfo();
 
@@ -109,10 +120,51 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         fabMain.setOnClickListener(this);
     }
 
-    private void listMessageSetting() {
-        listChatRoom= new ArrayList<>();
-        mAdapter = new MessageListAdapter();
-        mRecyclerView.setAdapter(mAdapter);
+    private void getChatRoomList() {
+        databaseReference.startAt(userName).addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                // getValue : Read data from Firebase
+                Log.d(TAG, "## onChildAdded: " + snapshot.getKey());
+//
+//                if(snapshot.getValue(ChatData.class) != null) {
+//                    ChatData room = snapshot.getValue(ChatData.class);
+//                    listChatRoom.add(room);
+//                    ((MessageListAdapter)mAdapter).addRoom(room);
+//                }
+
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    ChatData room = userSnapshot.getValue(ChatData.class);
+
+                    if (room != null) {
+                        //user.uid = userSnapshot.getKey();
+                        listChatRoom.add(room);
+                        ((MessageListAdapter)mAdapter).addRoom(room);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG, "## onChildChanged: " + snapshot.getKey());
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                Log.d(TAG, "## onChildRemoved: " + snapshot.getKey());
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG, "## onChildMoved: " + snapshot.getKey());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.w(TAG, "## onCancelled: " + error);
+                Toast.makeText(getApplicationContext(), "Failed to load comments.", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void bottomNavigation() {
@@ -190,15 +242,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                         }
 
                         if (position != -1) {
-                            //Map.Entry<String, String> element = (Map.Entry<String, String>) dialogUserList.get(position).entrySet();
-
-//                            String tempMessage = "Temp: " + listUserInfo.get(position).getName()
-//                                    + " || " + listUserInfo.get(position).uid
-//                                    + " || " + listUserInfo.get(position).userName;
-//
-//                            TextView temp = (TextView)view.findViewById(R.id.editTextSearchName);
-//                            temp.setText(tempMessage);
-
                             Intent intent = new Intent(getApplicationContext(), Chat.class);
                             intent.putExtra("UserName", userName);
                             intent.putExtra("Uid", uid);
@@ -217,62 +260,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                 });
 
                 break;
-//                if(dialogUserList != null) {
-//                    SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), dialogUserList,
-//                    R.layout.custom_alert_dialog_user_item,
-//                    new String[] {"userId", "userName"},
-//                    new int[]{R.id.alertDialogIdItemTextView, R.id.alertDialogNameItemTextView});
-//
-//                    listView.setAdapter(sAdapter);
-//
-//                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    dialog.dismiss();
-//
-//                    if(position != -1) {
-//                        Map.Entry<String, String> element = (Map.Entry<String, String>) dialogUserList.get(position).entrySet();
-//
-//                        Intent intent = new Intent(getApplicationContext(), Chat.class);
-//                        intent.putExtra("UserName", userName);
-//                        intent.putExtra("Uid", uid);
-//                        intent.putExtra("OpponentId", element.getKey());
-//                        intent.putExtra("OpponentName", element.getValue());
-//
-//                        ActivityOptions activityOptions = null;
-//                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                            activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
-//                            startActivity(intent, activityOptions.toBundle());
-//                        }
-//                    }
-//                }
-//            });
-                // ## Original, but I want to change list type of dialog to show the list of users
-//                FirebaseDatabase.getInstance().getReference("Counselors").orderByChild("c_name").addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        Counselor counselor = snapshot.getValue(Counselor.class);
-//                        Log.d(TAG, "Read Counselors Info:success");
-//                        if(counselor != null) {
-//                            Intent intent = new Intent(getApplicationContext(), Chat.class);
-//                            intent.putExtra("UserName", userName);
-//                            intent.putExtra("Uid", uid);
-//                            intent.putExtra("OpponentId", snapshot.getKey());
-//                            intent.putExtra("OpponentName", counselor.getC_name());
-//
-//                            ActivityOptions activityOptions = null;
-//                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                                activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.from_right, R.anim.from_left);
-//                                startActivity(intent, activityOptions.toBundle());
-////                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                        Toast.makeText(Message.this, "Message: omething wrong happened!", Toast.LENGTH_LONG).show();
-//                    }
-//                });
         }
     }
 
@@ -297,77 +284,5 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
             }
         });
-    }
-
-    private void ShowAlertDialog() {
-//        LayoutInflater inflater = getLayoutInflater();
-//        View view = inflater.inflate(R.layout.custom_alert_dialog_user_list, null);
-//        listView = (ListView) view.findViewById(R.id.alertDialogUserList);
-//        listView.setAdapter(userListAdapter);
-//
-//        // Create Dialog
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//
-//        // Set Layout
-//        builder.setView(view);
-//        // Confirm & Cancel button
-//        builder.setPositiveButton("Send", null);
-//        builder.setNegativeButton("Cancel", null);
-//        // Set Icon
-//        builder.setIcon(R.drawable.ic_hope);
-//        // Set Title
-//        builder.setTitle("Choose an user to talk :)");
-//        builder.show();
-//        final AlertDialog dialog = builder.create();
-
-//        if(dialogUserList != null) {
-//            SimpleAdapter sAdapter = new SimpleAdapter(getApplicationContext(), dialogUserList,
-//                    R.layout.custom_alert_dialog_user_item,
-//                    new String[] {"userId", "userName"},
-//                    new int[]{R.id.alertDialogIdItemTextView, R.id.alertDialogNameItemTextView});
-//
-//            listView.setAdapter(sAdapter);
-
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    dialog.dismiss();
-//
-//                    if(position != -1) {
-//                        Map.Entry<String, String> element = (Map.Entry<String, String>) dialogUserList.get(position).entrySet();
-//
-//                        Intent intent = new Intent(getApplicationContext(), Chat.class);
-//                        intent.putExtra("UserName", userName);
-//                        intent.putExtra("Uid", uid);
-//                        intent.putExtra("OpponentId", element.getKey());
-//                        intent.putExtra("OpponentName", element.getValue());
-//
-//                        ActivityOptions activityOptions = null;
-//                        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                            activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
-//                            startActivity(intent, activityOptions.toBundle());
-//                        }
-//                    }
-//                }
-//            });
-//       }
-    }
-
-    private void toggleFab() {
-        if(isFabOpen) {
-            fabMain.setImageResource(R.drawable.ic_chat);
-            fabSub1.startAnimation(fab_close);
-            fabSub2.startAnimation(fab_close);
-            fabSub1.setClickable(false);
-            fabSub2.setClickable(false);
-            isFabOpen = false;
-        } else {
-            fabMain.setImageResource(R.drawable.ic_close);
-            fabSub1.startAnimation(fab_open);
-            fabSub2.startAnimation(fab_open);
-            fabSub1.setClickable(true);
-            fabSub2.setClickable(true);
-            isFabOpen = true;
-        }
     }
 }

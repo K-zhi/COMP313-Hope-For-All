@@ -1,5 +1,6 @@
 package comp321.hope_for_all.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +10,16 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.models.ChatData;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
-    private List<ChatData> mDataset;
-    private String myNickNmae;
+    private List<ChatData> mDataSet;
+    private String myNickName;
+    private final Activity context;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtNickName;
@@ -34,11 +37,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset
-    public ChatAdapter(List<ChatData> myDataset, Context context, String myNickName) {
-        mDataset = myDataset;
-        this.myNickNmae = myNickName;
+//    public ChatAdapter(Activity context) {
+//        this.context = context;
+//        mDataSet = new ArrayList<>();
+//    }
+
+    // Provide a suitable constructor (depends on the kind of dataSet
+    public ChatAdapter(Activity context, List<ChatData> myDataSet, String myNickName) {
+        if(mDataSet == null)
+            myDataSet = new ArrayList<>();
+
+        mDataSet = myDataSet;
+        this.myNickName = myNickName;
+        this.context = context;
     }
+
+    public List<ChatData> getChatList() { return this.mDataSet; }
 
     // Create New view (Invoked by the layout manager)
     public ChatAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -54,37 +68,35 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // Get element from your dataset at this position
         // Replace the contents of the view with that element
-        if(mDataset != null && mDataset.size() > 0) {
-            ChatData chat = mDataset.get(position);
+        ChatData chat = mDataSet.get(position);
 
-            if(chat != null) {
-                holder.txtNickName.setText(chat.getUserName());
-                holder.txtMsg.setText(chat.getMsg());
+        if(chat != null) {
+            holder.txtNickName.setText(chat.getUserName());
+            holder.txtMsg.setText(chat.getMsg());
 
-                if(chat.getUserName().equals(this.myNickNmae)) {
-                    holder.txtMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-                    holder.txtNickName.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
-                }
-                else {
-                    holder.txtMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-                    holder.txtNickName.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-                }
+            if(chat.getUserName().equals(this.myNickName)) {
+                holder.txtMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+                holder.txtNickName.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);
+            }
+            else {
+                holder.txtMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
+                holder.txtNickName.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
             }
         }
     }
 
     @Override
     public int getItemCount() {
-        return mDataset == null ? 0 : mDataset.size();
+        return mDataSet == null ? 0 : mDataSet.size();
     }
 
     public ChatData getChat(int position) {
-        return mDataset != null ? mDataset.get(position) : null;
+        return mDataSet != null ? mDataSet.get(position) : null;
     }
 
     // Renewal chat data
     public void addChat(ChatData chat) {
-        mDataset.add(chat);
-        notifyItemInserted(mDataset.size() - 1);
+        mDataSet.add(chat);
+        notifyItemInserted(mDataSet.size() - 1);
     }
 }

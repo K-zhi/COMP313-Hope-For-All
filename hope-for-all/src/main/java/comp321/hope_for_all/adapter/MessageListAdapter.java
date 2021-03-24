@@ -31,7 +31,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MyViewHolder> {
 //    private ArrayList<ChatData> mItems = new ArrayList<>();
 
-    private List<ChatData> mDataSet = new ArrayList<>();
+    private List<ChatData> mDataSet;
     private String uid;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -42,69 +42,95 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         public MyViewHolder(View view) {
             super(view);
 
-            //txtRoomName = view.findViewById();
             rootView = view;
+            txtRoomName = view.findViewById(R.id.txtChatRoomName);
+            txtMsg = view.findViewById(R.id.txtChatRoomContent);
+
             view.setClickable(true);
             view.setEnabled(true);
         }
     }
 
     public MessageListAdapter() {
-        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        FirebaseDatabase.getInstance().getReference().child("ChatRooms").orderByChild("users/"+uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.getChildren() != null) {
-                    for(DataSnapshot item :snapshot.getChildren()) {
-                        mDataSet.add(item.getValue(ChatData.class));
-                    }
-
-                    notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+//        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//        FirebaseDatabase.getInstance().getReference().child("ChatRooms").orderByChild("users/"+uid).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if(snapshot.getChildren() != null) {
+//                    for(DataSnapshot item :snapshot.getChildren()) {
+//                        mDataSet.add(item.getValue(ChatData.class));
+//                    }
+//
+//                    notifyDataSetChanged();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
     }
 
-    public MessageListAdapter(List<ChatData> dataset, Context context) {
-        mDataSet = dataset;
+    public MessageListAdapter(Context context, List<ChatData> dataSet) {
+        if(mDataSet == null)
+            mDataSet = new ArrayList<>();
+
+        this.mDataSet = dataSet;
     }
 
     @Override
     public MessageListAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_chat_list, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.custom_chat_room_item, parent, false);
 
-        return new MyViewHolder(view);
+        MyViewHolder v = new MyViewHolder(view);
+
+        return v;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        if(holder != null) {
+            if(mDataSet != null && mDataSet.size() > 0) {
+                // get element from dataSet at this position
+                // replace the contents of the view with that element
+                ChatData room = mDataSet.get(position);
 
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Chat.class);
-                intent.putExtra("UserName", mDataSet.get(position).getUserName());
-                intent.putExtra("Uid", mDataSet.get(position).getUid());
-                intent.putExtra("OpponentId", mDataSet.get(position).getOpponentId());
-
-                ActivityOptions activityOptions = null;
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.from_right, R.anim.from_left);
-                    startActivity(v.getContext(), intent, activityOptions.toBundle());
+                if(room != null) {
+                    holder.txtRoomName.setText(room.getOpponentName());
+                    holder.txtMsg.setText(room.getMsg());
                 }
             }
-        });
 
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), Chat.class);
+                    intent.putExtra("UserName", mDataSet.get(position).getUserName());
+                    intent.putExtra("Uid", mDataSet.get(position).getUid());
+                    intent.putExtra("OpponentId", mDataSet.get(position).getOpponentId());
+
+                    ActivityOptions activityOptions = null;
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.from_right, R.anim.from_left);
+                        startActivity(v.getContext(), intent, activityOptions.toBundle());
+                    }
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mDataSet.size();
+        return mDataSet == null ? 0 : mDataSet.size();
+    }
+
+    // Renewal chat data
+    public void addRoom(ChatData room) {
+        if(mDataSet == null)
+            mDataSet = new ArrayList<>();
+        mDataSet.add(room);
+        notifyItemInserted(mDataSet.size() - 1);
     }
 
 //    public MessageListAdapter(ArrayList<ChatData> list) {
