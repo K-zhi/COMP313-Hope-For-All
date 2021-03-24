@@ -295,11 +295,12 @@ public class MainCounselor extends AppCompatActivity {
                     case R.id.homeNav:
                         return true;
 
-                    case R.id.messageNav:
-                        startActivity(new Intent(getApplicationContext(), Message.class));
-                        overridePendingTransition(0, 0);
-                        finish();
-                        return true;
+//                   TODO: Need separate Message Activity for Counselor
+//                    case R.id.messageNav:
+//                        startActivity(new Intent(getApplicationContext(), Message.class));
+//                        overridePendingTransition(0, 0);
+//                        finish();
+//                        return true;
                 }
                 return false;
             }
