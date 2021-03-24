@@ -59,8 +59,10 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+
         user = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         userID = user.getUid();
 
         final TextView userNameTextView = findViewById(R.id.tvUserName);

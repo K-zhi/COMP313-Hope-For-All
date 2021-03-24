@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -17,11 +18,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,6 +40,8 @@ import comp321.hope_for_all.R;
 import comp321.hope_for_all.models.User;
 
 public class UpdateUserProfile extends AppCompatActivity {
+
+    private static final String TAG = "TAG";
 
     private EditText etUserName, etName, etEmail;
     private Button save, cancel;
@@ -54,6 +61,8 @@ public class UpdateUserProfile extends AppCompatActivity {
         String editName = data.getStringExtra("name");
         String editEmail = data.getStringExtra("email");
 
+        Log.d(TAG, "onCreate" + " " + editUserName + " " + editName + " " + editEmail);
+
         etUserName = findViewById(R.id.update_userName);
         etName = findViewById(R.id.update_name);
         etEmail = findViewById(R.id.update_email);
@@ -62,8 +71,10 @@ public class UpdateUserProfile extends AppCompatActivity {
         cancel = findViewById(R.id.btnCancel);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance().getReference().child("Users");
         user = firebaseAuth.getCurrentUser();
+
+        database = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference userRef = database.child("Users");
 
         etUserName.setText(editUserName);
         etName.setText(editName);
@@ -78,40 +89,42 @@ public class UpdateUserProfile extends AppCompatActivity {
                 String strName = etName.getText().toString().trim();
                 String strEmail = etEmail.getText().toString().trim();
 
+                DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Users");
+
                 user = firebaseAuth.getCurrentUser();
-                userID = user.getUid();
+                userID = database.child("Users").getKey();
 
-                String key = database.child("Users").child(userID).getKey();
+                ref.orderByChild("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(userID).build();
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot datas : dataSnapshot.getChildren()) {
+                                String key = datas.getKey();
 
-                user.updateProfile(userProfileChangeRequest)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
+                                String name = datas.child("name").getValue().toString();
+                                String userName = datas.child("userName").getValue().toString();
+                                String email = datas.child("email").getValue().toString();
 
-                                User users = new User(editUserName, editName, editEmail);
+                                ref.child(key).child("userName").setValue(srtUserName);
+                                ref.child(key).child("name").setValue(strName);
+                                ref.child(key).child("email").setValue(strEmail);
 
-                                Map<String, Object> postValues = users.toMap();
+                                startActivity(new Intent(getApplicationContext(), UserProfile.class));
 
-                                Map<String, Object> childUpdates = new HashMap<>();
-                                childUpdates.put(key, postValues);
-                                database.updateChildren(childUpdates);
-
-                                Toast.makeText(UpdateUserProfile.this,"Account is updated!", Toast.LENGTH_LONG).show();
-
-
-                                //startActivity(new Intent(getApplicationContext(), UpdateUserProfile.class));
+                                Toast.makeText(UpdateUserProfile.this, "Your profile is updated", Toast.LENGTH_SHORT).show();
 
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(UpdateUserProfile.this, "Email already exist!", Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+
+
+                });
 
             }
         });
