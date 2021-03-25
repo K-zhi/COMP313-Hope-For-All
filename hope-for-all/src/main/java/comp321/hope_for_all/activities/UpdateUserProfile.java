@@ -91,8 +91,8 @@ public class UpdateUserProfile extends AppCompatActivity {
 
                 String key = ref.getKey();
 
-                userID = database.child("Users").child(key).getKey();
-
+                userID = user.getUid();
+                
                 ref.orderByChild(userID).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -106,9 +106,9 @@ public class UpdateUserProfile extends AppCompatActivity {
                                 String userName = datas.child("userName").getValue().toString();
                                 String email = datas.child("email").getValue().toString();
 
-                                ref.child(key).child("userName").setValue(srtUserName);
-                                ref.child(key).child("name").setValue(strName);
-                                ref.child(key).child("email").setValue(strEmail);
+                                ref.child(userID).child("userName").setValue(srtUserName);
+                                ref.child(userID).child("name").setValue(strName);
+                                ref.child(userID).child("email").setValue(strEmail);
 
                                 startActivity(new Intent(getApplicationContext(), UserProfile.class));
 
