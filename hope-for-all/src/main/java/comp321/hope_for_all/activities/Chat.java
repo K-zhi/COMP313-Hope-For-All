@@ -93,7 +93,7 @@ public class Chat extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
 
         // FirebaseDatabase.getInstance().getReference("ChatRoom").addValueEventListener(new ValueEventListener()
-        FirebaseDatabase.getInstance().getReference("ChatRoom").child(uName).addChildEventListener(new ChildEventListener() {
+        FirebaseDatabase.getInstance().getReference("ChatRooms").child(uName).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 //                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
