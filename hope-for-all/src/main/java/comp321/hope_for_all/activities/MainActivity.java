@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton addPost;
     private RecyclerView recyclerView;
     BottomNavigationView bottomNavigationView;
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("Posts");
 
@@ -216,7 +218,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //adding delete function
     private void deletePost(Post post){
         myRef.child(post.getId()).removeValue(new DatabaseReference.CompletionListener() {
             @Override
@@ -226,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void showDialogUpdatePost(Post posts){
 
@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void bottomNav() {
 
-        setTitle("Home");
+        setTitle("Home Page");
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.homeNav);
