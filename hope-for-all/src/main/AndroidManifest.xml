@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".activities.UpdateCounselorProfile"></activity>
         <activity android:name=".activities.Chat" />
-        <activity android:name=".activities.MainCounselor" />
+        <activity android:name=".activities.MainCounselor" android:windowSoftInputMode="adjustPan" />
         <activity android:name=".activities.MainGuest" />
         <activity android:name=".activities.UpdateUserProfile" />
         <activity android:name=".activities.SelectUserType" />
@@ -24,7 +24,7 @@
         <activity android:name=".activities.CounselorProfile" />
         <activity android:name=".activities.Message" />
         <activity android:name=".activities.UserProfile" />
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.MainActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".activities.CreateUser" />
         <activity android:name=".activities.LoginUser">
             <intent-filter>
