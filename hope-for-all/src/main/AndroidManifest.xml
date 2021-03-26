@@ -14,6 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HopeForAll"
         android:usesCleartextTraffic="true">
+        <activity android:name=".activities.UpdateCounselorProfile"></activity>
         <activity android:name=".activities.Chat" />
         <activity android:name=".activities.MainCounselor" />
         <activity android:name=".activities.MainGuest" />
@@ -21,7 +22,7 @@
         <activity android:name=".activities.SelectUserType" />
         <activity android:name=".activities.CreateCounselor" />
         <activity android:name=".activities.CounselorProfile" />
-        <activity android:name=".activities.Message"/>
+        <activity android:name=".activities.Message" />
         <activity android:name=".activities.UserProfile" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.CreateUser" />

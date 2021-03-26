@@ -41,8 +41,6 @@ import comp321.hope_for_all.models.User;
 
 public class UpdateUserProfile extends AppCompatActivity {
 
-    private static final String TAG = "TAG";
-
     private EditText etUserName, etName, etEmail;
     private Button save, cancel;
 
@@ -60,8 +58,6 @@ public class UpdateUserProfile extends AppCompatActivity {
         String editUserName = data.getStringExtra("userName");
         String editName = data.getStringExtra("name");
         String editEmail = data.getStringExtra("email");
-
-        Log.d(TAG, "onCreate" + " " + editUserName + " " + editName + " " + editEmail);
 
         etUserName = findViewById(R.id.update_userName);
         etName = findViewById(R.id.update_name);
