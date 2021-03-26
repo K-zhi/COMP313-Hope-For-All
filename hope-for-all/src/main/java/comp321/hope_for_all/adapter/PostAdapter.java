@@ -90,7 +90,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
                 params.setMarginStart(200);
                 holder.itemView.findViewById(R.id.id_postview).setLayoutParams(params);
-                holder.comment.setVisibility(View.GONE);
+                holder.comment.setVisibility(View.INVISIBLE);
+            }
+            else {
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
+                params.setMarginStart(0);
+                holder.itemView.findViewById(R.id.id_postview).setLayoutParams(params);
+                holder.comment.setVisibility(View.VISIBLE);
             }
         }
 
