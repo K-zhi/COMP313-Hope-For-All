@@ -118,6 +118,8 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
         fabMain = (FloatingActionButton) findViewById(R.id.FloatingBtnMain);
         fabMain.setOnClickListener(this);
+
+        bottomNavigation();
     }
 
     private void getChatRoomList() {
@@ -176,12 +178,16 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                     case R.id.homeNav:
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
+
                     case R.id.messageNav:
-                        return false;
+                        return true;
+
                     case R.id.profileNav:
                         startActivity(new Intent(getApplicationContext(), UserProfile.class));
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
                 }
                 return false;

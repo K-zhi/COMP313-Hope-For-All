@@ -285,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void bottomNav() {
 
-        setTitle("Home Page");
+        setTitle("User Home Page");
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.homeNav);
