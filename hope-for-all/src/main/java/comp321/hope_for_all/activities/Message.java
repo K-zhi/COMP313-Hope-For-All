@@ -126,12 +126,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 // getValue : Read data from Firebase
                 Log.d(TAG, "## onChildAdded: " + snapshot.getKey());
-//
-//                if(snapshot.getValue(ChatData.class) != null) {
-//                    ChatData room = snapshot.getValue(ChatData.class);
-//                    listChatRoom.add(room);
-//                    ((MessageListAdapter)mAdapter).addRoom(room);
-//                }
 
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                     ChatData room = userSnapshot.getValue(ChatData.class);

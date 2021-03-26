@@ -97,7 +97,10 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                 ChatData room = mDataSet.get(position);
 
                 if(room != null) {
-                    holder.txtRoomName.setText(room.getOpponentName());
+                    if(room.getOpponentId() == uid)
+                        holder.txtRoomName.setText(room.getUserName());
+                    else
+                        holder.txtRoomName.setText(room.getOpponentName());
                     holder.txtMsg.setText(room.getMsg());
                 }
             }
@@ -109,6 +112,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                     intent.putExtra("UserName", mDataSet.get(position).getUserName());
                     intent.putExtra("Uid", mDataSet.get(position).getUid());
                     intent.putExtra("OpponentId", mDataSet.get(position).getOpponentId());
+                    intent.putExtra("OpponentName", mDataSet.get(position).getOpponentName());
 
                     ActivityOptions activityOptions = null;
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
