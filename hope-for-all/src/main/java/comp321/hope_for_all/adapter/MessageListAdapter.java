@@ -29,8 +29,6 @@ import comp321.hope_for_all.models.ChatData;
 import static androidx.core.content.ContextCompat.startActivity;
 
 public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.MyViewHolder> {
-//    private ArrayList<ChatData> mItems = new ArrayList<>();
-
     private List<ChatData> mDataSet;
     private String uid;
     private String chatKey;
