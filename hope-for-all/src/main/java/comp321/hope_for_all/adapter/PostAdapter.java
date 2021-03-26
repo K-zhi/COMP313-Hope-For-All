@@ -77,9 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         else {
             holder.editTextComment.setVisibility(View.INVISIBLE);
             holder.tvPostContent.setVisibility(View.VISIBLE);
-            if(context.getClass() == MainGuest.class) {
-                holder.comment.setVisibility(View.GONE);
-            }
+
 //            holder.comment.setVisibility(View.VISIBLE);
             holder.edit.setVisibility(View.VISIBLE);
             holder.delete.setVisibility(View.VISIBLE);
@@ -90,6 +88,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
                 params.setMarginStart(200);
                 holder.itemView.findViewById(R.id.id_postview).setLayoutParams(params);
+                holder.comment.setVisibility(View.INVISIBLE);
+            }
+            else {
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)holder.itemView.getLayoutParams();
+                params.setMarginStart(0);
+                holder.itemView.findViewById(R.id.id_postview).setLayoutParams(params);
+                holder.comment.setVisibility(View.VISIBLE);
+            }
+
+            if(context.getClass() == MainGuest.class) {
                 holder.comment.setVisibility(View.GONE);
             }
         }
@@ -132,6 +140,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 notifyDataSetChanged();
                 InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(holder.editTextComment.getWindowToken(), 0);
+                onCallBack.onButtonCancelComment();
             }
         });
     }
