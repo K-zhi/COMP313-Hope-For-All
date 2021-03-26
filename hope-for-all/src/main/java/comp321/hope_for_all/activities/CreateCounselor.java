@@ -1,11 +1,13 @@
 package comp321.hope_for_all.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -30,6 +32,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+
 import java.util.List;
 
 import comp321.hope_for_all.R;
@@ -40,7 +43,7 @@ import comp321.hope_for_all.models.User;
 public class CreateCounselor extends AppCompatActivity implements View.OnClickListener{
 
     private EditText userName, name, bio, email, website, location, password, confirmPassword;
-    //TODO: private AutoCompleteTextView autoCompleteTextView;
+
     private Button createAccount;
     private TextView logIn;
     private LinearLayout layout;
@@ -63,7 +66,7 @@ public class CreateCounselor extends AppCompatActivity implements View.OnClickLi
         website = findViewById(R.id.etWebsite);
         location = findViewById(R.id.etLocation);
 
-        //final AutoCompleteTextView autoCompleteTextView = findViewById(R.id.etLocation);
+        //final AutoCompleteTextView autoCompleteTextView=findViewById(R.id.etLocation);
         //autoCompleteTextView.setAdapter(new PlaceAutoSuggestAdapter(CreateCounselor.this,android.R.layout.simple_list_item_1));
 
         email = findViewById(R.id.etEmail);

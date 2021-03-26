@@ -58,6 +58,17 @@ public class MainCounselor extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && addPost.getVisibility() == View.VISIBLE) {
+                    addPost.hide();
+                } else if (dy < 0 && addPost.getVisibility() != View.VISIBLE) {
+                    addPost.show();
+                }
+            }
+        });
 
         addPost = findViewById(R.id.button_add_post);
         addPost.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +87,6 @@ public class MainCounselor extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Posts");
-
 
     }
 
@@ -283,11 +293,14 @@ public class MainCounselor extends AppCompatActivity {
                         return true;
 
                     case R.id.homeNav:
-                        startActivity(new Intent(getApplicationContext(), MainCounselor.class));
-                        overridePendingTransition(0, 0);
-                        finish();
                         return true;
-                        
+
+//                   TODO: Need separate Message Activity for Counselor
+//                    case R.id.messageNav:
+//                        startActivity(new Intent(getApplicationContext(), Message.class));
+//                        overridePendingTransition(0, 0);
+//                        finish();
+//                        return true;
                 }
                 return false;
             }

@@ -33,7 +33,6 @@ import comp321.hope_for_all.models.User;
 
 public class UserProfile extends AppCompatActivity {
 
-    private static final String TAG = "UserProfile";
     private TextView userNameTextView, nameTextView, emailTextView, logOut;
     private Button editProfile;
 
@@ -59,8 +58,10 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
+
         user = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         userID = user.getUid();
 
         final TextView userNameTextView = findViewById(R.id.tvUserName);
@@ -73,8 +74,6 @@ public class UserProfile extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 User userProfile = snapshot.getValue(User.class);
-
-                Log.d(TAG, "signInWithEmail:success");
 
                 if (userProfile != null) {
                     userName = userProfile.userName;
