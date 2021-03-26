@@ -90,13 +90,6 @@ public class UserListAdapter extends BaseAdapter {
             holder.userId.setText(userList.get(position).uid);
             holder.image.setImageResource(R.drawable.ic_brain);
         }
-//
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
 
         return view;
     }

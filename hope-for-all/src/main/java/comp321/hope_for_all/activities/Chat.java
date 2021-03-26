@@ -66,9 +66,8 @@ public class Chat extends AppCompatActivity {
             oppId = intent.getExtras().getString("OpponentId");
         if(intent.getExtras().getString("OpponentName") != null)
             oppName = intent.getExtras().getString("OpponentName");
-
-        // Set Chat Key
-        chatKey = "Group" + oppName.substring(0, 1);
+        if(intent.getExtras().getString("RoomKey") != null)
+            chatKey = intent.getExtras().getString("RoomKey");
 
         btnSendChat = findViewById(R.id.btnSendChat);
         editTxtChat = findViewById(R.id.editTxtChat);
@@ -110,28 +109,26 @@ public class Chat extends AppCompatActivity {
         mAdapter = new ChatAdapter(Chat.this, chatList, uName);
         mRecyclerView.setAdapter(mAdapter);
 
-        // Check Chat Data key in Database
-        mDatabaseRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot chatSnapshot : snapshot.getChildren()) {
-                    String test = chatSnapshot.getKey().toString();
-
-                    if(test == chatKey) {
-                        isExist = true;
-                        break;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        if(isExist == false)
-            chatKey = "Group" + uName.substring(0, 1);
+//        // Check Chat Data key in Database
+//        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                for(DataSnapshot chatSnapshot : snapshot.getChildren()) {
+//                    String test = chatSnapshot.getKey().toString();
+//
+//                    if(test == chatKey) {
+//                        isExist = true;
+//                        break;
+//                    } else if(isExist == false)
+//                        chatKey = uName.substring(0, 1) + oppId;
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
 
         // Read Chat Data from FireBase
         mDatabaseRef.child(chatKey).addChildEventListener(new ChildEventListener() {

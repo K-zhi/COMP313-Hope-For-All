@@ -5,12 +5,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import comp321.hope_for_all.R;
@@ -24,23 +29,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtNickName;
         public TextView txtMsg;
+        public TextView txtTime;
+        public ImageView image;
         public View rootView;
 
         public MyViewHolder(View view) {
             super(view);
             txtNickName = view.findViewById(R.id.txtNickName);
             txtMsg = view.findViewById(R.id.txtMessage);
+            //txtTime = view.findViewById(R.id.txtTime);
             rootView = view;
 
             view.setClickable(true);
             view.setEnabled(true);
         }
     }
-
-//    public ChatAdapter(Activity context) {
-//        this.context = context;
-//        mDataSet = new ArrayList<>();
-//    }
 
     // Provide a suitable constructor (depends on the kind of dataSet
     public ChatAdapter(Activity context, List<ChatData> myDataSet, String myNickName) {
@@ -71,8 +74,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
         ChatData chat = mDataSet.get(position);
 
         if(chat != null) {
+
             holder.txtNickName.setText(chat.getUserName());
             holder.txtMsg.setText(chat.getMsg());
+            //holder.txtTime.setText("HH:mm");
 
             if(chat.getUserName().equals(this.myNickName)) {
                 holder.txtMsg.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_END);

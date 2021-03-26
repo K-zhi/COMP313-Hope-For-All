@@ -100,7 +100,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         listChatRoom = new ArrayList<>();
-        mAdapter = new MessageListAdapter();
+        mAdapter = new MessageListAdapter(uid);
         mRecyclerView.setAdapter(mAdapter);
 
         // Get the list of chats from Firebase;
@@ -121,7 +121,8 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void getChatRoomList() {
-        databaseReference.startAt(userName).addChildEventListener(new ChildEventListener() {
+        //String chatKey = "Group" + userName.substring(0, 1);
+        databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 // getValue : Read data from Firebase
@@ -241,6 +242,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                             intent.putExtra("Uid", uid);
                             intent.putExtra("OpponentId", listUserInfo.get(position).uid);
                             intent.putExtra("OpponentName", listUserInfo.get(position).userName);
+                            intent.putExtra("RoomKey", uid+listUserInfo.get(position).uid);
 
                             ActivityOptions activityOptions = null;
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
