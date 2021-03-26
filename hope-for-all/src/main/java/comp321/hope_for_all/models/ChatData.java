@@ -1,6 +1,7 @@
 package comp321.hope_for_all.models;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class ChatData implements Serializable {
     private String msg;
@@ -10,14 +11,15 @@ public class ChatData implements Serializable {
     // Add
     private String opponentName;
     private String opponentId;
-    private String time;
+    private String date;
 
     public ChatData() {}
 
-    public ChatData(int image, String opponentName, String msg) {
+    public ChatData(int image, String opponentName, String msg, String date) {
         this.image = image;
         this.opponentName = opponentName;
         this.msg = msg;
+        this.date = date;
     }
 
     public String getMsg() {
@@ -68,11 +70,12 @@ public class ChatData implements Serializable {
         this.opponentId = opponentId;
     }
 
-    public String getTime() {
-        return time;
+    public String getDate() {
+        return date;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setDate(String date) {
+        this.date = date;
     }
+
 }

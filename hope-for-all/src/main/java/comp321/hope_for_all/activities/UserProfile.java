@@ -1,9 +1,11 @@
 package comp321.hope_for_all.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,7 +36,7 @@ import comp321.hope_for_all.models.User;
 public class UserProfile extends AppCompatActivity {
 
     private TextView userNameTextView, nameTextView, emailTextView, logOut;
-    private Button editProfile;
+    private Button editProfile, deleteProfile;
 
     private FirebaseUser user;
     private DatabaseReference databaseReference;
@@ -108,8 +110,33 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
-    }
+        deleteProfile = findViewById(R.id.btnDeleteProfile);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        deleteProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.setTitle("Delete Information").setMessage("Are you sure to delete your Id?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        user.delete();
+                        finishAffinity();
+                    }
+                });
 
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "Cancel to delete your information", Toast.LENGTH_SHORT);
+                        dialog.dismiss();
+                    }
+                });
+
+                //AlertDialog alertDialog = builder.create();
+                builder.show();;
+            }
+        });
+    }
 
     private void bottomNavigation() {
 
