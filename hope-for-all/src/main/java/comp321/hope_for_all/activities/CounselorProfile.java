@@ -29,7 +29,6 @@ import comp321.hope_for_all.models.User;
 
 public class CounselorProfile extends AppCompatActivity {
 
-    private static final String TAG = "CounselorProfile";
     private TextView logOut;
     private Button editProfile;
 
@@ -47,13 +46,6 @@ public class CounselorProfile extends AppCompatActivity {
 
         bottomNavigation();
 
-        editProfile = findViewById(R.id.btnEditProfile);
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: EDIT USER PROFILE ACTIVITY
-            }
-        });
 
         logOut = findViewById(R.id.tvSignOut);
         logOut.setOnClickListener(new View.OnClickListener() {
@@ -81,8 +73,6 @@ public class CounselorProfile extends AppCompatActivity {
 
                 Counselor counselorProfile = snapshot.getValue(Counselor.class);
 
-                Log.d(TAG, "signInWithEmail:success");
-
                 if (counselorProfile != null) {
                     String strUserName = counselorProfile.c_userName;
                     String strName = counselorProfile.c_name;
@@ -103,6 +93,22 @@ public class CounselorProfile extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(CounselorProfile.this, "Something wrong happened!", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        editProfile = findViewById(R.id.btnEditProfile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), UpdateCounselorProfile.class);
+
+                i.putExtra("name", nameTextView.getText().toString().trim());
+                i.putExtra("bio", bioTextView.getText().toString().trim());
+                i.putExtra("email", emailTextView.getText().toString().trim());
+                i.putExtra("website", websiteTextView.getText().toString().trim());
+                i.putExtra("location", locationTextView.getText().toString().trim());
+
+                startActivity(i);
             }
         });
 
