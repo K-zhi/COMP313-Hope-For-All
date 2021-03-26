@@ -132,6 +132,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 notifyDataSetChanged();
                 InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(holder.editTextComment.getWindowToken(), 0);
+                onCallBack.onButtonCancelComment();
             }
         });
     }
