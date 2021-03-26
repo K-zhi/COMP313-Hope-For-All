@@ -77,9 +77,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         else {
             holder.editTextComment.setVisibility(View.INVISIBLE);
             holder.tvPostContent.setVisibility(View.VISIBLE);
-            if(context.getClass() == MainGuest.class) {
-                holder.comment.setVisibility(View.GONE);
-            }
+
 //            holder.comment.setVisibility(View.VISIBLE);
             holder.edit.setVisibility(View.VISIBLE);
             holder.delete.setVisibility(View.VISIBLE);
@@ -97,6 +95,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 params.setMarginStart(0);
                 holder.itemView.findViewById(R.id.id_postview).setLayoutParams(params);
                 holder.comment.setVisibility(View.VISIBLE);
+            }
+
+            if(context.getClass() == MainGuest.class) {
+                holder.comment.setVisibility(View.GONE);
             }
         }
 
