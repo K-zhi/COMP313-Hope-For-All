@@ -176,7 +176,7 @@ public class MainCounselor extends AppCompatActivity {
     }
 
     private void setClick() {
-      /*  adapter.setOnCallBack(new PostAdapter.OnCallBack() {
+        adapter.setOnCallBack(new PostAdapter.OnCallBack() {
             @Override
             public void onButtonCommentClick(Post post) {
                 commentPost(post);
@@ -194,7 +194,6 @@ public class MainCounselor extends AppCompatActivity {
                 showDialogUpdatePost(post);
             }
 
-
             @Override
             public void onButtonConfirmComment(Post post) {
                 addDataToFirebase(post.getContent(), post.getParentId());
@@ -207,7 +206,7 @@ public class MainCounselor extends AppCompatActivity {
                 bottomNavigationView.setVisibility(View.VISIBLE);
                 addPost.setVisibility(View.VISIBLE);
             }
-        });*/
+        });
     }
 
     private void deletePost(Post post){
@@ -272,7 +271,7 @@ public class MainCounselor extends AppCompatActivity {
     }
 
     private void commentPost(Post post) {
-
+        adapter.addItem(post.getId());
     }
 
     private void bottomNav() {
