@@ -277,7 +277,7 @@ public class MainCounselor extends AppCompatActivity {
 
     private void bottomNav() {
 
-        setTitle("Home");
+        setTitle("Counselor Home Page");
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.homeNav);
