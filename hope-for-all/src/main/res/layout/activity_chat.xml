@@ -12,7 +12,9 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/my_recycler_view"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:layout_margin="20dp"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,14 +23,22 @@
         android:weightSum="1">
 
         <EditText
+            android:id="@+id/editTxtChat"
             android:layout_width="8dp"
-            android:layout_height="match_parent"
+            android:layout_height="46dp"
+            android:layout_margin="10dp"
             android:layout_weight="1"
-            android:id="@+id/editTxtChat"/>
+            android:padding="10dp"
+            android:background="@drawable/custom_input" />
+
         <Button
+            android:id="@+id/btnSendChat"
             android:layout_width="80dp"
-            android:layout_height="match_parent"
-            android:text="SEND"
-            android:id="@+id/btnSendChat"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:text="SEND" />
     </LinearLayout>
+
 </LinearLayout>

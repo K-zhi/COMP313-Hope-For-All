@@ -152,15 +152,19 @@ public class UserProfile extends AppCompatActivity {
                     case R.id.homeNav:
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
+
                     case R.id.profileNav:
                         return true;
+
                     case R.id.messageNav:
                         Intent intent = new Intent(getApplicationContext(), Message.class);
                         intent.putExtra("UserName", userName);
                         intent.putExtra("Uid", userID);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
                 }
                 return false;
