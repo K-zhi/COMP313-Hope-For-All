@@ -35,8 +35,9 @@ public class CounselorProfile extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference databaseReference;
 
-    private String userID;
 
+    private String userID;
+    private String userName;
     private BottomNavigationView bottomNavigationView;
 
     @Override
@@ -74,6 +75,7 @@ public class CounselorProfile extends AppCompatActivity {
                 Counselor counselorProfile = snapshot.getValue(Counselor.class);
 
                 if (counselorProfile != null) {
+                    userName = counselorProfile.c_userName;
                     String strUserName = counselorProfile.c_userName;
                     String strName = counselorProfile.c_name;
                     String strBio = counselorProfile.c_bio;
@@ -134,9 +136,12 @@ public class CounselorProfile extends AppCompatActivity {
                         return true;
 
                     case R.id.messageNav:
-                        Intent intent = new Intent(getApplicationContext(), Message.class);
+                        Intent intent = new Intent(getApplicationContext(), CounselorMessage.class);
+                        intent.putExtra("c_userName", userName);
+                        intent.putExtra("Uid", userID);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
                 }
                 return false;
