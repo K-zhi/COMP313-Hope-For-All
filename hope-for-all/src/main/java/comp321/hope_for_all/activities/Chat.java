@@ -6,12 +6,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -49,11 +52,14 @@ public class Chat extends AppCompatActivity {
 
     private EditText editTxtChat;
     private Button btnSendChat;
+    private LinearLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        layout = findViewById(R.id.chatLayout);
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("ChatRooms");
 
@@ -92,6 +98,9 @@ public class Chat extends AppCompatActivity {
                         chat.setMsg(message);
                         chat.setDate(strNow);
                         FirebaseDatabase.getInstance().getReference().child("ChatRooms").child(chatKey).push().setValue(chat);
+
+                        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
                     }
                 }
             }

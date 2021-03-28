@@ -41,6 +41,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.protobuf.StringValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -229,7 +230,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                 // Set Icon
                 builder.setIcon(R.drawable.ic_hope);
                 // Set Title
-                builder.setTitle("Choose an user to talk :)");
+                builder.setTitle("Choose a user to talk :)");
                 builder.show();
 
                 final AlertDialog dialog = builder.create();

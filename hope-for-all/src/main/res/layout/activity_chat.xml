@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:id="@+id/chatLayout">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
