@@ -116,8 +116,8 @@ public class CounselorProfile extends AppCompatActivity {
 
     private void bottomNavigation() {
 
-        setTitle("Account Profile");
-        
+        setTitle("Account Profile" );
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.profileNav);
 

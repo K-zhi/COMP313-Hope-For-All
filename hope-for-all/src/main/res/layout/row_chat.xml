@@ -2,17 +2,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#FCFAED"
+    android:foreground="@drawable/custom_chat_bubbles"
+    android:layout_margin="10dp">
 
     <TextView
+        android:id="@+id/txtNickName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_weight="1"
-        android:textSize="12sp"
-        android:id="@+id/txtNickName" />
+        android:fontFamily="@font/roboto_mono"
+        android:text="username"
+        android:textColor="@color/blue"
+        android:textSize="16sp" />
+
     <TextView
+        android:id="@+id/txtMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
-        android:id="@+id/txtMessage" />
+        android:text="message content"
+        android:fontFamily="@font/abeezee_italic"
+        android:padding="10dp"
+        android:textColor="#585D78"
+        android:textSize="20sp" />
 </LinearLayout>
