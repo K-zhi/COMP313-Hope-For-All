@@ -59,16 +59,14 @@ import comp321.hope_for_all.models.User;
 import static androidx.core.content.ContextCompat.startActivity;
 
 public class Message extends AppCompatActivity implements View.OnClickListener {
-    private FirebaseUser user;
     private DatabaseReference databaseReference;
     private static final String TAG = "Message";
     private String userName;
     private String uid;
     private String chatKey;
-    public Boolean isExistKey;
+    public Boolean isExistKey = false;
 
-    private FloatingActionButton fabMain, fabSub1, fabSub2;
-    private Animation fab_open, fab_close;
+    private FloatingActionButton fabMain;
     private boolean isFabOpen = false;
 
     // #K: For show the list of chats
@@ -85,7 +83,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
     // #K: Related with the list of Counselors
     private static CounselorListAdapter counselorAdapter;
-    private static List<Counselor> listCounselors;
+    private List<Counselor> listCounselors;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,9 +96,9 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         databaseReference = FirebaseDatabase.getInstance().getReference("ChatRooms");
 
         Intent intent = getIntent();
-        if(intent.getExtras().getString("UserName") != null)
+        if (intent.getExtras().getString("UserName") != null)
             userName = intent.getExtras().getString("UserName");
-        if(intent.getExtras().getString("Uid") != null)
+        if (intent.getExtras().getString("Uid") != null)
             uid = intent.getExtras().getString("Uid");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.chatRoomRecyclerView);
@@ -115,14 +113,14 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         // Get the list of chats from Firebase;
         getChatRoomList();
 
-        if(listUserInfo != null)
+        if (listUserInfo != null)
             userListAdapter = new UserListAdapter(this, listUserInfo);
         else {
             listUserInfo = new ArrayList<>();
             userListAdapter = new UserListAdapter(this);
         }
 
-        if(listCounselors != null)
+        if (listCounselors != null)
             counselorAdapter = new CounselorListAdapter(this, listCounselors);
         else {
             listCounselors = new ArrayList<>();
@@ -154,7 +152,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                     if (room != null) {
                         //user.uid = userSnapshot.getKey();
                         listChatRoom.add(room);
-                        ((MessageListAdapter)mAdapter).addRoom(room);
+                        ((MessageListAdapter) mAdapter).addRoom(room);
                     }
                 }
             }
@@ -216,7 +214,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.FloatingBtnMain :
+            case R.id.FloatingBtnMain:
                 //dialogUserList = new ArrayList<>();
                 listUserInfo = new ArrayList<>();
 
@@ -255,8 +253,8 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if(listUserInfo == null  || listUserInfo.size() == 0) {
-                            if(userListAdapter.getUserList() != null && userListAdapter.getUserList().size() > 0){
+                        if (listUserInfo == null || listUserInfo.size() == 0) {
+                            if (userListAdapter.getUserList() != null && userListAdapter.getUserList().size() > 0) {
                                 listUserInfo = userListAdapter.getUserList();
                             }
                         }
@@ -272,14 +270,16 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                             FirebaseDatabase.getInstance().getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for(DataSnapshot chatSnapshot : snapshot.getChildren()) {
-                                        if(chatSnapshot.getKey().equals(chatKey)) {
+                                    isExistKey = false;
+                                    for (DataSnapshot chatSnapshot : snapshot.getChildren()) {
+                                        if (chatSnapshot.getKey().equals(chatKey)) {
                                             isExistKey = true;
                                             break;
                                         } else
                                             isExistKey = false;
                                     }
 
+                                    // Todo: delete ' == true'
                                     chatKey = isExistKey == true ? chatKey : uid + listUserInfo.get(position).uid;
 
                                     intent.putExtra("UserName", userName);
@@ -300,20 +300,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
                                 }
                             });
-
-//                            chatKey = isExistKey == false ? chatKey = uid + listUserInfo.get(position).uid : chatKey;
-
-//                            intent.putExtra("UserName", userName);
-//                            intent.putExtra("Uid", uid);
-//                            intent.putExtra("OpponentId", listUserInfo.get(position).uid);
-//                            intent.putExtra("OpponentName", listUserInfo.get(position).userName);
-//                            intent.putExtra("RoomKey", chatKey);
-//
-//                            ActivityOptions activityOptions = null;
-//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                                activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
-//                                startActivity(intent, activityOptions.toBundle());
-//                            }
                         }
 
                         dialog.dismiss();
@@ -336,7 +322,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                     if (user != null) {
                         user.uid = userSnapshot.getKey();
                         // #D: if there is an current user, delete the item in the list of users
-                        if(!uid.equals(user.uid)) {
+                        if (!uid.equals(user.uid)) {
                             listUserInfo.add(user);
                             userListAdapter.setUser(user);
                         }
@@ -357,10 +343,10 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         FirebaseDatabase.getInstance().getReference("Counselors").orderByChild("c_name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot counselorSnapshot : snapshot.getChildren()) {
+                for (DataSnapshot counselorSnapshot : snapshot.getChildren()) {
                     Counselor counselor = counselorSnapshot.getValue(Counselor.class);
 
-                    if(counselor != null) {
+                    if (counselor != null) {
                         listCounselors.add(counselor);
                         counselorAdapter.setCounselor(counselor);
                     }
