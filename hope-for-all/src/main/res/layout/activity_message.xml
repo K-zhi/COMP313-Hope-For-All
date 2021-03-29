@@ -22,7 +22,7 @@
         android:layout_marginBottom="70dp"
         android:layout_marginRight="20dp"
         android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_add"
+        app:srcCompat="@drawable/ic_add_person"
         tools:ignore="MissingConstraints" />
 
     <RelativeLayout

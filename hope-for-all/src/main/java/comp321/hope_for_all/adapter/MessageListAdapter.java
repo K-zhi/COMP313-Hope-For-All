@@ -97,20 +97,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                     String key = mDataSet.get(position).getOpponentId();
                     // Check Chat Data key in Database
                     chatKey = mDataSet.get(position).getOpponentId() + mDataSet.get(position).getUid();
-
-                    if(key.equals(uid)) {
-                        intent.putExtra("UserName", mDataSet.get(position).getOpponentName());
-                        intent.putExtra("Uid", mDataSet.get(position).getOpponentId());
-                        intent.putExtra("OpponentId", mDataSet.get(position).getUid());
-                        intent.putExtra("OpponentName", mDataSet.get(position).getUserName());
-                    }
-                    else {
-                        intent.putExtra("UserName", mDataSet.get(position).getUserName());
-                        intent.putExtra("Uid", mDataSet.get(position).getUid());
-                        intent.putExtra("OpponentId", mDataSet.get(position).getOpponentId());
-                        intent.putExtra("OpponentName", mDataSet.get(position).getOpponentName());
-                    }
-
                     // Check Chat Data key in Database
                     FirebaseDatabase.getInstance().getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
                         @Override
@@ -118,11 +104,32 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                             for(DataSnapshot chatSnapshot : snapshot.getChildren()) {
                                 String test = chatSnapshot.getKey().toString();
 
-                                if(test == chatKey) {
+                                if(test.equals(chatKey)) {
                                     isExist = true;
                                     break;
                                 } else
                                     isExist = false;
+                            }
+                            chatKey = isExist == true ? chatKey : mDataSet.get(position).getUid() + mDataSet.get(position).getOpponentId();
+
+                            if(key.equals(uid)) {
+                                intent.putExtra("UserName", mDataSet.get(position).getOpponentName());
+                                intent.putExtra("Uid", mDataSet.get(position).getOpponentId());
+                                intent.putExtra("OpponentId", mDataSet.get(position).getUid());
+                                intent.putExtra("OpponentName", mDataSet.get(position).getUserName());
+                            }
+                            else {
+                                intent.putExtra("UserName", mDataSet.get(position).getUserName());
+                                intent.putExtra("Uid", mDataSet.get(position).getUid());
+                                intent.putExtra("OpponentId", mDataSet.get(position).getOpponentId());
+                                intent.putExtra("OpponentName", mDataSet.get(position).getOpponentName());
+                            }
+                            intent.putExtra("RoomKey", chatKey);
+
+                            ActivityOptions activityOptions = null;
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.from_right, R.anim.from_left);
+                                startActivity(v.getContext(), intent, activityOptions.toBundle());
                             }
                         }
 
@@ -131,16 +138,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
                         }
                     });
-
-                    if(isExist == false)
-                        chatKey = mDataSet.get(position).getUid() + mDataSet.get(position).getOpponentId();
-                    intent.putExtra("RoomKey", chatKey);
-
-                    ActivityOptions activityOptions = null;
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.from_right, R.anim.from_left);
-                        startActivity(v.getContext(), intent, activityOptions.toBundle());
-                    }
                 }
             });
         }
@@ -157,5 +154,30 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             mDataSet = new ArrayList<>();
         mDataSet.add(room);
         notifyItemInserted(mDataSet.size() - 1);
+    }
+
+    public Boolean checkIsExistKey(String key) {
+        // Check Chat Data key in Database
+        FirebaseDatabase.getInstance().getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot chatSnapshot : snapshot.getChildren()) {
+                    String test = chatSnapshot.getKey().toString();
+
+                    if(test.equals(chatKey)) {
+                        isExist = true;
+                        break;
+                    } else
+                        isExist = false;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return isExist;
     }
 }

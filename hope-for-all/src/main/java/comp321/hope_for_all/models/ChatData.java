@@ -9,6 +9,7 @@ public class ChatData implements Serializable {
     private String uid;
     private int image;
     // Add
+    private String rookKey;
     private String opponentName;
     private String opponentId;
     private String date;
