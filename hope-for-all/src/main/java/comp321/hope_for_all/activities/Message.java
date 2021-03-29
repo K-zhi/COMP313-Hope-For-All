@@ -235,8 +235,9 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         if(listUserInfo == null  || listUserInfo.size() == 0) {
-                            if(userListAdapter.getUserList() != null && userListAdapter.getUserList().size() > 0)
+                            if(userListAdapter.getUserList() != null && userListAdapter.getUserList().size() > 0){
                                 listUserInfo = userListAdapter.getUserList();
+                            }
                         }
 
                         if (position != -1) {
@@ -269,6 +270,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
+    // #D: Make the list of Users
     private void getUsersInfo() {
         // Get the users data from Firebase
         FirebaseDatabase.getInstance().getReference("Users").orderByChild("name").addValueEventListener(new ValueEventListener() {
@@ -279,8 +281,11 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
                     if (user != null) {
                         user.uid = userSnapshot.getKey();
-                        listUserInfo.add(user);
-                        userListAdapter.setUser(user);
+                        // #D: if there is an current user, delete the item in the list of users
+                        if(!uid.equals(user.uid)) {
+                            listUserInfo.add(user);
+                            userListAdapter.setUser(user);
+                        }
                     }
                 }
             }
