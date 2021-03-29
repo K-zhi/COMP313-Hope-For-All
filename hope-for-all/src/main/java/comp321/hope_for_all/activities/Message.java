@@ -62,6 +62,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "Message";
     private String userName;
     private String uid;
+    private String chatKey;
 
     private FloatingActionButton fabMain, fabSub1, fabSub2;
     private Animation fab_open, fab_close;
@@ -72,7 +73,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView.LayoutManager mLayoutManager;
     private List<ChatData> listChatRoom;
 
-    //
     private static UserListAdapter userListAdapter;
     public static ListView listView;
     private List<User> listUserInfo;
@@ -118,6 +118,8 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
         fabMain = (FloatingActionButton) findViewById(R.id.FloatingBtnMain);
         fabMain.setOnClickListener(this);
+
+        bottomNavigation();
     }
 
     private void getChatRoomList() {
@@ -178,7 +180,8 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                         overridePendingTransition(0, 0);
                         return true;
                     case R.id.messageNav:
-                        return false;
+                        return true;
+
                     case R.id.profileNav:
                         startActivity(new Intent(getApplicationContext(), UserProfile.class));
                         overridePendingTransition(0, 0);
@@ -238,11 +241,18 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
                         if (position != -1) {
                             Intent intent = new Intent(getApplicationContext(), Chat.class);
+
+                            String key = listUserInfo.get(position).uid;
+                            // Check Chat Data key in Database
+                            chatKey = listUserInfo.get(position).uid + uid;
+                            Boolean isExist = ((MessageListAdapter)mAdapter).checkIsExistKey(chatKey);
+                            chatKey = isExist == false ? chatKey = uid + listUserInfo.get(position).uid : chatKey;
+
                             intent.putExtra("UserName", userName);
                             intent.putExtra("Uid", uid);
                             intent.putExtra("OpponentId", listUserInfo.get(position).uid);
                             intent.putExtra("OpponentName", listUserInfo.get(position).userName);
-                            intent.putExtra("RoomKey", uid+listUserInfo.get(position).uid);
+                            intent.putExtra("RoomKey", chatKey);
 
                             ActivityOptions activityOptions = null;
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
