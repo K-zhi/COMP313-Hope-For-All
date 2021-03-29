@@ -64,6 +64,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     private String userName;
     private String uid;
     private String chatKey;
+    public Boolean isExistKey;
 
     private FloatingActionButton fabMain, fabSub1, fabSub2;
     private Animation fab_open, fab_close;
@@ -262,20 +263,53 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                             String key = listUserInfo.get(position).uid;
                             // Check Chat Data key in Database
                             chatKey = listUserInfo.get(position).uid + uid;
-                            Boolean isExist = ((MessageListAdapter)mAdapter).checkIsExistKey(chatKey);
-                            chatKey = isExist == false ? chatKey = uid + listUserInfo.get(position).uid : chatKey;
 
-                            intent.putExtra("UserName", userName);
-                            intent.putExtra("Uid", uid);
-                            intent.putExtra("OpponentId", listUserInfo.get(position).uid);
-                            intent.putExtra("OpponentName", listUserInfo.get(position).userName);
-                            intent.putExtra("RoomKey", chatKey);
+                            // Check Chat Data key in Database
+                            FirebaseDatabase.getInstance().getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    for(DataSnapshot chatSnapshot : snapshot.getChildren()) {
+                                        if(chatSnapshot.getKey().equals(chatKey)) {
+                                            isExistKey = true;
+                                            break;
+                                        } else
+                                            isExistKey = false;
+                                    }
 
-                            ActivityOptions activityOptions = null;
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
-                                startActivity(intent, activityOptions.toBundle());
-                            }
+                                    chatKey = isExistKey == true ? chatKey : uid + listUserInfo.get(position).uid;
+
+                                    intent.putExtra("UserName", userName);
+                                    intent.putExtra("Uid", uid);
+                                    intent.putExtra("OpponentId", listUserInfo.get(position).uid);
+                                    intent.putExtra("OpponentName", listUserInfo.get(position).userName);
+                                    intent.putExtra("RoomKey", chatKey);
+
+                                    ActivityOptions activityOptions = null;
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                        activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
+                                        startActivity(intent, activityOptions.toBundle());
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                }
+                            });
+
+//                            chatKey = isExistKey == false ? chatKey = uid + listUserInfo.get(position).uid : chatKey;
+
+//                            intent.putExtra("UserName", userName);
+//                            intent.putExtra("Uid", uid);
+//                            intent.putExtra("OpponentId", listUserInfo.get(position).uid);
+//                            intent.putExtra("OpponentName", listUserInfo.get(position).userName);
+//                            intent.putExtra("RoomKey", chatKey);
+//
+//                            ActivityOptions activityOptions = null;
+//                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                                activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
+//                                startActivity(intent, activityOptions.toBundle());
+//                            }
                         }
 
                         dialog.dismiss();

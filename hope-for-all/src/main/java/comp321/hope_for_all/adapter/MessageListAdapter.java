@@ -98,28 +98,46 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                     // Check Chat Data key in Database
                     chatKey = mDataSet.get(position).getOpponentId() + mDataSet.get(position).getUid();
                     // Check Chat Data key in Database
-                    isExist = checkIsExistKey(chatKey);
-                    chatKey = isExist == false ? chatKey = mDataSet.get(position).getUid() + mDataSet.get(position).getOpponentId() : chatKey;
+                    FirebaseDatabase.getInstance().getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            for(DataSnapshot chatSnapshot : snapshot.getChildren()) {
+                                String test = chatSnapshot.getKey().toString();
 
-                    if(key.equals(uid)) {
-                        intent.putExtra("UserName", mDataSet.get(position).getOpponentName());
-                        intent.putExtra("Uid", mDataSet.get(position).getOpponentId());
-                        intent.putExtra("OpponentId", mDataSet.get(position).getUid());
-                        intent.putExtra("OpponentName", mDataSet.get(position).getUserName());
-                    }
-                    else {
-                        intent.putExtra("UserName", mDataSet.get(position).getUserName());
-                        intent.putExtra("Uid", mDataSet.get(position).getUid());
-                        intent.putExtra("OpponentId", mDataSet.get(position).getOpponentId());
-                        intent.putExtra("OpponentName", mDataSet.get(position).getOpponentName());
-                    }
-                    intent.putExtra("RoomKey", chatKey);
+                                if(test.equals(chatKey)) {
+                                    isExist = true;
+                                    break;
+                                } else
+                                    isExist = false;
+                            }
+                            chatKey = isExist == true ? chatKey : mDataSet.get(position).getUid() + mDataSet.get(position).getOpponentId();
 
-                    ActivityOptions activityOptions = null;
-                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                        activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.from_right, R.anim.from_left);
-                        startActivity(v.getContext(), intent, activityOptions.toBundle());
-                    }
+                            if(key.equals(uid)) {
+                                intent.putExtra("UserName", mDataSet.get(position).getOpponentName());
+                                intent.putExtra("Uid", mDataSet.get(position).getOpponentId());
+                                intent.putExtra("OpponentId", mDataSet.get(position).getUid());
+                                intent.putExtra("OpponentName", mDataSet.get(position).getUserName());
+                            }
+                            else {
+                                intent.putExtra("UserName", mDataSet.get(position).getUserName());
+                                intent.putExtra("Uid", mDataSet.get(position).getUid());
+                                intent.putExtra("OpponentId", mDataSet.get(position).getOpponentId());
+                                intent.putExtra("OpponentName", mDataSet.get(position).getOpponentName());
+                            }
+                            intent.putExtra("RoomKey", chatKey);
+
+                            ActivityOptions activityOptions = null;
+                            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                activityOptions = ActivityOptions.makeCustomAnimation(v.getContext(), R.anim.from_right, R.anim.from_left);
+                                startActivity(v.getContext(), intent, activityOptions.toBundle());
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             });
         }
@@ -146,7 +164,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                 for(DataSnapshot chatSnapshot : snapshot.getChildren()) {
                     String test = chatSnapshot.getKey().toString();
 
-                    if(test == chatKey) {
+                    if(test.equals(chatKey)) {
                         isExist = true;
                         break;
                     } else
