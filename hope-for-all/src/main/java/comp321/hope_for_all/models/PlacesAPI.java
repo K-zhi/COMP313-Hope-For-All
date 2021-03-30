@@ -22,7 +22,7 @@ public class PlacesAPI {
         try {
             StringBuilder sb=new StringBuilder("https://maps.googleapis.com/maps/api/place/autocomplete/json?");
             sb.append("input="+input);
-            sb.append("&key=AIzaSyA4lVs87qTjQZEamxfekojQr5Bpadcdyyg");
+            sb.append("&key=AIzaSyCO8C44wFERywfsQLZJYXOxq_PX7ENiDos");
             URL url=new URL(sb.toString());
             connection=(HttpURLConnection)url.openConnection();
             InputStreamReader inputStreamReader=new InputStreamReader(connection.getInputStream());
