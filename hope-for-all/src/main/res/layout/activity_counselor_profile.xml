@@ -56,9 +56,10 @@
         <ImageView
             android:id="@+id/imageViewCounselorName"
             android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="28dp"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_name" />
 
         <TextView
@@ -84,9 +85,10 @@
         <ImageView
             android:id="@+id/imageViewCounselorBio"
             android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="28dp"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_info" />
 
         <TextView
@@ -112,9 +114,10 @@
         <ImageView
             android:id="@+id/imageViewCounselorEmail"
             android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="28dp"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_email" />
 
         <TextView
@@ -140,9 +143,10 @@
         <ImageView
             android:id="@+id/imageViewCounselorWebsite"
             android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="28dp"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_website" />
 
         <TextView
@@ -200,7 +204,7 @@
             android:layout_marginRight="5dp"
             android:background="@drawable/custom_blue_button"
             android:textSize="15dp"
-            android:text="Edit Profile"
+            android:text="Update Profile"
             android:textAllCaps="false" />
 
         <Button

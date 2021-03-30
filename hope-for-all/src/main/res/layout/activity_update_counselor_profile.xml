@@ -30,11 +30,12 @@
         android:background="@drawable/custom_input">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/imageViewCounselorName"
             android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="28dp"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_name" />
 
         <EditText
@@ -57,11 +58,12 @@
         android:background="@drawable/custom_input">
 
         <ImageView
-            android:id="@+id/imageView4"
+            android:id="@+id/imageViewCounselorBio"
             android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="28dp"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_info" />
 
         <EditText
@@ -85,11 +87,12 @@
         android:background="@drawable/custom_input">
 
         <ImageView
-            android:id="@+id/imageView5"
+            android:id="@+id/imageViewCounselorEmail"
             android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="28dp"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_email" />
 
         <EditText
@@ -112,11 +115,12 @@
         android:background="@drawable/custom_input">
 
         <ImageView
-            android:id="@+id/imageViewWeb"
+            android:id="@+id/imageViewCounselorWebsite"
             android:layout_width="45dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="28dp"
             android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             app:srcCompat="@drawable/ic_website" />
 
         <EditText
@@ -139,7 +143,7 @@
         android:background="@drawable/custom_input">
 
         <ImageView
-            android:id="@+id/imageViewLocation"
+            android:id="@+id/imageViewCounselorLocation"
             android:layout_width="45dp"
             android:layout_height="28dp"
             android:layout_margin="5dp"
