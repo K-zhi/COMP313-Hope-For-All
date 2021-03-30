@@ -1,11 +1,5 @@
 package comp321.hope_for_all.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +13,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -74,11 +74,15 @@ public class MainCounselor extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
                 if (dy > 0 && addPost.getVisibility() == View.VISIBLE) {
                     addPost.hide();
-                } else if (dy < 0 && addPost.getVisibility() != View.VISIBLE) {
+                }
+                else if (dy < 0 && addPost.getVisibility() != View.VISIBLE) {
                     addPost.show();
                 }
+
             }
         });
+
+
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("Counselors");
