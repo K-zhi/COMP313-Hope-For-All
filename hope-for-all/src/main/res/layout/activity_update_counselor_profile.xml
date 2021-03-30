@@ -155,7 +155,7 @@
             android:textColor="@color/black"
             android:textSize="20dp" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/etLocation"
             android:layout_width="240dp"
             android:layout_height="wrap_content"
