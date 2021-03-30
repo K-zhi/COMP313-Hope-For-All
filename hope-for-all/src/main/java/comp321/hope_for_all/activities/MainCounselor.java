@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +51,14 @@ public class MainCounselor extends AppCompatActivity {
     private List<Post> list = new ArrayList<>();
     private PostAdapter adapter;
 
+
+    private FirebaseUser user;
+    private DatabaseReference databaseReference;
+
+    private String userID;
+    private String userName;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +79,11 @@ public class MainCounselor extends AppCompatActivity {
                 }
             }
         });
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Counselors");
+        userID = user.getUid();
+        userName = user.getDisplayName();
 
         addPost = findViewById(R.id.button_add_post);
         addPost.setOnClickListener(new View.OnClickListener() {
@@ -294,12 +309,14 @@ public class MainCounselor extends AppCompatActivity {
                     case R.id.homeNav:
                         return true;
 
-//                   TODO: Need separate Message Activity for Counselor
-//                    case R.id.messageNav:
-//                        startActivity(new Intent(getApplicationContext(), Message.class));
-//                        overridePendingTransition(0, 0);
-//                        finish();
-//                        return true;
+                    case R.id.messageNav:
+                        Intent intent = new Intent(getApplicationContext(), CounselorMessage.class);
+                        intent.putExtra("c_userName", userName);
+                        intent.putExtra("uid", userID);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                        finish();
+                        return true;
                 }
                 return false;
             }

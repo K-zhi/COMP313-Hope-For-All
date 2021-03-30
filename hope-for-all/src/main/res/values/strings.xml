@@ -3,4 +3,10 @@
     <string name="slogan">A community built to help people to help you, because we believe hope is for all and mental health plays a vital role.</string>
     <string name="counselor_caption">Are you a license health adviser? Sign up as Counselor.</string>
     <string name="user_caption">Simply want to share your thoughts? Sign up as User.</string>
+    <string name="title_activity_counselor_message">CounselorMessage</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 </resources>
