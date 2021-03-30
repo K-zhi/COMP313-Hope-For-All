@@ -1,8 +1,5 @@
 package comp321.hope_for_all.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -14,6 +11,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +31,7 @@ import comp321.hope_for_all.adapter.PlaceAutoSuggestAdapter;
 
 public class UpdateCounselorProfile extends AppCompatActivity {
 
-    private EditText name, bio, email, website; //location;
+    private EditText name, bio, email, website;
     private AutoCompleteTextView autoCompleteTextView;
     private Button save, cancel;
 

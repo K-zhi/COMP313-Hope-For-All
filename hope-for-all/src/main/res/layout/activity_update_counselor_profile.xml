@@ -29,19 +29,17 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Name"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/ic_name" />
 
         <EditText
             android:id="@+id/etName"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:textColor="@color/light_blue"
@@ -58,19 +56,17 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:text="Bio"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/ic_info" />
 
         <EditText
             android:id="@+id/etBio"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Bio here...."
@@ -88,19 +84,17 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Email"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/ic_email" />
 
         <EditText
             android:id="@+id/etEmail"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:textColor="@color/light_blue"
@@ -117,19 +111,17 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Website"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewWeb"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/ic_website" />
 
         <EditText
             android:id="@+id/etWebsite"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:textColor="@color/light_blue"
@@ -146,19 +138,18 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Location"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewLocation"
+            android:layout_width="45dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_location" />
 
         <AutoCompleteTextView
             android:id="@+id/etLocation"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Location here...."
