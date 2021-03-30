@@ -59,6 +59,8 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        getSupportActionBar().hide();
+
         layout = findViewById(R.id.chatLayout);
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("ChatRooms");

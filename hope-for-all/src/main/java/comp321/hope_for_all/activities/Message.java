@@ -292,6 +292,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                         activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
                                         startActivity(intent, activityOptions.toBundle());
+
                                     }
                                 }
 

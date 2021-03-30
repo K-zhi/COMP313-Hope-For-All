@@ -10,7 +10,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chatRoomRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="670dp"
+        android:overScrollMode="always"
+        android:scrollbars="vertical">
 
     </androidx.recyclerview.widget.RecyclerView>
 

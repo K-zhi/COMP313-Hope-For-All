@@ -11,7 +11,8 @@
         android:id="@+id/txtNickName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_weight="1"
         android:fontFamily="@font/roboto_mono"
         android:text="username"
@@ -23,8 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="message content"
-        android:fontFamily="@font/abeezee_italic"
-        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:textColor="#585D78"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 </LinearLayout>
