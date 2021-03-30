@@ -5,12 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:overScrollMode="always"
     tools:context=".activities.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="672dp" />
+        android:layout_height="600dp"
+        android:overScrollMode="always"
+        android:scrollbars="vertical" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_add_post"
@@ -23,7 +27,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:layout_width="match_parent"
@@ -33,7 +38,9 @@
             app:itemTextColor="@drawable/selector"
             app:itemIconTint="@drawable/selector"
             app:menu="@menu/menu"
-            android:layout_alignParentBottom="true"></com.google.android.material.bottomnavigation.BottomNavigationView>
+            android:layout_alignParentBottom="true"
+            app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior">
+        </com.google.android.material.bottomnavigation.BottomNavigationView>
     </RelativeLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
