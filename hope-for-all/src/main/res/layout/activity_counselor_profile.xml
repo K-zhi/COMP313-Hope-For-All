@@ -53,19 +53,17 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Name"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewCounselorName"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/ic_name" />
 
         <TextView
             android:id="@+id/tvName"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Name here...."
@@ -83,19 +81,17 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:text="Bio"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewCounselorBio"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/ic_info" />
 
         <TextView
             android:id="@+id/tvBio"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Bio here...."
@@ -113,19 +109,17 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Email"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewCounselorEmail"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/ic_email" />
 
         <TextView
             android:id="@+id/tvEmail"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Email here...."
@@ -143,19 +137,17 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Website"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewCounselorWebsite"
+            android:layout_width="45dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            app:srcCompat="@drawable/ic_website" />
 
         <TextView
             android:id="@+id/tvWebsite"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Website here...."
@@ -173,19 +165,18 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Location"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewCounselorLocation"
+            android:layout_width="45dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_location" />
 
         <TextView
             android:id="@+id/tvLocation"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Location here...."
