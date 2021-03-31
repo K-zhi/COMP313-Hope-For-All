@@ -1,39 +1,31 @@
 package comp321.hope_for_all.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.models.User;
 
-public class UserProfile extends AppCompatActivity {
+public class UserProfile extends AppCompatActivity implements View.OnClickListener{
 
     private TextView userNameTextView, nameTextView, emailTextView, logOut;
     private Button editProfile, deleteProfile;
@@ -52,14 +44,7 @@ public class UserProfile extends AppCompatActivity {
         bottomNavigation();
 
         logOut = findViewById(R.id.tvSignOut);
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(UserProfile.this, LoginUser.class));
-            }
-        });
-
+        logOut.setOnClickListener(this);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
 
@@ -138,6 +123,29 @@ public class UserProfile extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onClick(View v) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setIcon(R.drawable.ic_hope);
+        alert.setTitle("Sign out");
+        alert.setMessage("Are you sure you want to sign out?");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(UserProfile.this, LoginUser.class));
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(UserProfile.this, UserProfile.class));
+            }
+        });
+        alert.show();
+    }
+
     private void bottomNavigation() {
 
         setTitle("Account Profile");
@@ -171,4 +179,5 @@ public class UserProfile extends AppCompatActivity {
             }
         });
     }
+
 }

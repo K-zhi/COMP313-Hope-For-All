@@ -1,5 +1,6 @@
 package comp321.hope_for_all.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -23,7 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.models.Counselor;
 
-public class CounselorProfile extends AppCompatActivity {
+public class CounselorProfile extends AppCompatActivity implements View.OnClickListener{
 
     private TextView logOut;
     private Button editProfile;
@@ -47,13 +49,7 @@ public class CounselorProfile extends AppCompatActivity {
 
 
         logOut = findViewById(R.id.tvSignOut);
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(CounselorProfile.this, LoginUser.class));
-            }
-        });
+        logOut.setOnClickListener(this);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("Counselors");
@@ -114,6 +110,29 @@ public class CounselorProfile extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setIcon(R.drawable.ic_hope);
+        alert.setTitle("Sign out");
+        alert.setMessage("Are you sure you want to sign out?");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(CounselorProfile.this, LoginUser.class));
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(CounselorProfile.this, CounselorProfile.class));
+            }
+        });
+        alert.show();
+    }
+
     private void bottomNavigation() {
 
         setTitle("Account Profile" );
@@ -146,4 +165,5 @@ public class CounselorProfile extends AppCompatActivity {
             }
         });
     }
+
 }
