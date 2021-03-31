@@ -95,10 +95,11 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("ChatRooms");
 
-        Intent intent = getIntent();
-        if (intent.getExtras().getString("UserName") != null)
+        Intent intent = intent = getIntent();
+
+        if (intent.hasExtra("UserName"))
             userName = intent.getExtras().getString("UserName");
-        if (intent.getExtras().getString("Uid") != null)
+        if (intent.hasExtra("Uid"))
             uid = intent.getExtras().getString("Uid");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.chatRoomRecyclerView);
@@ -290,8 +291,8 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
                                     ActivityOptions activityOptions = null;
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
-                                        startActivity(intent, activityOptions.toBundle());
+                                        //activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext());
+                                        startActivity(intent);
                                     }
                                 }
 
@@ -322,7 +323,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                     if (user != null) {
                         user.uid = userSnapshot.getKey();
                         // #D: if there is an current user, delete the item in the list of users
-                        if (!uid.equals(user.uid)) {
+                        if (uid != null && !uid.equals(user.uid)) {
                             listUserInfo.add(user);
                             userListAdapter.setUser(user);
                         }
