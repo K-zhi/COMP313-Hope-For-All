@@ -2,7 +2,9 @@ package comp321.hope_for_all.activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +38,8 @@ import comp321.hope_for_all.models.ChatData;
 
 public class Chat extends AppCompatActivity {
     DatabaseReference mDatabaseRef;
+
+    private Toolbar mToolbar;
     private static final String TAG = "Chat ";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -59,8 +63,12 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        layout = findViewById(R.id.chatLayout);
+        //mToolbar = findViewById(R.id.subToolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("CHAT with");
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
+        layout = findViewById(R.id.chatLayout);
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("ChatRooms");
 
         Intent intent = getIntent();

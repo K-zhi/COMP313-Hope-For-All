@@ -16,7 +16,8 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".activities.ChatActivity"></activity>
         <activity android:name=".activities.UpdateCounselorProfile" />
-        <activity android:name=".activities.Chat" />
+        <activity android:name=".activities.Chat"
+            android:parentActivityName=".activities.Message"/>
         <activity
             android:name=".activities.MainCounselor"
             android:windowSoftInputMode="adjustPan" />
