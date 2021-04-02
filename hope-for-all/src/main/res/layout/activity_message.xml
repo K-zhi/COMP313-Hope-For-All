@@ -25,6 +25,17 @@
         app:srcCompat="@drawable/ic_add_person"
         tools:ignore="MissingConstraints" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/FloatingBtnCou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="130dp"
+        android:layout_marginRight="20dp"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_add_person"
+        tools:ignore="MissingConstraints" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">

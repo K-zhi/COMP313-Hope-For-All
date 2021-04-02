@@ -82,11 +82,13 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
 
                 if(room != null) {
                     String key = room.getOpponentId();
-                    if(key.equals(uid))
-                        holder.txtRoomName.setText(room.getUserName());
-                    else
-                        holder.txtRoomName.setText(room.getOpponentName());
-                    holder.txtMsg.setText(room.getMsg());
+                    if(key != null) {
+                        if(key.equals(uid))
+                            holder.txtRoomName.setText(room.getUserName());
+                        else
+                            holder.txtRoomName.setText(room.getOpponentName());
+                        holder.txtMsg.setText(room.getMsg());
+                    }
                 }
             }
 
@@ -154,6 +156,13 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
             mDataSet = new ArrayList<>();
         mDataSet.add(room);
         notifyItemInserted(mDataSet.size() - 1);
+    }
+
+    public void deleteRoom(ChatData room) {
+        if(mDataSet != null && mDataSet.size() > 0) {
+            mDataSet.remove(room);
+            notifyItemRemoved(mDataSet.size() - 1);
+        }
     }
 
     public Boolean checkIsExistKey(String key) {
