@@ -1,16 +1,17 @@
 package comp321.hope_for_all.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,19 +24,18 @@ import com.google.firebase.database.ValueEventListener;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.models.Counselor;
-import comp321.hope_for_all.models.User;
 
-public class CounselorProfile extends AppCompatActivity {
+public class CounselorProfile extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String TAG = "CounselorProfile";
     private TextView logOut;
     private Button editProfile;
 
     private FirebaseUser user;
     private DatabaseReference databaseReference;
 
-    private String userID;
 
+    private String userID;
+    private String userName;
     private BottomNavigationView bottomNavigationView;
 
     @Override
@@ -45,22 +45,11 @@ public class CounselorProfile extends AppCompatActivity {
 
         bottomNavigation();
 
-        editProfile = findViewById(R.id.btnEditProfile);
-        editProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO: EDIT USER PROFILE ACTIVITY
-            }
-        });
+        getSupportActionBar().hide();
+
 
         logOut = findViewById(R.id.tvSignOut);
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(CounselorProfile.this, LoginUser.class));
-            }
-        });
+        logOut.setOnClickListener(this);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("Counselors");
@@ -79,9 +68,8 @@ public class CounselorProfile extends AppCompatActivity {
 
                 Counselor counselorProfile = snapshot.getValue(Counselor.class);
 
-                Log.d(TAG, "signInWithEmail:success");
-
                 if (counselorProfile != null) {
+                    userName = counselorProfile.c_userName;
                     String strUserName = counselorProfile.c_userName;
                     String strName = counselorProfile.c_name;
                     String strBio = counselorProfile.c_bio;
@@ -104,12 +92,51 @@ public class CounselorProfile extends AppCompatActivity {
             }
         });
 
+        editProfile = findViewById(R.id.btnEditProfile);
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(view.getContext(), UpdateCounselorProfile.class);
+
+                i.putExtra("name", nameTextView.getText().toString().trim());
+                i.putExtra("bio", bioTextView.getText().toString().trim());
+                i.putExtra("email", emailTextView.getText().toString().trim());
+                i.putExtra("website", websiteTextView.getText().toString().trim());
+                i.putExtra("location", locationTextView.getText().toString().trim());
+
+                startActivity(i);
+            }
+        });
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setIcon(R.drawable.ic_hope);
+        alert.setTitle("Sign out");
+        alert.setMessage("Are you sure you want to sign out?");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(CounselorProfile.this, LoginUser.class));
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(CounselorProfile.this, CounselorProfile.class));
+            }
+        });
+        alert.show();
     }
 
     private void bottomNavigation() {
 
-        setTitle("Account Profile");
-        
+        setTitle("Account Profile" );
+
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.profileNav);
 
@@ -121,14 +148,22 @@ public class CounselorProfile extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), MainCounselor.class));
                         overridePendingTransition(0, 0);
                         return true;
+
                     case R.id.profileNav:
-                        startActivity(new Intent(getApplicationContext(), CounselorProfile.class));
-                        overridePendingTransition(0, 0);
                         return true;
 
+                    case R.id.messageNav:
+                        Intent intent = new Intent(getApplicationContext(), CounselorMessage.class);
+                        intent.putExtra("c_userName", userName);
+                        intent.putExtra("Uid", userID);
+                        startActivity(intent);
+                        overridePendingTransition(0, 0);
+                        finish();
+                        return true;
                 }
                 return false;
             }
         });
     }
+
 }

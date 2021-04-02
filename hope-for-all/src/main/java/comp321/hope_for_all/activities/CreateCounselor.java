@@ -1,11 +1,13 @@
 package comp321.hope_for_all.activities;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -30,17 +32,19 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+
 import java.util.List;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.adapter.PlaceAutoSuggestAdapter;
 import comp321.hope_for_all.models.Counselor;
-import comp321.hope_for_all.models.User;
 
 public class CreateCounselor extends AppCompatActivity implements View.OnClickListener{
 
-    private EditText userName, name, bio, email, website, location, password, confirmPassword;
-    //TODO: private AutoCompleteTextView autoCompleteTextView;
+    private EditText userName, name, bio, email, website, password, confirmPassword;
+
+    private AutoCompleteTextView autoCompleteTextView;
+
     private Button createAccount;
     private TextView logIn;
     private LinearLayout layout;
@@ -61,10 +65,7 @@ public class CreateCounselor extends AppCompatActivity implements View.OnClickLi
         name = findViewById(R.id.etName);
         bio = findViewById(R.id.etBio);
         website = findViewById(R.id.etWebsite);
-        location = findViewById(R.id.etLocation);
-
-        //final AutoCompleteTextView autoCompleteTextView = findViewById(R.id.etLocation);
-        //autoCompleteTextView.setAdapter(new PlaceAutoSuggestAdapter(CreateCounselor.this,android.R.layout.simple_list_item_1));
+        //location = findViewById(R.id.etLocation);
 
         email = findViewById(R.id.etEmail);
         password = findViewById(R.id.etPassword);
@@ -85,39 +86,38 @@ public class CreateCounselor extends AppCompatActivity implements View.OnClickLi
 
         progressDialog = new ProgressDialog(mActivity);
 
-        //getLocation();
+        autoCompleteTextView=findViewById(R.id.etLocation);
+        autoCompleteTextView.setAdapter(new PlaceAutoSuggestAdapter(CreateCounselor.this,android.R.layout.simple_list_item_1));
+
+        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("Address : ",autoCompleteTextView.getText().toString());
+                LatLng latLng=getLatLngFromAddress(autoCompleteTextView.getText().toString());
+                if(latLng!=null) {
+                    Log.d("Lat Lng : ", " " + latLng.latitude + " " + latLng.longitude);
+                    Address address=getAddressFromLatLng(latLng);
+                    if(address!=null) {
+                        Log.d("Address : ", "" + address.toString());
+                        Log.d("Address Line : ",""+address.getAddressLine(0));
+                        Log.d("Phone : ",""+address.getPhone());
+                        Log.d("Pin Code : ",""+address.getPostalCode());
+                        Log.d("Feature : ",""+address.getFeatureName());
+                        Log.d("More : ",""+address.getLocality());
+                    }
+                    else {
+                        Log.d("Adddress","Address Not Found");
+                    }
+                }
+                else {
+                    Log.d("Lat Lng","Lat Lng Not Found");
+                }
+
+            }
+        });
 
     }
-//TODO: to be implemented in next Release need API Key
-//    private void getLocation() {
-//
-//        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Log.d("Address : ",autoCompleteTextView.getText().toString());
-//                LatLng latLng=getLatLngFromAddress(autoCompleteTextView.getText().toString());
-//                if(latLng!=null) {
-//                    Log.d("Lat Lng : ", " " + latLng.latitude + " " + latLng.longitude);
-//                    Address address=getAddressFromLatLng(latLng);
-//                    if(address!=null) {
-//                        Log.d("Address : ", "" + address.toString());
-//                        Log.d("Address Line : ",""+address.getAddressLine(0));
-//                        Log.d("Phone : ",""+address.getPhone());
-//                        Log.d("Pin Code : ",""+address.getPostalCode());
-//                        Log.d("Feature : ",""+address.getFeatureName());
-//                        Log.d("More : ",""+address.getLocality());
-//                    }
-//                    else {
-//                        Log.d("Adddress","Address Not Found");
-//                    }
-//                }
-//                else {
-//                    Log.d("Lat Lng","Lat Lng Not Found");
-//                }
-//
-//            }
-//        });
-//    }
+
 
     private LatLng getLatLngFromAddress(String address){
 
@@ -194,7 +194,7 @@ public class CreateCounselor extends AppCompatActivity implements View.OnClickLi
         String inputBio = bio.getText().toString().trim();
         String inputEmail = email.getText().toString().trim();
         String inputWebsite = website.getText().toString().trim();
-        String inputLocation = location.getText().toString().trim();
+        String inputLocation = autoCompleteTextView.getText().toString().trim();
         String inputPassword = password.getText().toString().trim();
         String inputConfPassword = confirmPassword.getText().toString().trim();
 

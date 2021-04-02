@@ -1,41 +1,34 @@
 package comp321.hope_for_all.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.models.User;
 
-public class UserProfile extends AppCompatActivity {
+public class UserProfile extends AppCompatActivity implements View.OnClickListener{
 
-    private static final String TAG = "UserProfile";
     private TextView userNameTextView, nameTextView, emailTextView, logOut;
-    private Button editProfile;
+    private Button editProfile, deleteProfile;
 
     private FirebaseUser user;
     private DatabaseReference databaseReference;
@@ -51,16 +44,11 @@ public class UserProfile extends AppCompatActivity {
         bottomNavigation();
 
         logOut = findViewById(R.id.tvSignOut);
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(UserProfile.this, LoginUser.class));
-            }
-        });
+        logOut.setOnClickListener(this);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
         userID = user.getUid();
 
         final TextView userNameTextView = findViewById(R.id.tvUserName);
@@ -73,8 +61,6 @@ public class UserProfile extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 User userProfile = snapshot.getValue(User.class);
-
-                Log.d(TAG, "signInWithEmail:success");
 
                 if (userProfile != null) {
                     userName = userProfile.userName;
@@ -109,8 +95,56 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        deleteProfile = findViewById(R.id.btnDeleteProfile);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        deleteProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.setTitle(R.string.dialog_title).setMessage(R.string.dialog_message);
+                builder.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        user.delete();
+                        finishAffinity();
+                    }
+                });
+
+                builder.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "Cancel to delete your information", Toast.LENGTH_SHORT);
+                        dialog.dismiss();
+                    }
+                });
+
+                //AlertDialog alertDialog = builder.create();
+                builder.show();;
+            }
+        });
     }
 
+    @Override
+    public void onClick(View v) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setIcon(R.drawable.ic_hope);
+        alert.setTitle("Sign out");
+        alert.setMessage("Are you sure you want to sign out?");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(UserProfile.this, LoginUser.class));
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(UserProfile.this, UserProfile.class));
+            }
+        });
+        alert.show();
+    }
 
     private void bottomNavigation() {
 
@@ -126,18 +160,24 @@ public class UserProfile extends AppCompatActivity {
                     case R.id.homeNav:
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
+
                     case R.id.profileNav:
                         return true;
+
                     case R.id.messageNav:
                         Intent intent = new Intent(getApplicationContext(), Message.class);
                         intent.putExtra("UserName", userName);
+                        intent.putExtra("Uid", userID);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
                 }
                 return false;
             }
         });
     }
+
 }

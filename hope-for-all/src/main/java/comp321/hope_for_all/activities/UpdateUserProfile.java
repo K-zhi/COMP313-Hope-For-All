@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -17,11 +18,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,13 +67,13 @@ public class UpdateUserProfile extends AppCompatActivity {
         cancel = findViewById(R.id.btnCancel);
 
         firebaseAuth = FirebaseAuth.getInstance();
-        database = FirebaseDatabase.getInstance().getReference().child("Users");
         user = firebaseAuth.getCurrentUser();
+
+        database = FirebaseDatabase.getInstance().getReference();
 
         etUserName.setText(editUserName);
         etName.setText(editName);
         etEmail.setText(editEmail);
-
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,40 +83,44 @@ public class UpdateUserProfile extends AppCompatActivity {
                 String strName = etName.getText().toString().trim();
                 String strEmail = etEmail.getText().toString().trim();
 
-                user = firebaseAuth.getCurrentUser();
+                DatabaseReference ref= FirebaseDatabase.getInstance().getReference().child("Users");
+
+                String key = ref.getKey();
+
                 userID = user.getUid();
+                
+                ref.orderByChild(userID).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                String key = database.child("Users").child(userID).getKey();
+                        if (dataSnapshot.exists()) {
+                            for (DataSnapshot datas : dataSnapshot.getChildren()) {
 
-                UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder()
-                        .setDisplayName(userID).build();
+                                String key = datas.getKey();
 
-                user.updateProfile(userProfileChangeRequest)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
+                                String name = datas.child("name").getValue().toString();
+                                String userName = datas.child("userName").getValue().toString();
+                                String email = datas.child("email").getValue().toString();
 
-                                User users = new User(editUserName, editName, editEmail);
+                                ref.child(userID).child("userName").setValue(srtUserName);
+                                ref.child(userID).child("name").setValue(strName);
+                                ref.child(userID).child("email").setValue(strEmail);
 
-                                Map<String, Object> postValues = users.toMap();
+                                startActivity(new Intent(getApplicationContext(), UserProfile.class));
 
-                                Map<String, Object> childUpdates = new HashMap<>();
-                                childUpdates.put(key, postValues);
-                                database.updateChildren(childUpdates);
-
-                                Toast.makeText(UpdateUserProfile.this,"Account is updated!", Toast.LENGTH_LONG).show();
-
-
-                                //startActivity(new Intent(getApplicationContext(), UpdateUserProfile.class));
+                                Toast.makeText(UpdateUserProfile.this, "Your profile is updated", Toast.LENGTH_SHORT).show();
 
                             }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(UpdateUserProfile.this, "Email already exist!", Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+
+
+                });
 
             }
         });

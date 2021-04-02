@@ -1,11 +1,5 @@
 package comp321.hope_for_all.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,10 +14,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,6 +51,14 @@ public class MainCounselor extends AppCompatActivity {
     private List<Post> list = new ArrayList<>();
     private PostAdapter adapter;
 
+
+    private FirebaseUser user;
+    private DatabaseReference databaseReference;
+
+    private String userID;
+    private String userName;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +68,26 @@ public class MainCounselor extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && addPost.getVisibility() == View.VISIBLE) {
+                    addPost.hide();
+                }
+                else if (dy < 0 && addPost.getVisibility() != View.VISIBLE) {
+                    addPost.show();
+                }
+
+            }
+        });
+
+
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Counselors");
+        userID = user.getUid();
+        userName = user.getDisplayName();
 
         addPost = findViewById(R.id.button_add_post);
         addPost.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +106,6 @@ public class MainCounselor extends AppCompatActivity {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Posts");
-
 
     }
 
@@ -184,7 +213,6 @@ public class MainCounselor extends AppCompatActivity {
                 showDialogUpdatePost(post);
             }
 
-
             @Override
             public void onButtonConfirmComment(Post post) {
                 addDataToFirebase(post.getContent(), post.getParentId());
@@ -262,12 +290,12 @@ public class MainCounselor extends AppCompatActivity {
     }
 
     private void commentPost(Post post) {
-
+        adapter.addItem(post.getId());
     }
 
     private void bottomNav() {
 
-        setTitle("Home");
+        setTitle("Counselor Home Page");
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.homeNav);
@@ -283,11 +311,16 @@ public class MainCounselor extends AppCompatActivity {
                         return true;
 
                     case R.id.homeNav:
-                        startActivity(new Intent(getApplicationContext(), MainCounselor.class));
+                        return true;
+
+                    case R.id.messageNav:
+                        Intent intent = new Intent(getApplicationContext(), CounselorMessage.class);
+                        intent.putExtra("c_userName", userName);
+                        intent.putExtra("uid", userID);
+                        startActivity(intent);
                         overridePendingTransition(0, 0);
                         finish();
                         return true;
-                        
                 }
                 return false;
             }

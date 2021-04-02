@@ -20,8 +20,13 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // Todo: delete it
+            splits.abi.enable = false;
+            splits.density.enable = false;
+            aaptOptions.cruncherEnabled = false;
+            ext.alwaysUpdateBuildId = false;
         }
     }
     compileOptions {
@@ -42,12 +47,30 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:19.6.0'
     implementation 'com.google.firebase:firebase-firestore:22.1.1'
     implementation 'com.firebaseui:firebase-ui-database:7.1.1'
-
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    implementation 'androidx.wear:wear:1.0.0'
 
     //Maps
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
+
+    //Extra
+    compile 'com.firebaseui:firebase-ui:0.6.2'
+    implementation 'com.android.volley:volley:1.1.0'
+    compileOnly 'com.google.android.wearable:wearable:2.6.0'
+
+    //JUnit test
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test:core:1.0.0'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.0.0'
+    androidTestImplementation 'androidx.test.ext:truth:1.0.0'
+    androidTestImplementation 'com.google.truth:truth:0.42'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-accessibility:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-web:3.1.0'
+    androidTestImplementation 'androidx.test.espresso.idling:idling-concurrent:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
 
 }

@@ -1,15 +1,7 @@
 package comp321.hope_for_all.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,12 +14,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.firebase.ui.database.FirebaseRecyclerOptions;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,7 +36,6 @@ import java.util.Objects;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.adapter.PostAdapter;
-import comp321.hope_for_all.models.Counselor;
 import comp321.hope_for_all.models.Post;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton addPost;
     private RecyclerView recyclerView;
     BottomNavigationView bottomNavigationView;
+
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = database.getReference("Posts");
 
@@ -63,6 +59,18 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && addPost.getVisibility() == View.VISIBLE) {
+                    addPost.hide();
+                } else if (dy < 0 && addPost.getVisibility() != View.VISIBLE) {
+                    addPost.show();
+                }
+            }
+        });
+
 
         addPost = findViewById(R.id.button_add_post);
         addPost.setOnClickListener(new View.OnClickListener() {
@@ -84,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("Posts");
 
     }
-
 
 
     private void showDialogAddPost() {
@@ -205,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //adding delete function
     private void deletePost(Post post){
         myRef.child(post.getId()).removeValue(new DatabaseReference.CompletionListener() {
             @Override
@@ -215,7 +221,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void showDialogUpdatePost(Post posts){
 
@@ -263,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Updated successfully", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), R.string.toast_post_updated, Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -274,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void bottomNav() {
 
-        setTitle("Home");
+        setTitle("User Home Page");
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.homeNav);
