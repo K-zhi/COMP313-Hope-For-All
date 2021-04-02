@@ -43,6 +43,7 @@ public class LoginUser extends AppCompatActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_user);
+        getSupportActionBar().hide();
 
         email = findViewById(R.id.etEmail);
         password = findViewById(R.id.etPassword);

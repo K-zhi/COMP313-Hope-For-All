@@ -3,30 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.MainActivity"
-    android:background="@android:color/transparent">
+    tools:context=".activities.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/chatRoomRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
-        android:overScrollMode="always"
-        android:scrollbars="vertical" />
+        android:layout_height="match_parent">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_add_post"
+        android:id="@+id/FloatingBtnMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_marginBottom="70dp"
         android:layout_marginRight="20dp"
-        android:src="@drawable/ic_create_post" />
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_add"
+        tools:ignore="MissingConstraints" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
@@ -36,10 +37,8 @@
             app:itemBackground="@android:color/white"
             app:itemIconTint="@drawable/selector"
             app:itemTextColor="@drawable/selector"
-            app:menu="@menu/menu">
-
-        </com.google.android.material.bottomnavigation.BottomNavigationView>
-
+            app:menu="@menu/menu"></com.google.android.material.bottomnavigation.BottomNavigationView>
     </RelativeLayout>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

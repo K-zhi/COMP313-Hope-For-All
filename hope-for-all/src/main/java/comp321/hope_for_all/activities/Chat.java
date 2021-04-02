@@ -68,7 +68,10 @@ public class Chat extends AppCompatActivity {
         actionBar.setTitle("CHAT with");
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        getSupportActionBar().hide();
+
         layout = findViewById(R.id.chatLayout);
+
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("ChatRooms");
 
         Intent intent = getIntent();

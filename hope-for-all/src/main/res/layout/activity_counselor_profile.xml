@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/counselorProfileInfo">
+    android:id="@+id/counselorProfileInfo"
+    android:scrollbarAlwaysDrawVerticalTrack="true">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,19 +53,18 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Name"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewCounselorName"
+            android:layout_width="45dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_name" />
 
         <TextView
             android:id="@+id/tvName"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Name here...."
@@ -82,19 +82,18 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:text="Bio"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewCounselorBio"
+            android:layout_width="45dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_info" />
 
         <TextView
             android:id="@+id/tvBio"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Bio here...."
@@ -112,19 +111,18 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Email"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewCounselorEmail"
+            android:layout_width="45dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_email" />
 
         <TextView
             android:id="@+id/tvEmail"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Email here...."
@@ -142,19 +140,18 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Website"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewCounselorWebsite"
+            android:layout_width="45dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_website" />
 
         <TextView
             android:id="@+id/tvWebsite"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Website here...."
@@ -172,19 +169,18 @@
         android:layout_marginRight="30dp"
         android:background="@drawable/custom_input">
 
-        <TextView
-            android:layout_width="109dp"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:paddingVertical="10dp"
-            android:textAlignment="center"
-            android:text="Location"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
+        <ImageView
+            android:id="@+id/imageViewCounselorLocation"
+            android:layout_width="45dp"
+            android:layout_height="28dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_location" />
 
         <TextView
             android:id="@+id/tvLocation"
-            android:layout_width="240dp"
+            android:layout_width="265dp"
             android:layout_height="wrap_content"
             android:padding="5dp"
             android:text="Location here...."
@@ -208,7 +204,7 @@
             android:layout_marginRight="5dp"
             android:background="@drawable/custom_blue_button"
             android:textSize="15dp"
-            android:text="Edit Profile"
+            android:text="Update Profile"
             android:textAllCaps="false" />
 
         <Button
@@ -229,27 +225,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="40dp"
         android:layout_marginRight="30dp"
         android:text="Sign out"
         android:textAlignment="center"
         android:textColor="@color/blue"
         android:textSize="18dp" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/bottom_navigation"
-            app:itemBackground="@android:color/white"
-            app:itemTextColor="@drawable/selector"
-            app:itemIconTint="@drawable/selector"
-            app:menu="@menu/menu"
-            android:layout_alignParentBottom="true"></com.google.android.material.bottomnavigation.BottomNavigationView>
+            android:layout_height="match_parent">
 
-    </RelativeLayout>
+            <com.google.android.material.bottomnavigation.BottomNavigationView
+                android:id="@+id/bottom_navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:itemBackground="@android:color/white"
+                app:itemIconTint="@drawable/selector"
+                app:itemTextColor="@drawable/selector"
+                app:menu="@menu/menu">
+
+            </com.google.android.material.bottomnavigation.BottomNavigationView>
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

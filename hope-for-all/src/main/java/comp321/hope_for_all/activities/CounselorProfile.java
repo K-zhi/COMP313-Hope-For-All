@@ -1,17 +1,17 @@
 package comp321.hope_for_all.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,13 +21,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.protobuf.StringValue;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.models.Counselor;
-import comp321.hope_for_all.models.User;
 
-public class CounselorProfile extends AppCompatActivity {
+public class CounselorProfile extends AppCompatActivity implements View.OnClickListener{
 
     private TextView logOut;
     private Button editProfile;
@@ -35,8 +33,9 @@ public class CounselorProfile extends AppCompatActivity {
     private FirebaseUser user;
     private DatabaseReference databaseReference;
 
-    private String userID;
 
+    private String userID;
+    private String userName;
     private BottomNavigationView bottomNavigationView;
 
     @Override
@@ -46,15 +45,11 @@ public class CounselorProfile extends AppCompatActivity {
 
         bottomNavigation();
 
+        getSupportActionBar().hide();
+
 
         logOut = findViewById(R.id.tvSignOut);
-        logOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                startActivity(new Intent(CounselorProfile.this, LoginUser.class));
-            }
-        });
+        logOut.setOnClickListener(this);
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("Counselors");
@@ -74,6 +69,7 @@ public class CounselorProfile extends AppCompatActivity {
                 Counselor counselorProfile = snapshot.getValue(Counselor.class);
 
                 if (counselorProfile != null) {
+                    userName = counselorProfile.c_userName;
                     String strUserName = counselorProfile.c_userName;
                     String strName = counselorProfile.c_name;
                     String strBio = counselorProfile.c_bio;
@@ -114,6 +110,29 @@ public class CounselorProfile extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onClick(View v) {
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setIcon(R.drawable.ic_hope);
+        alert.setTitle("Sign out");
+        alert.setMessage("Are you sure you want to sign out?");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(CounselorProfile.this, LoginUser.class));
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                startActivity(new Intent(CounselorProfile.this, CounselorProfile.class));
+            }
+        });
+        alert.show();
+    }
+
     private void bottomNavigation() {
 
         setTitle("Account Profile" );
@@ -134,13 +153,17 @@ public class CounselorProfile extends AppCompatActivity {
                         return true;
 
                     case R.id.messageNav:
-                        Intent intent = new Intent(getApplicationContext(), Message.class);
+                        Intent intent = new Intent(getApplicationContext(), CounselorMessage.class);
+                        intent.putExtra("c_userName", userName);
+                        intent.putExtra("Uid", userID);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
                 }
                 return false;
             }
         });
     }
+
 }
