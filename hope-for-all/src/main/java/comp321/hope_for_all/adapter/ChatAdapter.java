@@ -69,7 +69,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
     // Replace the contents of a view invoked by the layout manager
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        // Get element from your dataset at this position
+        // Get element from your dataSet at this position
         // Replace the contents of the view with that element
         ChatData chat = mDataSet.get(position);
 
