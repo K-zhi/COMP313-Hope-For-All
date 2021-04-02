@@ -171,105 +171,105 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                     }
                 }
 
-                // #K: Step1. Check the list to show one thing each chat room
-                String strDateCurr, strDateNext;
-                String id, oppId, chatKey;
-                Integer index = 0;
-
-                if(listChatRoom != null && listChatRoom.size() > 0) {
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-
-                    List<ChatData> compList = new ArrayList<>(listChatRoom);
-
-                    // Todo : Comment out temporarily
-                    for(int i = 0; i < listChatRoom.size(); i++) {
-                        // #K: Step3.0. Check RoomKey is the same
-                        id = listChatRoom.get(index).getUid();
-                        oppId = listChatRoom.get(index).getOpponentId();
-                        strDateCurr = listChatRoom.get(index).getDate();
-
-                        for(int j = 0; j < compList.size(); j++) {
-                            if(compList.get(j).getUid().equals(id) && compList.get(j).getOpponentId().equals(oppId)) {
-                                // #K: Step4. If RoomKey is the same, Compare the data
-                                strDateNext = compList.get(j).getDate();
-
-                                Date dateCur = convertStrDate(strDateCurr);
-                                Date dateNext = convertStrDate(strDateNext);
-
-                                // Step5: If current one is after the previous item, delete it and add the new one
-                                if(dateCur.before(dateNext)) {
-                                    listChatRoom.remove(compList.get(index));
-                                    ((MessageListAdapter)mAdapter).deleteRoom(compList.get(index));
-
-                                    id = compList.get(i).getUid();
-                                    oppId = compList.get(i).getOpponentId();
-                                    strDateCurr = compList.get(i).getDate();
-                                    index = compList.size() - 1;
-                                }
-                            } else if(compList.get(i).getUid().equals(oppId) // #K: Step3.1. RoomKey's opponent id is the same as current UserId
-                                    && compList.get(i).getOpponentId().equals(id)) {
-                                // #K: Step4. If RoomKey is the same, Compare the data
-                                strDateNext = compList.get(i).getDate();
-
-                                Date dateCur = convertStrDate(strDateCurr);
-                                Date dateNext = convertStrDate(strDateNext);
-
-                                // Step5: If current one is after the previous item, delete it and add the new one
-                                if(dateCur.before(dateNext)) {
-                                    listChatRoom.remove(compList.get(index));
-                                    ((MessageListAdapter)mAdapter).deleteRoom(compList.get(index));
-
-                                    id = compList.get(i).getOpponentId();
-                                    oppId = compList.get(i).getUid();
-                                    strDateCurr = compList.get(i).getDate();
-                                    index = compList.size() - 1;
-                                }
-
-                            }
-                        }
-                    }
-
-                    //                    // Compare the list
-//                    for(int i = 0; i < tempList.size(); i++) {
-//                        id = tempList.get(i).getUid();
-//                        oppId = tempList.get(i).getOpponentId();
+//                // #K: Step1. Check the list to show one thing each chat room
+//                String strDateCurr, strDateNext;
+//                String id, oppId, chatKey;
+//                Integer index = 0;
 //
-//                        // #K: Step2. Check the chat list size
-//                        if(filterList.size() == 0) {
-//                            filterList.add(tempList.get(i));
-//                            index = filterList.size() - 1;
-//                        } else {
-//                            // #K: Step3. Check RoomKey is the same or not
-//                            for(int j = 0; j < filterList.size(); j++) {
-//                                if((filterList.get(j).getUid().equals(id) && filterList.get(j).getOpponentId().equals(oppId))
-//                                        || (filterList.get(j).getUid().equals(oppId) && filterList.get(j).getOpponentId().equals(id))) {
-//                                    // #K: Step3. If RoomKey is the same or not
-//                                    strDatePrev = filterList.get(j).getDate();
-//                                    strDateCurr = tempList.get(i).getDate();
+//                if(listChatRoom != null && listChatRoom.size() > 0) {
+//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 //
-//                                    try {
-//                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-//                                        Date datePrev = sdf.parse(strDatePrev);
-//                                        Date dateCur = sdf.parse(strDateCurr);
+//                    List<ChatData> compList = new ArrayList<>(listChatRoom);
 //
-//                                        // Step3: If current one is after the previous item, delete it and add the new one
-//                                        if(datePrev.before(dateCur)) {
-//                                            filterList.add(tempList.get(i));
-//                                            filterList.remove(tempList.get(index));
-//                                            index = filterList.size() - 1;
-//                                        }
+//                    // Todo : Comment out temporarily
+//                    for(int i = 0; i < listChatRoom.size(); i++) {
+//                        // #K: Step3.0. Check RoomKey is the same
+//                        id = listChatRoom.get(index).getUid();
+//                        oppId = listChatRoom.get(index).getOpponentId();
+//                        strDateCurr = listChatRoom.get(index).getDate();
 //
-//                                    }catch (ParseException ex) {
-//                                        Log.v("Parse Exception: ", ex.getLocalizedMessage());
-//                                    }
-//                                } else {
-//                                    filterList.add(tempList.get(i));
-//                                    index = filterList.size() - 1;
+//                        for(int j = 0; j < compList.size(); j++) {
+//                            if(compList.get(j).getUid().equals(id) && compList.get(j).getOpponentId().equals(oppId)) {
+//                                // #K: Step4. If RoomKey is the same, Compare the data
+//                                strDateNext = compList.get(j).getDate();
+//
+//                                Date dateCur = convertStrDate(strDateCurr);
+//                                Date dateNext = convertStrDate(strDateNext);
+//
+//                                // Step5: If current one is after the previous item, delete it and add the new one
+//                                if(dateCur.before(dateNext)) {
+//                                    listChatRoom.remove(compList.get(index));
+//                                    ((MessageListAdapter)mAdapter).deleteRoom(compList.get(index));
+//
+//                                    id = compList.get(i).getUid();
+//                                    oppId = compList.get(i).getOpponentId();
+//                                    strDateCurr = compList.get(i).getDate();
+//                                    index = compList.size() - 1;
 //                                }
+//                            } else if(compList.get(i).getUid().equals(oppId) // #K: Step3.1. RoomKey's opponent id is the same as current UserId
+//                                    && compList.get(i).getOpponentId().equals(id)) {
+//                                // #K: Step4. If RoomKey is the same, Compare the data
+//                                strDateNext = compList.get(i).getDate();
+//
+//                                Date dateCur = convertStrDate(strDateCurr);
+//                                Date dateNext = convertStrDate(strDateNext);
+//
+//                                // Step5: If current one is after the previous item, delete it and add the new one
+//                                if(dateCur.before(dateNext)) {
+//                                    listChatRoom.remove(compList.get(index));
+//                                    ((MessageListAdapter)mAdapter).deleteRoom(compList.get(index));
+//
+//                                    id = compList.get(i).getOpponentId();
+//                                    oppId = compList.get(i).getUid();
+//                                    strDateCurr = compList.get(i).getDate();
+//                                    index = compList.size() - 1;
+//                                }
+//
 //                            }
 //                        }
 //                    }
-                }
+//
+//                    //                    // Compare the list
+////                    for(int i = 0; i < tempList.size(); i++) {
+////                        id = tempList.get(i).getUid();
+////                        oppId = tempList.get(i).getOpponentId();
+////
+////                        // #K: Step2. Check the chat list size
+////                        if(filterList.size() == 0) {
+////                            filterList.add(tempList.get(i));
+////                            index = filterList.size() - 1;
+////                        } else {
+////                            // #K: Step3. Check RoomKey is the same or not
+////                            for(int j = 0; j < filterList.size(); j++) {
+////                                if((filterList.get(j).getUid().equals(id) && filterList.get(j).getOpponentId().equals(oppId))
+////                                        || (filterList.get(j).getUid().equals(oppId) && filterList.get(j).getOpponentId().equals(id))) {
+////                                    // #K: Step3. If RoomKey is the same or not
+////                                    strDatePrev = filterList.get(j).getDate();
+////                                    strDateCurr = tempList.get(i).getDate();
+////
+////                                    try {
+////                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+////                                        Date datePrev = sdf.parse(strDatePrev);
+////                                        Date dateCur = sdf.parse(strDateCurr);
+////
+////                                        // Step3: If current one is after the previous item, delete it and add the new one
+////                                        if(datePrev.before(dateCur)) {
+////                                            filterList.add(tempList.get(i));
+////                                            filterList.remove(tempList.get(index));
+////                                            index = filterList.size() - 1;
+////                                        }
+////
+////                                    }catch (ParseException ex) {
+////                                        Log.v("Parse Exception: ", ex.getLocalizedMessage());
+////                                    }
+////                                } else {
+////                                    filterList.add(tempList.get(i));
+////                                    index = filterList.size() - 1;
+////                                }
+////                            }
+////                        }
+////                    }
+//                }
             }
 
             @Override
