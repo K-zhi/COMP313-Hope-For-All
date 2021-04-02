@@ -5,6 +5,8 @@ import android.net.Uri;
 public class Counselor {
 
     public String c_userName, c_name, c_bio, c_email, c_website, c_location;
+    // #D: Add counselor id
+    private String cid;
 
     public Counselor(){
 
@@ -42,5 +44,13 @@ public class Counselor {
 
     public String getC_location() {
         return c_location;
+    }
+
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
     }
 }
