@@ -1,13 +1,5 @@
 package comp321.hope_for_all.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,19 +10,24 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.adapter.ChatAdapter;
@@ -45,7 +42,7 @@ public class Chat extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<ChatData> chatList;
-    // After change it
+
     private String uid;
     private String uName;
     private String oppId;
@@ -63,13 +60,6 @@ public class Chat extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        //mToolbar = findViewById(R.id.subToolbar);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("CHAT with");
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        getSupportActionBar().hide();
-
         layout = findViewById(R.id.chatLayout);
 
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("ChatRooms");
@@ -86,6 +76,9 @@ public class Chat extends AppCompatActivity {
         if(intent.hasExtra("RoomKey"))
             chatKey = intent.getExtras().getString("RoomKey");
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Chatting with " + intent.getExtras().getString("OpponentName"));
+
         btnSendChat = findViewById(R.id.btnSendChat);
         editTxtChat = findViewById(R.id.editTxtChat);
         btnSendChat.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +87,6 @@ public class Chat extends AppCompatActivity {
                 if(editTxtChat.getText() != null) {
                     String message = editTxtChat.getText().toString();
 
-                    // Caution, if the data's format is nor correct, have to delete it from Firebase
                     if(message != null) {
                         long now = System.currentTimeMillis();
                         Date date = new Date(now);
@@ -117,11 +109,10 @@ public class Chat extends AppCompatActivity {
             }
         });
 
-        // Recycle the view continuously
+
         mRecyclerView = findViewById(R.id.my_recycler_view);
-        // To improve performance if know that changes in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
-        // Use a linear layout manager
+
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
@@ -129,7 +120,11 @@ public class Chat extends AppCompatActivity {
         mAdapter = new ChatAdapter(Chat.this, chatList, uName);
         mRecyclerView.setAdapter(mAdapter);
 
-        // Read Chat Data from FireBase
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        mRecyclerView.setLayoutManager(layoutManager);
+
+
         mDatabaseRef.child(chatKey).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

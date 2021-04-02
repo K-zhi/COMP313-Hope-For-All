@@ -28,14 +28,14 @@ import comp321.hope_for_all.models.Counselor;
 public class CounselorProfile extends AppCompatActivity implements View.OnClickListener{
 
     private TextView logOut;
-    private Button editProfile;
+    private Button editProfile, deleteProfile;
 
     private FirebaseUser user;
     private DatabaseReference databaseReference;
 
-
     private String userID;
     private String userName;
+
     private BottomNavigationView bottomNavigationView;
 
     @Override
@@ -46,7 +46,6 @@ public class CounselorProfile extends AppCompatActivity implements View.OnClickL
         bottomNavigation();
 
         getSupportActionBar().hide();
-
 
         logOut = findViewById(R.id.tvSignOut);
         logOut.setOnClickListener(this);
@@ -105,6 +104,33 @@ public class CounselorProfile extends AppCompatActivity implements View.OnClickL
                 i.putExtra("location", locationTextView.getText().toString().trim());
 
                 startActivity(i);
+            }
+        });
+
+        deleteProfile = findViewById(R.id.btnDeleteProfile);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        deleteProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.setIcon(R.drawable.ic_hope);
+                builder.setTitle(R.string.dialog_title).setMessage(R.string.dialog_message);
+                builder.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        user.delete();
+                        startActivity(new Intent(CounselorProfile.this, LoginUser.class));
+                    }
+                });
+
+                builder.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getApplicationContext(), "Cancel to delete your information", Toast.LENGTH_SHORT);
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.show();;
             }
         });
 
