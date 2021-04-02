@@ -64,15 +64,15 @@ public class Chat extends AppCompatActivity {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("ChatRooms");
 
         Intent intent = getIntent();
-        if(intent.getExtras().getString("UserName") != null)
+        if(intent.hasExtra("UserName"))
             uName = intent.getExtras().getString("UserName");
-        if(intent.getExtras().getString("Uid") != null)
+        if(intent.hasExtra("Uid"))
             uid = intent.getExtras().getString("Uid");
-        if(intent.getExtras().getString("OpponentId") != null)
+        if(intent.hasExtra("OpponentId"))
             oppId = intent.getExtras().getString("OpponentId");
-        if(intent.getExtras().getString("OpponentName") != null)
+        if(intent.hasExtra("OpponentName"))
             oppName = intent.getExtras().getString("OpponentName");
-        if(intent.getExtras().getString("RoomKey") != null)
+        if(intent.hasExtra("RoomKey"))
             chatKey = intent.getExtras().getString("RoomKey");
 
         btnSendChat = findViewById(R.id.btnSendChat);
@@ -87,7 +87,7 @@ public class Chat extends AppCompatActivity {
                     if(message != null) {
                         long now = System.currentTimeMillis();
                         Date date = new Date(now);
-                        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                        SimpleDateFormat sdfNow = new SimpleDateFormat("yyyyMMddHHmmss");
                         String strNow = sdfNow.format(date);
 
                         ChatData chat = new ChatData();
@@ -100,7 +100,7 @@ public class Chat extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference().child("ChatRooms").child(chatKey).push().setValue(chat);
 
                         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
+                        //imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
                     }
                 }
             }
@@ -117,27 +117,6 @@ public class Chat extends AppCompatActivity {
         chatList = new ArrayList();
         mAdapter = new ChatAdapter(Chat.this, chatList, uName);
         mRecyclerView.setAdapter(mAdapter);
-
-//        // Check Chat Data key in Database
-//        mDatabaseRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for(DataSnapshot chatSnapshot : snapshot.getChildren()) {
-//                    String test = chatSnapshot.getKey().toString();
-//
-//                    if(test == chatKey) {
-//                        isExist = true;
-//                        break;
-//                    } else if(isExist == false)
-//                        chatKey = uName.substring(0, 1) + oppId;
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
         // Read Chat Data from FireBase
         mDatabaseRef.child(chatKey).addChildEventListener(new ChildEventListener() {
@@ -158,17 +137,17 @@ public class Chat extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+                Log.d(TAG, "## onChildRemoved: " + snapshot.getKey());
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                Log.d(TAG, "## onChildMoved: " + snapshot.getKey());
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.d(TAG, "## onCancelled: " + error.getMessage());
             }
         });
     }
