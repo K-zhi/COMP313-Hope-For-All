@@ -97,6 +97,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         // Connected to new custom title bar
         //requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_message);
+        getSupportActionBar().setTitle(R.string.chats);
         //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_message_title);
 
         // Initialize database valuable
