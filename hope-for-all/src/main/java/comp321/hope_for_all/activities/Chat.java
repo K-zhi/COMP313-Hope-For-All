@@ -111,7 +111,7 @@ public class Chat extends AppCompatActivity {
                         FirebaseDatabase.getInstance().getReference().child("ChatRooms").child(chatKey).push().setValue(chat);
 
                         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                        //imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
+                        imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
                     }
                 }
             }
