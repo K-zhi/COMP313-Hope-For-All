@@ -100,8 +100,8 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
         deleteProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                builder.setTitle("Delete Information").setMessage("Are you sure to delete your Id?");
-                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                builder.setTitle(R.string.dialog_title).setMessage(R.string.dialog_message);
+                builder.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         user.delete();
@@ -109,7 +109,7 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
                     }
                 });
 
-                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(R.string.dialog_no, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Toast.makeText(getApplicationContext(), "Cancel to delete your information", Toast.LENGTH_SHORT);
