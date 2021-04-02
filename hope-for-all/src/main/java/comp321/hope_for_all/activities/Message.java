@@ -63,7 +63,7 @@ import static androidx.core.content.ContextCompat.startActivity;
 
 public class Message extends AppCompatActivity implements View.OnClickListener {
     private FirebaseDatabase database;
-    private DatabaseReference databaseReference;
+
     private static final String TAG = "Message";
     private String userName;
     private String uid;
@@ -79,15 +79,16 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<ChatData> listChatRoom;
+    private List<ChatData> listChatRoomKeys;
 
     // # Custom Alert Dialog
-    public static ListView listView;
+    public ListView listView;
     // #K: To be related with the list of Users
-    private static UserListAdapter userListAdapter;
+    private UserListAdapter userListAdapter;
     private List<User> listUserInfo;
 
     // #K: Related with the list of Counselors
-    private static CounselorListAdapter counselorAdapter;
+    private CounselorListAdapter counselorAdapter;
     private List<Counselor> listCounselors;
 
     @Override
@@ -162,114 +163,43 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                 // getValue : Read data from Firebase
                 Log.d(TAG, "## onChildAdded: " + snapshot.getKey());
 
+                List<ChatData> compList = new ArrayList<>();
+
+                // Read all data about messages from database
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                     ChatData room = userSnapshot.getValue(ChatData.class);
 
                     if(room != null) {
-                        listChatRoom.add(room);
-                        ((MessageListAdapter) mAdapter).addRoom(room);
+                        compList.add(room);
                     }
                 }
 
-//                // #K: Step1. Check the list to show one thing each chat room
-//                String strDateCurr, strDateNext;
-//                String id, oppId, chatKey;
-//                Integer index = 0;
-//
-//                if(listChatRoom != null && listChatRoom.size() > 0) {
-//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-//
-//                    List<ChatData> compList = new ArrayList<>(listChatRoom);
-//
-//                    // Todo : Comment out temporarily
-//                    for(int i = 0; i < listChatRoom.size(); i++) {
-//                        // #K: Step3.0. Check RoomKey is the same
-//                        id = listChatRoom.get(index).getUid();
-//                        oppId = listChatRoom.get(index).getOpponentId();
-//                        strDateCurr = listChatRoom.get(index).getDate();
-//
-//                        for(int j = 0; j < compList.size(); j++) {
-//                            if(compList.get(j).getUid().equals(id) && compList.get(j).getOpponentId().equals(oppId)) {
-//                                // #K: Step4. If RoomKey is the same, Compare the data
-//                                strDateNext = compList.get(j).getDate();
-//
-//                                Date dateCur = convertStrDate(strDateCurr);
-//                                Date dateNext = convertStrDate(strDateNext);
-//
-//                                // Step5: If current one is after the previous item, delete it and add the new one
-//                                if(dateCur.before(dateNext)) {
-//                                    listChatRoom.remove(compList.get(index));
-//                                    ((MessageListAdapter)mAdapter).deleteRoom(compList.get(index));
-//
-//                                    id = compList.get(i).getUid();
-//                                    oppId = compList.get(i).getOpponentId();
-//                                    strDateCurr = compList.get(i).getDate();
-//                                    index = compList.size() - 1;
-//                                }
-//                            } else if(compList.get(i).getUid().equals(oppId) // #K: Step3.1. RoomKey's opponent id is the same as current UserId
-//                                    && compList.get(i).getOpponentId().equals(id)) {
-//                                // #K: Step4. If RoomKey is the same, Compare the data
-//                                strDateNext = compList.get(i).getDate();
-//
-//                                Date dateCur = convertStrDate(strDateCurr);
-//                                Date dateNext = convertStrDate(strDateNext);
-//
-//                                // Step5: If current one is after the previous item, delete it and add the new one
-//                                if(dateCur.before(dateNext)) {
-//                                    listChatRoom.remove(compList.get(index));
-//                                    ((MessageListAdapter)mAdapter).deleteRoom(compList.get(index));
-//
-//                                    id = compList.get(i).getOpponentId();
-//                                    oppId = compList.get(i).getUid();
-//                                    strDateCurr = compList.get(i).getDate();
-//                                    index = compList.size() - 1;
-//                                }
-//
-//                            }
-//                        }
-//                    }
-//
-//                    //                    // Compare the list
-////                    for(int i = 0; i < tempList.size(); i++) {
-////                        id = tempList.get(i).getUid();
-////                        oppId = tempList.get(i).getOpponentId();
-////
-////                        // #K: Step2. Check the chat list size
-////                        if(filterList.size() == 0) {
-////                            filterList.add(tempList.get(i));
-////                            index = filterList.size() - 1;
-////                        } else {
-////                            // #K: Step3. Check RoomKey is the same or not
-////                            for(int j = 0; j < filterList.size(); j++) {
-////                                if((filterList.get(j).getUid().equals(id) && filterList.get(j).getOpponentId().equals(oppId))
-////                                        || (filterList.get(j).getUid().equals(oppId) && filterList.get(j).getOpponentId().equals(id))) {
-////                                    // #K: Step3. If RoomKey is the same or not
-////                                    strDatePrev = filterList.get(j).getDate();
-////                                    strDateCurr = tempList.get(i).getDate();
-////
-////                                    try {
-////                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-////                                        Date datePrev = sdf.parse(strDatePrev);
-////                                        Date dateCur = sdf.parse(strDateCurr);
-////
-////                                        // Step3: If current one is after the previous item, delete it and add the new one
-////                                        if(datePrev.before(dateCur)) {
-////                                            filterList.add(tempList.get(i));
-////                                            filterList.remove(tempList.get(index));
-////                                            index = filterList.size() - 1;
-////                                        }
-////
-////                                    }catch (ParseException ex) {
-////                                        Log.v("Parse Exception: ", ex.getLocalizedMessage());
-////                                    }
-////                                } else {
-////                                    filterList.add(tempList.get(i));
-////                                    index = filterList.size() - 1;
-////                                }
-////                            }
-////                        }
-////                    }
-//                }
+                // ##### Filtering to be connected with current user
+                String listId, saveId;
+
+                saveId = "";
+                listChatRoom = new ArrayList<>();
+
+                for(int i = 0; i < compList.size(); i++) {
+                    if(compList.get(i).getUid().equals(uid) || compList.get(i).getOpponentId().equals(uid)){
+                        if(compList.get(i).getUid().equals(uid)) {
+                            listId = compList.get(i).getOpponentId();
+                        } else {
+                            listId = compList.get(i).getUid();
+                        }
+
+                        if(listId.equals(saveId)) {
+                            listChatRoom.remove(listChatRoom.size() - 1);
+                        }
+
+                        listChatRoom.add(compList.get(i));
+                        saveId = listId;
+                    }
+                }
+
+                for(int i = 0; i < listChatRoom.size(); i++) {
+                    ((MessageListAdapter) mAdapter).addRoom(listChatRoom.get(i));
+                }
             }
 
             @Override
@@ -291,6 +221,46 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.w(TAG, "## onCancelled: " + error);
                 Toast.makeText(getApplicationContext(), "Failed to load comments.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //
+    private void getChatRoomKeys() {
+        database.getReference("ChatRoomKeys").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                listChatRoomKeys = new ArrayList<>();
+                // getValue : Read data from Firebase
+                Log.d(TAG, "## onChildAdded about ChatRoom Keys: " + snapshot.getKey());
+
+                for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+                    ChatData room = userSnapshot.getValue(ChatData.class);
+
+                    if(room != null) {
+                        listChatRoomKeys.add(room);
+                    }
+                }
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }
@@ -372,7 +342,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                             chatKey = listUserInfo.get(position).uid + uid;
 
                             // Check Chat Data key in Database
-                            FirebaseDatabase.getInstance().getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
+                            database.getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     isExistKey = false;
@@ -385,7 +355,15 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                                     }
 
                                     // Todo: delete ' == true'
-                                    chatKey = isExistKey == true ? chatKey : uid + listUserInfo.get(position).uid;
+                                    chatKey = isExistKey ? chatKey : uid + listUserInfo.get(position).uid;
+
+                                    // Make ChatRoomKey Table
+                                    if(isExistKey == false) {
+                                        ChatData chatKeyId = new ChatData();
+                                        chatKeyId.setUid(uid);
+                                        chatKeyId.setOpponentId(listUserInfo.get(position).uid);
+                                        database.getReference().child("ChatRoomKeys").child(chatKey).push().setValue(chatKeyId);
+                                    }
 
                                     intent.putExtra("UserName", userName);
                                     intent.putExtra("Uid", uid);
@@ -457,7 +435,15 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                             }
 
                             // Todo: delete ' == true'
-                            chatKey = isExistKey == true ? chatKey : uid + listCounselors.get(position).getCid();
+                            chatKey = isExistKey ? chatKey : uid + listCounselors.get(position).getCid();
+
+                            // Make ChatRoomKey Table
+                            if(isExistKey == false) {
+                                ChatData chatKeyId = new ChatData();
+                                chatKeyId.setUid(uid);
+                                chatKeyId.setOpponentId(listCounselors.get(position).getCid());
+                                database.getReference().child("ChatRoomKeys").child(chatKey).push().setValue(chatKeyId);
+                            }
 
                             intent.putExtra("UserName", userName);
                             intent.putExtra("Uid", uid);
