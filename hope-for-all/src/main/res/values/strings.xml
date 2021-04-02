@@ -9,4 +9,9 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string name="dialog_title">Delete Information</string>
+    <string name="dialog_message">Are you sure to delete your Id?</string>
+    <string name="dialog_yes">Yes</string>
+    <string name="dialog_no">No</string>
+    <string name="toast_post_updated">Updated successfully</string>
 </resources>
