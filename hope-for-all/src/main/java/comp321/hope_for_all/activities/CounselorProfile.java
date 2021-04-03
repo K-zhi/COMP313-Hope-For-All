@@ -143,7 +143,7 @@ public class CounselorProfile extends AppCompatActivity implements View.OnClickL
         alert.setIcon(R.drawable.ic_hope);
         alert.setTitle("Sign out");
         alert.setMessage("Are you sure you want to sign out?");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseAuth.getInstance().signOut();

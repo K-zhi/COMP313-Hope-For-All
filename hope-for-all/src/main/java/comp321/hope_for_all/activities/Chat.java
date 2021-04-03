@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,6 +55,10 @@ public class Chat extends AppCompatActivity {
     private EditText editTxtChat;
     private Button btnSendChat;
     private LinearLayout layout;
+
+    private FirebaseUser user;
+    private String userID;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,5 +161,19 @@ public class Chat extends AppCompatActivity {
                 Log.d(TAG, "## onCancelled: " + error.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+
+        Intent intent = new Intent(getApplicationContext(), Message.class);
+        intent.putExtra("UserName", userName);
+        intent.putExtra("Uid", userID);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+
+
     }
 }
