@@ -8,7 +8,6 @@ import androidx.test.espresso.Espresso;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
@@ -118,10 +117,6 @@ public class CommentTestUser {
         };
 
         ViewInteraction recyclerViewInteraction = Espresso.onView(ViewMatchers.withId(R.id.recycler_view));
-        recyclerViewInteraction.perform(RecyclerViewActions.actionOnItemAtPosition(0, postComment));
-        recyclerViewInteraction.perform(RecyclerViewActions.actionOnItemAtPosition(0, cancelComment));
-        recyclerViewInteraction.perform(RecyclerViewActions.actionOnItemAtPosition(0, postComment));
-        recyclerViewInteraction.perform(RecyclerViewActions.actionOnItemAtPosition(0, editComment));
-        recyclerViewInteraction.perform(RecyclerViewActions.actionOnItemAtPosition(0, confirmComment));
+
     }
 }
