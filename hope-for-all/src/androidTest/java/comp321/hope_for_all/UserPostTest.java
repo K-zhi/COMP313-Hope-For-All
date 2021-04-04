@@ -15,7 +15,7 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class PostScenarioTest {
+public class UserPostTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule =
