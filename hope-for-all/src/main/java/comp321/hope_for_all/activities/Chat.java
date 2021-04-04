@@ -163,17 +163,4 @@ public class Chat extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-
-        Intent intent = new Intent(getApplicationContext(), Message.class);
-        intent.putExtra("UserName", userName);
-        intent.putExtra("Uid", userID);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-        finish();
-
-
-    }
 }

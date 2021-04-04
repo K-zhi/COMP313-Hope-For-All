@@ -12,7 +12,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -23,7 +22,6 @@ import java.util.List;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.activities.Chat;
-import comp321.hope_for_all.activities.Message;
 import comp321.hope_for_all.models.ChatData;
 
 import static androidx.core.content.ContextCompat.startActivity;
@@ -76,8 +74,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         if(holder != null) {
             if(mDataSet != null && mDataSet.size() > 0) {
-                // get element from dataSet at this position
-                // replace the contents of the view with that element
+
                 ChatData room = mDataSet.get(position);
 
                 if(room != null) {
@@ -97,9 +94,9 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), Chat.class);
                     String key = mDataSet.get(position).getOpponentId();
-                    // Check Chat Data key in Database
+
                     chatKey = mDataSet.get(position).getOpponentId() + mDataSet.get(position).getUid();
-                    // Check Chat Data key in Database
+
                     FirebaseDatabase.getInstance().getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -150,7 +147,6 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
         return mDataSet == null ? 0 : mDataSet.size();
     }
 
-    // Renewal chat data
     public void addRoom(ChatData room) {
         if(mDataSet == null)
             mDataSet = new ArrayList<>();
@@ -166,7 +162,7 @@ public class MessageListAdapter extends RecyclerView.Adapter<MessageListAdapter.
     }
 
     public Boolean checkIsExistKey(String key) {
-        // Check Chat Data key in Database
+
         FirebaseDatabase.getInstance().getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

@@ -1,7 +1,5 @@
 package comp321.hope_for_all.models;
 
-import com.google.type.DateTime;
-
 public class Post {
 
     private String id;
@@ -10,7 +8,6 @@ public class Post {
 
 
     public Post() {
-        //default constructor is needed
         id = "";
         content = "";
         parentId = "";
