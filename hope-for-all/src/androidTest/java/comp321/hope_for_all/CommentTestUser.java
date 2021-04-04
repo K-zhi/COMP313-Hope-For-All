@@ -33,7 +33,7 @@ public class CommentTestUser {
     @Before
     public void Prepare() {
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        auth.signInWithEmailAndPassword("mkpacleb@mail.com", "123456")
+        auth.signInWithEmailAndPassword("wook@mail.com", "qwerty")
             .addOnCompleteListener(mainActivityActivityTestRule.getActivity(), new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
