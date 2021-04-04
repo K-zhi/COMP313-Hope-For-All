@@ -27,7 +27,7 @@ public class PostScenarioTest {
         onView(withId(R.id.button_add_post)).perform(click());
 
         onView(withId(R.id.et_post))
-                .perform(typeText("Hello from Espresso Test"));
+                .perform(typeText("Hello from Espresso Test c/o User"));
 
         onView(withId(R.id.btn_post))
                 .perform(click());
