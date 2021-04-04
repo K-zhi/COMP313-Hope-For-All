@@ -1,11 +1,9 @@
 package comp321.hope_for_all.models;
 
-import android.net.Uri;
-
 public class Counselor {
 
     public String c_userName, c_name, c_bio, c_email, c_website, c_location;
-    // #D: Add counselor id
+
     private String cid;
 
     public Counselor(){

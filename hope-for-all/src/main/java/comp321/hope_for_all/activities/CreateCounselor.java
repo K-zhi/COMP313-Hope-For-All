@@ -1,13 +1,11 @@
 package comp321.hope_for_all.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -31,7 +29,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
-
 
 import java.util.List;
 
@@ -65,7 +62,6 @@ public class CreateCounselor extends AppCompatActivity implements View.OnClickLi
         name = findViewById(R.id.etName);
         bio = findViewById(R.id.etBio);
         website = findViewById(R.id.etWebsite);
-        //location = findViewById(R.id.etLocation);
 
         email = findViewById(R.id.etEmail);
         password = findViewById(R.id.etPassword);

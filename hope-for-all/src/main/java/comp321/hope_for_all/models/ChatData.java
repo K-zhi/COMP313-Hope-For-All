@@ -1,14 +1,13 @@
 package comp321.hope_for_all.models;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class ChatData implements Serializable {
     private String msg;
     private String userName;
     private String uid;
     private int image;
-    // Add
+
     private String rookKey;
     private String opponentName;
     private String opponentId;

@@ -31,7 +31,6 @@ public class UserListAdapter extends BaseAdapter {
     }
 
     public UserListAdapter(Activity context, List<User> userList) {
-        //super(context, R.layout.custom_alert_dialog_user_item, userList);
         this.context = context;
         if(userList == null)
             userList = new ArrayList<>();
