@@ -51,7 +51,6 @@ public class MainCounselor extends AppCompatActivity {
     private List<Post> list = new ArrayList<>();
     private PostAdapter adapter;
 
-
     private FirebaseUser user;
     private DatabaseReference databaseReference;
 
@@ -65,6 +64,9 @@ public class MainCounselor extends AppCompatActivity {
         setContentView(R.layout.activity_main_counselor);
 
         bottomNav();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userID = user.getUid();
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -83,7 +85,6 @@ public class MainCounselor extends AppCompatActivity {
         });
 
 
-
         user = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("Counselors");
         userID = user.getUid();
@@ -98,6 +99,11 @@ public class MainCounselor extends AppCompatActivity {
         });
 
         readData();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
+
     }
 
     @Override
@@ -315,8 +321,8 @@ public class MainCounselor extends AppCompatActivity {
 
                     case R.id.messageNav:
                         Intent intent = new Intent(getApplicationContext(), CounselorMessage.class);
-                        intent.putExtra("c_userName", userName);
-                        intent.putExtra("uid", userID);
+                        intent.putExtra("UserName", userName);
+                        intent.putExtra("Uid", userID);
                         startActivity(intent);
                         overridePendingTransition(0, 0);
                         finish();

@@ -32,7 +32,6 @@ public class CounselorListAdapter extends BaseAdapter {
         this.counselorList = counselorList;
     }
 
-    // #K: For using layout
     public class CounselorHolder {
         TextView counselorName;
         TextView counselorId;
@@ -80,7 +79,6 @@ public class CounselorListAdapter extends BaseAdapter {
             view = convertView;
         }
 
-        // # Null check
         if(counselorList != null) {
             CounselorHolder holder = (CounselorHolder) view.getTag();
             holder.counselorName.setText(counselorList.get(position).c_userName);

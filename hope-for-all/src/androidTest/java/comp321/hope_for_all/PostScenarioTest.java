@@ -27,13 +27,11 @@ public class PostScenarioTest {
         onView(withId(R.id.button_add_post)).perform(click());
 
         onView(withId(R.id.et_post))
-                .perform(typeText("Hello from test"));
+                .perform(typeText("Hello from Espresso Test"));
 
         onView(withId(R.id.btn_post))
                 .perform(click());
 
     }
-
-
 
 }

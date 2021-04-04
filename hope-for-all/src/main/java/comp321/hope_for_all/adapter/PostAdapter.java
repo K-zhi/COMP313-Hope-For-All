@@ -8,12 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -77,8 +75,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         else {
             holder.editTextComment.setVisibility(View.INVISIBLE);
             holder.tvPostContent.setVisibility(View.VISIBLE);
-
-//            holder.comment.setVisibility(View.VISIBLE);
             holder.edit.setVisibility(View.VISIBLE);
             holder.delete.setVisibility(View.VISIBLE);
             holder.confirmcomment.setVisibility(View.INVISIBLE);
