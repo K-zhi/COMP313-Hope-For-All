@@ -24,6 +24,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -50,12 +52,20 @@ public class MainActivity extends AppCompatActivity {
     private List<Post> list = new ArrayList<>();
     private PostAdapter adapter;
 
+    private FirebaseUser user;
+
+    private String userID;
+    private String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         bottomNav();
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        userID = user.getUid();
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -82,6 +92,10 @@ public class MainActivity extends AppCompatActivity {
 
         readData();
 
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(layoutManager);
+
     }
 
     @Override
@@ -92,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("Posts");
 
     }
-
 
     private void showDialogAddPost() {
         Dialog dialog = new Dialog(this);
@@ -298,8 +311,12 @@ public class MainActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.messageNav:
-                        startActivity(new Intent(getApplicationContext(), Message.class));
+                        Intent intent = new Intent(getApplicationContext(), Message.class);
+                        intent.putExtra("UserName", userName);
+                        intent.putExtra("Uid", userID);
+                        startActivity(intent);
                         overridePendingTransition(0, 0);
+                        finish();
                         return true;
                 }
                 return false;

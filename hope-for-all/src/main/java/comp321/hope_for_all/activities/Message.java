@@ -1,55 +1,37 @@
 package comp321.hope_for_all.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.protobuf.StringValue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import comp321.hope_for_all.R;
 import comp321.hope_for_all.adapter.CounselorListAdapter;
@@ -59,9 +41,7 @@ import comp321.hope_for_all.models.ChatData;
 import comp321.hope_for_all.models.Counselor;
 import comp321.hope_for_all.models.User;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
-public class Message extends AppCompatActivity implements View.OnClickListener {
+public class Message extends AppCompatActivity {
     private FirebaseDatabase database;
 
     private static final String TAG = "Message";
@@ -70,37 +50,29 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     private String chatKey;
     public Boolean isExistKey = false;
 
-    private FloatingActionButton fabMain, fabCounselor;
-    private boolean isFabOpen = false;
     private AlertDialog.Builder builder;
 
-    // #K: For show the list of chats
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<ChatData> listChatRoom;
     private List<ChatData> listChatRoomKeys;
 
-    // # Custom Alert Dialog
     public ListView listView;
-    // #K: To be related with the list of Users
     private UserListAdapter userListAdapter;
     private List<User> listUserInfo;
 
-    // #K: Related with the list of Counselors
     private CounselorListAdapter counselorAdapter;
     private List<Counselor> listCounselors;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Connected to new custom title bar
-        //requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
         setContentView(R.layout.activity_message);
-        getSupportActionBar().setTitle(R.string.chats);
-        //getWindow().setFeatureInt(Window.FEATURE_CUSTOM_TITLE, R.layout.custom_message_title);
 
-        // Initialize database valuable
+        getSupportActionBar().hide();
+
         database = FirebaseDatabase.getInstance();
 
         Intent intent = getIntent();
@@ -118,7 +90,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         mAdapter = new MessageListAdapter(uid);
         mRecyclerView.setAdapter(mAdapter);
 
-        // Get the list of chats from Firebase;
         getChatRoomList();
 
         if (listUserInfo != null)
@@ -135,38 +106,27 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
             counselorAdapter = new CounselorListAdapter(this);
         }
 
-        // Get the users data from Firebase
         getUsersInfo();
-        // # Get the counselors data from Firebase
+
         getCounselorsInfo();
 
-        fabMain = (FloatingActionButton) findViewById(R.id.FloatingBtnMain);
-        fabMain.setOnClickListener(this);
-
-        fabCounselor = (FloatingActionButton)findViewById(R.id.FloatingBtnCou);
-        fabCounselor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                makeCounselorsList();
-            }
-        });
-
         bottomNavigation();
+
+        upperNavigation();
     }
+
 
     private void getChatRoomList() {
         List<ChatData> tempList = new ArrayList<>();
 
-        // #K: Step0. Read the data from our database
         database.getReference("ChatRooms").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                // getValue : Read data from Firebase
+
                 Log.d(TAG, "## onChildAdded: " + snapshot.getKey());
 
                 List<ChatData> compList = new ArrayList<>();
 
-                // Read all data about messages from database
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                     ChatData room = userSnapshot.getValue(ChatData.class);
 
@@ -175,7 +135,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                     }
                 }
 
-                // ##### Filtering to be connected with current user
                 String listId, saveId;
 
                 saveId = "";
@@ -226,13 +185,12 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
-    //
     private void getChatRoomKeys() {
         database.getReference("ChatRoomKeys").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 listChatRoomKeys = new ArrayList<>();
-                // getValue : Read data from Firebase
+
                 Log.d(TAG, "## onChildAdded about ChatRoom Keys: " + snapshot.getKey());
 
                 for (DataSnapshot userSnapshot : snapshot.getChildren()) {
@@ -266,7 +224,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
-    // For converting string value to Date
     private Date convertStrDate(String strDate) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         Date date = new Date();
@@ -280,9 +237,31 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         return date;
     }
 
-    private void bottomNavigation() {
+    private void upperNavigation() {
 
-        setTitle("Chat Message");
+        BottomNavigationView bottomNavigationView = findViewById(R.id.upper_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.usersList);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.usersList:
+                        makeUsersList();
+                        return true;
+
+                    case R.id.counselorList:
+                        makeCounselorsList();
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+
+    private void bottomNavigation() {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setSelectedItemId(R.id.messageNav);
@@ -311,92 +290,83 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.FloatingBtnMain:
-                //dialogUserList = new ArrayList<>();
-                listUserInfo = new ArrayList<>();
 
-                LayoutInflater inflater = getLayoutInflater();
-                View view = inflater.inflate(R.layout.custom_alert_dialog_user_list, null);
-                listView = (ListView) view.findViewById(R.id.alertDialogUserList);
-                listView.setAdapter(userListAdapter);
+    private void makeUsersList() {
 
-                // Create Dialog
-                createDialogSetting(view, "user");
-                final AlertDialog dialog = builder.create();
+        listUserInfo = new ArrayList<>();
 
-                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if (listUserInfo == null || listUserInfo.size() == 0) {
-                            if (userListAdapter.getUserList() != null && userListAdapter.getUserList().size() > 0) {
-                                listUserInfo = userListAdapter.getUserList();
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.custom_alert_dialog_user_list, null);
+        listView = (ListView) view.findViewById(R.id.alertDialogUserList);
+        listView.setAdapter(userListAdapter);
+
+        createDialogSetting(view, "user");
+        final AlertDialog dialog = builder.create();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (listUserInfo == null || listUserInfo.size() == 0) {
+                    if (userListAdapter.getUserList() != null && userListAdapter.getUserList().size() > 0) {
+                        listUserInfo = userListAdapter.getUserList();
+                    }
+                }
+
+                if (position != -1) {
+                    Intent intent = new Intent(getApplicationContext(), Chat.class);
+
+                    chatKey = listUserInfo.get(position).uid + uid;
+
+                    database.getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            isExistKey = false;
+                            for (DataSnapshot chatSnapshot : snapshot.getChildren()) {
+                                if (chatSnapshot.getKey().equals(chatKey)) {
+                                    isExistKey = true;
+                                    break;
+                                } else
+                                    isExistKey = false;
+                            }
+
+                            chatKey = isExistKey ? chatKey : uid + listUserInfo.get(position).uid;
+
+                            if(isExistKey == false) {
+                                ChatData chatKeyId = new ChatData();
+                                chatKeyId.setUid(uid);
+                                chatKeyId.setOpponentId(listUserInfo.get(position).uid);
+                                database.getReference().child("ChatRoomKeys").child(chatKey).push().setValue(chatKeyId);
+                            }
+
+                            intent.putExtra("UserName", userName);
+                            intent.putExtra("Uid", uid);
+                            intent.putExtra("OpponentId", listUserInfo.get(position).uid);
+                            intent.putExtra("OpponentName", listUserInfo.get(position).userName);
+                            intent.putExtra("RoomKey", chatKey);
+
+                            ActivityOptions activityOptions = null;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                                activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
+                                startActivity(intent, activityOptions.toBundle());
+
                             }
                         }
 
-                        if (position != -1) {
-                            Intent intent = new Intent(getApplicationContext(), Chat.class);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                            // Check Chat Data key in Database
-                            chatKey = listUserInfo.get(position).uid + uid;
-
-                            // Check Chat Data key in Database
-                            database.getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    isExistKey = false;
-                                    for (DataSnapshot chatSnapshot : snapshot.getChildren()) {
-                                        if (chatSnapshot.getKey().equals(chatKey)) {
-                                            isExistKey = true;
-                                            break;
-                                        } else
-                                            isExistKey = false;
-                                    }
-
-                                    // Todo: delete ' == true'
-                                    chatKey = isExistKey ? chatKey : uid + listUserInfo.get(position).uid;
-
-                                    // Make ChatRoomKey Table
-                                    if(isExistKey == false) {
-                                        ChatData chatKeyId = new ChatData();
-                                        chatKeyId.setUid(uid);
-                                        chatKeyId.setOpponentId(listUserInfo.get(position).uid);
-                                        database.getReference().child("ChatRoomKeys").child(chatKey).push().setValue(chatKeyId);
-                                    }
-
-                                    intent.putExtra("UserName", userName);
-                                    intent.putExtra("Uid", uid);
-                                    intent.putExtra("OpponentId", listUserInfo.get(position).uid);
-                                    intent.putExtra("OpponentName", listUserInfo.get(position).userName);
-                                    intent.putExtra("RoomKey", chatKey);
-
-                                    ActivityOptions activityOptions = null;
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext(), R.anim.from_right, R.anim.from_left);
-                                        startActivity(intent, activityOptions.toBundle());
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
                         }
+                    });
+                }
 
-                        dialog.dismiss();
-                    }
-                });
+                dialog.dismiss();
+            }
+        });
 
-                break;
-        }
+
     }
 
-    // #D: To make the list of counselors in Custom dialog
-    private void makeCounselorsList() {
+    public void makeCounselorsList() {
         listCounselors = new ArrayList<>();
 
         LayoutInflater inflater = getLayoutInflater();
@@ -404,7 +374,6 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         listView = (ListView) view.findViewById(R.id.alertDialogUserList);
         listView.setAdapter(counselorAdapter);
 
-        // Create Dialog
         createDialogSetting(view, "counselor");
         final AlertDialog dialog = builder.create();
 
@@ -420,10 +389,8 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                 if (position != -1) {
                     Intent intent = new Intent(getApplicationContext(), Chat.class);
 
-                    // Check Chat Data key in Database
                     chatKey = listCounselors.get(position).getCid() + uid;
 
-                    // Check Chat Data key in Database
                     FirebaseDatabase.getInstance().getReference("ChatRooms").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -436,10 +403,8 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                                     isExistKey = false;
                             }
 
-                            // Todo: delete ' == true'
                             chatKey = isExistKey ? chatKey : uid + listCounselors.get(position).getCid();
 
-                            // Make ChatRoomKey Table
                             if(isExistKey == false) {
                                 ChatData chatKeyId = new ChatData();
                                 chatKeyId.setUid(uid);
@@ -455,7 +420,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
                             ActivityOptions activityOptions = null;
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                //activityOptions = ActivityOptions.makeCustomAnimation(getApplicationContext());
+
                                 startActivity(intent);
                             }
                         }
@@ -473,18 +438,10 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void createDialogSetting(View view, String role) {
-        // Create Dialog
+
         builder = new AlertDialog.Builder(this);
 
-        // Set Layout
         builder.setView(view);
-        // Confirm & Cancel button
-        builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -492,17 +449,17 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
                 dialog.dismiss();
             }
         });
-        // Set Icon
+
         builder.setIcon(R.drawable.ic_hope);
-        // Set Title
+
         String title = String.format("Choose a %s to talk :)", role);
         builder.setTitle(title);
         builder.show();
     }
 
-    // #D: Make the list of Users
+
     private void getUsersInfo() {
-        // Get the users data from Firebase
+
         database.getReference("Users").orderByChild("name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -511,7 +468,7 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
 
                     if (user != null) {
                         user.uid = userSnapshot.getKey();
-                        // #D: if there is an current user, delete the item in the list of users
+
                         if (uid != null && !uid.equals(user.uid)) {
                             listUserInfo.add(user);
                             userListAdapter.setUser(user);
@@ -527,9 +484,8 @@ public class Message extends AppCompatActivity implements View.OnClickListener {
         });
     }
 
-    // #K: Make the list of Counselors
     private void getCounselorsInfo() {
-        // Get the Counselors data from Firebase
+
         database.getReference("Counselors").orderByChild("c_name").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

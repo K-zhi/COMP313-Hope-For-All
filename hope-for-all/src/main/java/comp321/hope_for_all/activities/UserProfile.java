@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +28,7 @@ import comp321.hope_for_all.models.User;
 
 public class UserProfile extends AppCompatActivity implements View.OnClickListener{
 
-    private TextView userNameTextView, nameTextView, emailTextView, logOut;
+    private TextView logOut;
     private Button editProfile, deleteProfile;
 
     private FirebaseUser user;
@@ -100,6 +101,7 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
         deleteProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                builder.setIcon(R.drawable.ic_hope);
                 builder.setTitle(R.string.dialog_title).setMessage(R.string.dialog_message);
                 builder.setPositiveButton(R.string.dialog_yes, new DialogInterface.OnClickListener() {
                     @Override
@@ -122,6 +124,17 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
 
                 //AlertDialog alertDialog = builder.create();
                 builder.show();;
+            }
+        });
+    }
+
+    private void deleteProfile(User user){
+
+        databaseReference.child(user.getUserName()).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                Toast.makeText(getApplicationContext(), "Removed: " + user.getUserName(),
+                        Toast.LENGTH_LONG).show();
             }
         });
     }
