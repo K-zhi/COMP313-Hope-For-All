@@ -105,7 +105,10 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         user.delete();
-                        finishAffinity();
+                        //finishAffinity();
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(UserProfile.this, LoginUser.class);
+                        startActivity(intent);
                     }
                 });
 
