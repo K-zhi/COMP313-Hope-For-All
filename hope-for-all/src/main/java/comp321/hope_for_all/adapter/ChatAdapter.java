@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import comp321.hope_for_all.R;
+import comp321.hope_for_all.activities.Chat;
 import comp321.hope_for_all.models.ChatData;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> {
@@ -37,6 +38,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.MyViewHolder> 
             view.setClickable(true);
             view.setEnabled(true);
         }
+    }
+
+    public ChatAdapter(Activity context) {
+        this.context = context;
     }
 
     public ChatAdapter(Activity context, List<ChatData> myDataSet, String myNickName) {

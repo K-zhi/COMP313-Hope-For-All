@@ -35,17 +35,17 @@ import static org.junit.Assert.*;
 public class MessageCheckingTest extends TestCase {
     private static final String TAG = "TEST MESSAGE CLASS:";
     private Boolean isExistKey = false;
-    private User user1, user2;
+    private User testUser1, testUser2;
     private List<ChatData> roomKeys;
     private FirebaseDatabase database;
 
     @Before
     public void setUp() throws Exception {
-        user1 = new User();
-        user1.uid = "Fs4zS9BsVNMgcWvvAP2WfbhbhVy1";
+        testUser1 = new User();
+        testUser1.uid = "Fs4zS9BsVNMgcWvvAP2WfbhbhVy1";
 
-        user2 = new User();
-        user2.uid = "2P66aMDXEKcLVKwy8r9A5VeYqXs2";
+        testUser2 = new User();
+        testUser2.uid = "2P66aMDXEKcLVKwy8r9A5VeYqXs2";
 
         roomKeys = new ArrayList<>();
 
@@ -83,7 +83,7 @@ public class MessageCheckingTest extends TestCase {
 
     @Test
     public void checkingExistKey() throws Exception {
-        String roomKey = String.format(user1.uid, user2.uid);
+        String roomKey = String.format(testUser1.uid, testUser2.uid);
 
         for(int i = 0; i < roomKeys.size(); i++) {
             if(roomKey.equals(roomKeys.get(i)))
@@ -93,7 +93,7 @@ public class MessageCheckingTest extends TestCase {
         if(isExistKey)
             Log.d("FIRST: TEST TO EQUAL KEY", roomKey);
         else
-            roomKey = String.format(user2.uid, user1.uid);
+            roomKey = String.format(testUser2.uid, testUser1.uid);
 
         for(int i = 0; i < roomKeys.size(); i++) {
             if(roomKey.equals(roomKeys.get(i)))
@@ -102,8 +102,6 @@ public class MessageCheckingTest extends TestCase {
 
         if(isExistKey)
             Log.d("SECOND: TEST TO EQUAL KEY", roomKey);
-        else
-            roomKey = String.format(user2.uid, user1.uid);
     }
 
     @After
