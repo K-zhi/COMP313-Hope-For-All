@@ -15,7 +15,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 
 @RunWith(AndroidJUnit4.class)
-public class signOut {
+public class SignOutTest {
     @Rule
     public ActivityTestRule<UserProfile> mActivityTestRule =
             new ActivityTestRule<>(UserProfile.class);
