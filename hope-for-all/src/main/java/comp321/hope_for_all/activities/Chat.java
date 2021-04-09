@@ -44,11 +44,11 @@ public class Chat extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private List<ChatData> chatList;
 
-    private String uid;
-    private String uName;
-    private String oppId;
-    private String oppName;
-    private String chatKey;
+    private String uid = "TESTUSER1";
+    private String uName = "TestCHRIS";
+    private String oppId = "TESTUSER2";
+    private String oppName = "TestKim";
+    private String chatKey = "TESTUSER1TESTUSER2";
     private Boolean isExist = false;
     private String currDateStr;
 
@@ -82,7 +82,7 @@ public class Chat extends AppCompatActivity {
             chatKey = intent.getExtras().getString("RoomKey");
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Chatting with " + intent.getExtras().getString("OpponentName"));
+        actionBar.setTitle("Chatting with " + oppName);
 
         btnSendChat = findViewById(R.id.btnSendChat);
         editTxtChat = findViewById(R.id.editTxtChat);
@@ -105,7 +105,9 @@ public class Chat extends AppCompatActivity {
                         chat.setOpponentName(oppName);
                         chat.setMsg(message);
                         chat.setDate(strNow);
-                        FirebaseDatabase.getInstance().getReference().child("ChatRooms").child(chatKey).push().setValue(chat);
+
+                        if(chatKey != null)
+                            FirebaseDatabase.getInstance().getReference().child("ChatRooms").child(chatKey).push().setValue(chat);
 
                         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(layout.getWindowToken(), 0);
@@ -130,37 +132,39 @@ public class Chat extends AppCompatActivity {
         mRecyclerView.setLayoutManager(layoutManager);
 
 
-        mDatabaseRef.child(chatKey).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d("Chat: ", snapshot.getValue().toString());
-                if(snapshot.getValue() != null) {
-                    ChatData chat = snapshot.getValue(ChatData.class);
-                    ((ChatAdapter) mAdapter).addChat(chat);
-                    editTxtChat.setText("");
+        if(chatKey != null) {
+            mDatabaseRef.child(chatKey).addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    Log.d("Chat: ", snapshot.getValue().toString());
+                    if(snapshot.getValue() != null) {
+                        ChatData chat = snapshot.getValue(ChatData.class);
+                        ((ChatAdapter) mAdapter).addChat(chat);
+                        editTxtChat.setText("");
+                    }
                 }
-            }
 
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d(TAG, "## onChildChanged: " + snapshot.getKey());
-            }
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    Log.d(TAG, "## onChildChanged: " + snapshot.getKey());
+                }
 
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-                Log.d(TAG, "## onChildRemoved: " + snapshot.getKey());
-            }
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+                    Log.d(TAG, "## onChildRemoved: " + snapshot.getKey());
+                }
 
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d(TAG, "## onChildMoved: " + snapshot.getKey());
-            }
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    Log.d(TAG, "## onChildMoved: " + snapshot.getKey());
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d(TAG, "## onCancelled: " + error.getMessage());
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d(TAG, "## onCancelled: " + error.getMessage());
+                }
+            });
+        }
     }
 
 }
