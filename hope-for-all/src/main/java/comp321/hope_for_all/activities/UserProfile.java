@@ -107,8 +107,10 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         user.delete();
-                        startActivity(new Intent(UserProfile.this, LoginUser.class));
-
+                        //finishAffinity();
+                        FirebaseAuth.getInstance().signOut();
+                        Intent intent = new Intent(UserProfile.this, LoginUser.class);
+                        startActivity(intent);
                     }
                 });
 
@@ -120,6 +122,7 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
                     }
                 });
 
+                //AlertDialog alertDialog = builder.create();
                 builder.show();;
             }
         });
@@ -143,7 +146,7 @@ public class UserProfile extends AppCompatActivity implements View.OnClickListen
         alert.setIcon(R.drawable.ic_hope);
         alert.setTitle("Sign out");
         alert.setMessage("Are you sure you want to sign out?");
-        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 FirebaseAuth.getInstance().signOut();

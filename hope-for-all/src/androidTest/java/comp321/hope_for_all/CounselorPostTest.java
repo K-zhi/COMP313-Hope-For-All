@@ -7,19 +7,17 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import comp321.hope_for_all.activities.MainActivity;
-
+import comp321.hope_for_all.activities.MainCounselor;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 @RunWith(AndroidJUnit4.class)
-public class PostScenarioTest {
-
+public class CounselorPostTest {
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule =
-            new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<MainCounselor> mActivityTestRule =
+            new ActivityTestRule<>(MainCounselor.class);
 
     @Test
     public void addPostDisplay(){
@@ -27,7 +25,7 @@ public class PostScenarioTest {
         onView(withId(R.id.button_add_post)).perform(click());
 
         onView(withId(R.id.et_post))
-                .perform(typeText("Hello from Espresso Test"));
+                .perform(typeText("Hello Testing Counselor Chat"));
 
         onView(withId(R.id.btn_post))
                 .perform(click());
