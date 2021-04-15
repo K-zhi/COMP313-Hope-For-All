@@ -30,7 +30,9 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import comp321.hope_for_all.activities.Chat;
 import comp321.hope_for_all.activities.UpdateCounselorProfile;
@@ -53,6 +55,7 @@ public class ChatAdapterTest {
     private String oppId;
     private String oppName;
     private String chatKey;
+    private List<ChatData> testList;
     String message;
 
     @Before
@@ -62,6 +65,7 @@ public class ChatAdapterTest {
         oppId = "TESTUSER2";
         oppName = "TestKim";
         chatKey = "TESTUSER1TESTUSER2";
+        testList = new ArrayList<>();
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         auth.signInWithEmailAndPassword("kim@gmail.com", "123456")
